@@ -15,5 +15,6 @@ namespace API.Models.ModelViews
         public string PlaylistDescription { get; set; }
         public string CateName { get; set; }
         public string UserName { get; set; }
+        public string UserImg { get; set; }
     }
 }

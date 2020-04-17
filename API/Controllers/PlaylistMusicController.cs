@@ -13,9 +13,21 @@ namespace API.Controllers
     public class PlaylistMusicController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public IHttpActionResult GetList(int idPlist)
         {
-            return new string[] { "value1", "value2" };
+            var ls = Repositories.GetListPMByID(idPlist).Select(s => new MusicView
+            {
+                ID = s.MusicID,
+                MusicDownloadAllowed = s.Music.MusicDownloadAllowed,
+                CateID = s.Music.CateID,
+                MusicImage = s.Music.MusicImage,
+                MusicName = s.Music.MusicName,
+                SongOrMV = s.Music.SongOrMV,
+                View = s.Music.MusicView,
+                FileNormal = Repositories.GetQMByIDMusic(s.MusicID, false).MusicFile,
+                ListSinger = Repositories.GetSMByID(s.MusicID).Select(d => new SingerMusicView { SingerID = d.SingerID, SingerName = d.User.UserName })
+            });
+            return Ok(ls);
         }
 
         // GET api/<controller>/5

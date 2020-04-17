@@ -12,7 +12,7 @@
             @foreach (var item in ls)
             {
                 <div class="itemMusic">
-                    <a href="" style="font-size: 18px;"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.PlaylistImage" alt="" class="imgMusic">@item.PlaylistName</a>
+                    <a href="@Url.Action("PlayPlist",new { id=item.ID})" style="font-size: 18px;"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.PlaylistImage" alt="" class="imgMusic">@item.PlaylistName</a>
                     <div class="nameSinger">
                         <a href="">@item.UserName</a>
                     </div>

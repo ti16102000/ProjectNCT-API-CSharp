@@ -35,7 +35,11 @@
                 <!--song-->
                 <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.MusicImage" alt="">
                 <audio autoplay controls id="myAudio">
-                    <source src="@Url.Content("~/Resource/Audio/")@fileNormal.MusicFile" type="audio/mpeg">
+                    @if (fileNormal.QMusicApproved == true)
+                    {
+                        <source src="@Url.Content("~/Resource/Audio/")@fileNormal.MusicFile" type="audio/mpeg">
+                    }
+
                 </audio>
                 <!--song-->
             }
@@ -44,7 +48,10 @@
 
                 <!--mv-->
                 <video autoplay controls id="myAudio">
-                    <source src="@Url.Content("~/Resource/Video/")@fileNormal.MusicFile" type="audio/mpeg">
+                    @if (fileNormal.QMusicApproved == true)
+                    {
+                        <source src="@Url.Content("~/Resource/Video/")@fileNormal.MusicFile" type="video/mp4">
+                    }
                 </video>
                 <!--mv-->
             }
@@ -57,47 +64,51 @@
                 <div>
                     <span>Tự động chuyển bài:</span>
                     <input type="checkbox" name="" id="checkAuto" checked><br>
-                    @if (Model.SongOrMV == true)
+                    @if (fileNormal.QMusicApproved == true)
                     {
-                        <!--song-->
-                        <span class="addPlaylist" style="cursor: pointer;">
-                            <i class="fas fa-plus-circle"></i> Thêm
-                            vào
-                            <ul>
-                                @if (Session["UserID"] == null)
-                                {
-                                    <a href="@Url.Action("Index", "Login")">Mời bạn đăng nhập</a>
-                                }
-                                else
-                                {
-                                    if (lsPlist == null)
+                        if (Model.SongOrMV == true)
+                        {
+                            <!--song-->
+                            <span class="addPlaylist" style="cursor: pointer;">
+                                <i class="fas fa-plus-circle"></i> Thêm
+                                vào
+                                <ul>
+                                    @if (Session["UserID"] == null)
                                     {
-                                        <span>Bạn chưa có playlist nào. <a href="#">TẠO</a></span>
+                                        <a href="@Url.Action("Index", "Login")">Mời bạn đăng nhập</a>
                                     }
                                     else
                                     {
-                                        foreach (var item in lsPlist)
+                                        if (lsPlist==null)
                                         {
-                                            <li data-id="@item.ID">@item.PlaylistName</li>
+                                            <span>Bạn chưa có playlist nào. <a href="#">TẠO</a></span>
                                         }
+                                        else
+                                        {
+                                            foreach (var item in lsPlist)
+                                            {
+                                                <li data-id="@item.ID">@item.PlaylistName</li>
+                                            }
+                                        }
+
                                     }
+                                </ul>
+                            </span>
+                            <!--song-->
+                        }
+                        else
+                        {
+                            <!--mv-->
+                            @*<span style="cursor: pointer;" id="removeFav">
+                                    <i class="fas fa-heart"></i> Bỏ Yêu
+                                    thích
+                                </span>
+                                <span style="cursor: pointer;" id="addFav"><i class="far fa-heart"></i> Yêu thích</span>*@
+                            <!--mv-->
 
-                                }
-                            </ul>
-                        </span>
-                        <!--song-->
+                        }
                     }
-                    else
-                    {
-                        <!--mv-->
-                        <span style="cursor: pointer;" id="removeFav">
-                            <i class="fas fa-heart"></i> Bỏ Yêu
-                            thích
-                        </span>
-                        <span style="cursor: pointer;" id="addFav"><i class="far fa-heart"></i> Yêu thích</span>
-                        <!--mv-->
 
-                    }
                 </div>
                 <div>
                     @if (fileNormal.QMusicApproved == true)
@@ -243,18 +254,22 @@
         <span class="lblMusic">Nghe tiếp</span>
         @foreach (var item in lsRandom)
         {
-            <div class="itemSongRandom musicRandom">
-                <div>
-                    <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt=""> @item.MusicName</a><br>
-                    <span>
-                        @foreach (var singer in item.ListSinger)
-                        {
-                            <a href="">@singer.SingerName</a>
-                        }
+            if (item.ID != Model.ID)
+            {
+                <div class="itemSongRandom musicRandom">
+                    <div>
+                        <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt=""> @item.MusicName</a><br>
+                        <span>
+                            @foreach (var singer in item.ListSinger)
+                            {
+                                <a href="">@singer.SingerName</a>
+                            }
 
-                    </span>
+                        </span>
+                    </div>
                 </div>
-            </div>
+            }
+
         }
 
 

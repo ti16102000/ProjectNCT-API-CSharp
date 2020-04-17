@@ -136,7 +136,7 @@
             <ul>
                 @foreach (var item in lsCate)
                 {
-                    <li><a href="">@item.CateName</a></li>
+                    <li><a href="@Url.Action("ListPlaylistByIDCate",new { id=item.ID,name=item.CateName})">@item.CateName</a></li>
                 }
 
             </ul>

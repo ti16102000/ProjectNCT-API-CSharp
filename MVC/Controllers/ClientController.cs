@@ -15,7 +15,7 @@ namespace MVC.Controllers
             HttpResponseMessage resAllCate = APIService.client.GetAsync("Category").Result;
             IEnumerable<CategoryView> ls = resAllCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
             TempData["cate"] = ls;
-            //Session["UserID"] = 11;
+            Session["UserID"] = 11; //auto login acc user have id=11(data in my sql) to test my web faster
             if (Session["UserID"] != null)
             {
                 HttpResponseMessage res = APIService.client.GetAsync("User/" + Convert.ToInt32(Session["UserID"])).Result;
@@ -85,6 +85,7 @@ namespace MVC.Controllers
                 {
                     ViewBag.plist = null;
                 }
+                
             }
             //file
             HttpResponseMessage resFileNormal = APIService.client.GetAsync("QualityMusic?idMusic=" + model.ID + "&vip=" + false).Result;
@@ -158,9 +159,31 @@ namespace MVC.Controllers
         #endregion
 
         #region Play Playlist
-        public ActionResult PlayPlist()
+        public ActionResult PlayPlist(int id)
         {
-            return View();
+            var resPlist = APIService.client.GetAsync("Playlist/" + id).Result;
+            var model = resPlist.Content.ReadAsAsync<PlaylistView>().Result;
+            //list music
+            var resMusic = APIService.client.GetAsync("PlaylistMusic?idPlist=" + id).Result;
+            ViewBag.music = resMusic.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //random playlist
+            var resRandom = APIService.client.GetAsync("Playlist?idCate=" + model.CateID + "?number=" + 3).Result;
+            ViewBag.random = resRandom.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            //PlaylistUser
+            if (Session["UserID"] != null)
+            {
+                HttpResponseMessage res = APIService.client.GetAsync("Playlist?idUser=" + Convert.ToInt32(Session["UserID"])).Result;
+                IEnumerable<PlaylistView> plist = res.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+                if (plist.Count() > 0)
+                {
+                    ViewBag.plist = plist;
+                }
+                else
+                {
+                    ViewBag.plist = null;
+                }
+            }
+            return View(model);
         }
         #endregion
     }

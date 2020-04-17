@@ -21,5 +21,6 @@ namespace API.Models.ModelViews
         public string MusicNameUnsigned { get; set; }
         public Nullable<int> MusicRelated { get; set; }
         public IEnumerable<SingerMusicView> ListSinger { get; set; }
+        public string FileNormal { get; set; }
     }
 }

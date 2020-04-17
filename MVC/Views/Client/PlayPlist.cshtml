@@ -1,56 +1,85 @@
-﻿
+﻿@model API.Models.ModelViews.PlaylistView
 @{
     ViewBag.Title = "PlayPlist";
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.MusicView> lsMusic = ViewBag.music;
+    IEnumerable<API.Models.ModelViews.PlaylistView> lsRandom = ViewBag.random;
+    IEnumerable<API.Models.ModelViews.PlaylistView> lsPlist = ViewBag.plist;
+    int number = 1;
 }
 
 <div class="gridMusic">
     <div class="gridLeft">
         <div class="name-view-music">
-            <span>Tên Playlist - Ngưởi tạo</span>
-            <span style="position: absolute;left: 730px;top:86px;font-size: 18px;">
-                <i class="fas fa-headphones"></i> 300.000
-            </span>
+            <span>@Model.PlaylistName - @Model.UserName</span>
         </div>
         <div class="playMusic">
             <!--song-->
-            <img src="img/avt.png" alt="">
+            <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.PlaylistImage" alt="">
             <audio autoplay controls id="myAudio">
                 <source src="" type="audio/mpeg">
             </audio>
             <!--song-->
             <div id="playlistMusic">
-                <div class="itemPlaylist">
-                    <span>
-                        <span> 1. </span>
-                        <a href="nhac-demo.mp3">Demo 1 -</a>
+                @foreach (var item in lsMusic)
+                {                  
+                    <div class="itemPlaylist">
                         <span>
-                            <a href="">Ca sĩ 1</a>,
-                            <a href="">Ca sĩ 2</a>
+                            <span> @number. </span>
+                            <a href="@Url.Action("PlayMusic",new { id=item.ID})" data-src="@Url.Content("~/Resource/Audio/")@item.FileNormal" target="_blank">@item.MusicName -</a>
+                            <span>
+                                @foreach (var singer in item.ListSinger)
+                                {
+                                    <a href="">@singer.SingerName ,</a>
+                                }
+
+                            </span>
                         </span>
-                    </span>
-                    <span>
                         <span>
-                            <a href="nhac-demo.mp3" download="nhac" style="color: black;" id="downFile"
-                               title="Tải về"><i class="fa fa-download"></i></a>
+                            @if (item.MusicDownloadAllowed == true)
+                            {
+                                <span>
+                                    <a href="#" download="nhac" style="color: black;" id="downFile"
+                                       title="Tải về"><i class="fa fa-download"></i></a>
+                                </span>
+                            }
+
+                            <span class="addPlaylist" style="cursor: pointer;">
+                                <i class="fas fa-plus-circle"></i>
+                                <ul>
+                                    @if (Session["UserID"] == null)
+                                    {
+                                        <a href="@Url.Action("Index", "Login")">Mời bạn đăng nhập</a>
+                                    }
+                                    else
+                                    {
+                                        if (lsPlist==null)
+                                        {
+                                            <span>Bạn chưa có playlist nào. <a href="#">TẠO</a></span>
+                                        }
+                                        else
+                                        {
+                                            foreach (var p in lsPlist)
+                                            {
+                                                <li data-idPlist="@p.ID" data-idMusic="@item.ID">@p.PlaylistName</li>
+                                            }
+                                        }
+
+                                    }
+                                </ul>
+                            </span>
+                            <span><i class="fas fa-headphones"></i> @item.View</span>
                         </span>
-                        <span class="addPlaylist" style="cursor: pointer;">
-                            <i class="fas fa-plus-circle"></i>
-                            <ul>
-                                <li><a href="">Bài hát yêu thích</a> </li>
-                                <li><a href="">Test1</a></li>
-                                <li><a href="">Test2</a></li>
-                            </ul>
-                        </span>
-                        <span><i class="fas fa-headphones"></i> 300.000</span>
-                    </span>
-                </div>
+                    </div>
+                    number++;
+                }
+
             </div>
             <div class="menuMusic">
-                <img src="img/avt.png" alt="">
+                <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImg" alt="">
                 <div>
                     <span>Cung cấp bởi:</span><br>
-                    <span style="color: #00c292;font-weight: 700;">Nhaccuateoo</span>
+                    <a href="" style="color: #00c292;font-weight: 700;">@Model.UserName</a>
                 </div>
                 <div>
                     <span>Auto chuyển Playlist:</span>
@@ -69,22 +98,29 @@
                     <a href=""><img src="img/share_fb.png" alt=""></a>
                 </div>
             </div>
-            <p style="margin-top: 15px;margin-left: 20px;font-size: 16px;">Cho Description ở đây!!!</p>
+            <p style="margin-top: 15px;margin-left: 20px;font-size: 16px;">@Model.PlaylistDescription</p>
         </div>
     </div>
     <div class="gridRight">
         <span class="lblMusic">Nghe tiếp</span>
-        <div class="itemSongRandom">
-            <div>
-                <a href="nhac-demo.mp3">
-                    <img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên
-                    Playlist
-                </a><br>
-                <span>
-                    <a href="">Người tạo</a>
-                </span>
-            </div>
-        </div>
+        @foreach (var item in lsRandom)
+        {
+            if (item.ID != Model.ID)
+            {
+                <div class="itemSongRandom">
+                    <div>
+                        <a href="@Url.Action("PlayPlist",new { id=item.ID})">
+                            <img src="@Url.Content("~/Resource/ImagesMusic/")@item.PlaylistImage" alt="" style="border-radius: 0%;"> @item.PlaylistName
+                        </a><br>
+                        <span>
+                            <a href="">@item.UserName</a>
+                        </span>
+                    </div>
+                </div>
+            }
+
+        }
+
     </div>
 </div>
 @section scripts{
@@ -96,7 +132,7 @@
             var mainAudio = $('#myAudio');
             var itemLength = $('.itemPlaylist').length;
             $('.itemPlaylist:first-child').addClass("active-playlist");
-            mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("href"));
+            mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("data-src"));
             $('#checkAuto').change(function () {
                 if ($('#checkAuto').prop('checked') == true) {
                     valueAuto = true;
@@ -125,20 +161,20 @@
             $("#myAudio").on("ended", function () {
                 var index = $('.itemPlaylist').index($('.active-playlist')) + 1;
                 var nextItem = $('.itemPlaylist:nth-child(' + (index + 1) + ')');
-                var nextItemHref = $('.itemPlaylist:nth-child(' + (index + 1) + ')>span>a').attr("href");
+                var nextItemHref = $('.itemPlaylist:nth-child(' + (index + 1) + ')>span>a').attr("data-src");
                 if (valueRepeat == true) {
                     document.getElementById("myAudio").play();
                 } else if (valueRandom == true) {
                     var random = Math.floor((Math.random() * itemLength) + 1);
                     $('.itemPlaylist').removeClass("active-playlist");
                     $('.itemPlaylist:nth-child(' + random + ')').addClass("active-playlist");
-                    mainAudio.attr("src", $('.itemPlaylist:nth-child(' + random + ')>span>a').attr("href"));
+                    mainAudio.attr("src", $('.itemPlaylist:nth-child(' + random + ')>span>a').attr("data-src"));
                 } else if (index == itemLength && valueAuto == true) {
                     window.open($('.itemSongRandom>div>a:first-child').attr("href"), "_self");
                 }else if(index == itemLength){
                     $('.itemPlaylist').removeClass("active-playlist");
                     $('.itemPlaylist:first-child').addClass("active-playlist");
-                    mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("href"));
+                    mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("data-src"));
                 }else{
                     $('.itemPlaylist').removeClass("active-playlist");
                     nextItem.addClass("active-playlist");
@@ -148,8 +184,21 @@
             $('.itemPlaylist').click(function(){
                 $('.itemPlaylist').removeClass("active-playlist");
                 $(this).addClass("active-playlist");
-                mainAudio.attr("src",$('.active-playlist>span>a').attr("href"));
+                mainAudio.attr("src", $('.active-playlist>span>a').attr("data-src"));
             })
+            //add music playlist
+            $('.addPlaylist li').click(function () {
+                var idplist = parseInt($(this).attr("data-idPlist"));
+                var idmusic = parseInt($(this).attr("data-idMusic"));
+                $.post("/Client/AddMusicPlaylist", { PlaylistID: idplist, MusicID: idmusic }).done(function (res) {
+                    var stt = res.status;
+                    if (stt == true) {
+                        alertify.success("Thêm bài hát vào playlist thành công.");
+                    } else {
+                        alertify.error("Lỗi khi thêm bài hát vào playlist. Mời thử lại.");
+                    }
+                });
+            });
         });
 
 </script>

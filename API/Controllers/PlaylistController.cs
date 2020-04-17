@@ -28,6 +28,25 @@ namespace API.Controllers
             var ls = Repositories.GetListPlaylistByIDCate(idCate).Select(p => new PlaylistView { ID = p.ID, CateID = p.CateID, CateName = p.Category.CateName, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID,UserName=Repositories.GetUserByID(p.UserID).UserName });
             return Ok(ls);
         }
+        public IHttpActionResult GetPlist(int idCate,int number)
+        {
+            var list = new List<PlaylistView>();
+            var ls = Repositories.GetListPlaylistByIDCate(idCate).OrderBy(o => Guid.NewGuid()).Take(number).ToList();
+            foreach (var item in ls)
+            {
+                list.Add(new PlaylistView {
+                    ID = item.ID,
+                    PlaylistDescription = item.PlaylistDescription,
+                    PlaylistImage = item.PlaylistImage,
+                    PlaylistName = item.PlaylistName,
+                    UserID = item.UserID,
+                    CateID = item.CateID,
+                    CateName = item.Category.CateName,
+                    UserName = Repositories.GetUserByID(item.UserID).UserName
+                });
+            }
+            return Ok(list);
+        }
         public IHttpActionResult GetSearch(string value)
         {
             var ls = Repositories.GetListPlaylistSearch(value).Select(p => new PlaylistView { ID = p.ID, CateID = p.CateID, CateName = p.Category.CateName, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID });
@@ -37,7 +56,7 @@ namespace API.Controllers
         public IHttpActionResult GetID(int id)
         {
             var p = Repositories.GetPlaylistByID(id);
-            var item = new PlaylistView { ID = p.ID, CateID = p.CateID, CateName = p.Category.CateName, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID };
+            var item = new PlaylistView { ID = p.ID, CateID = p.CateID, CateName = p.Category.CateName, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID,UserName=Repositories.GetUserByID(p.UserID).UserName,UserImg=Repositories.GetUserByID(p.UserID).UserImage };
             return Ok(item);
         }
 
