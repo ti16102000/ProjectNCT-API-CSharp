@@ -176,6 +176,7 @@
     <Compile Include="Controllers\QualityController.cs" />
     <Compile Include="Controllers\QualityMusicController.cs" />
     <Compile Include="Controllers\RandomMusicController.cs" />
+    <Compile Include="Controllers\SearchMenuController.cs" />
     <Compile Include="Controllers\SingerMusicController.cs" />
     <Compile Include="Controllers\SubCateController.cs" />
     <Compile Include="Controllers\UserController.cs" />

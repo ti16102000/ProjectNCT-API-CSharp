@@ -197,5 +197,22 @@ namespace MVC.Controllers
             return View(ls);
         }
         #endregion
+
+        #region Search
+        [HttpGet]
+        public JsonResult SearchMusicMenu(string value,bool music)
+        {
+            var res = APIService.client.GetAsync("SearchMenu?value=" + value + "&music=" + music).Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult SearchSingerMenu(string value)
+        {
+            var res = APIService.client.GetAsync("SearchMenu?value=" + value).Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

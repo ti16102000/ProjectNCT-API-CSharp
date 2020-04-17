@@ -520,6 +520,7 @@
     left: 1082px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 10px;
+    z-index:1000;
 }
 #info{
     margin-left: 40px;

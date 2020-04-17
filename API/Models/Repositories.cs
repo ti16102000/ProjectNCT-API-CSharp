@@ -177,6 +177,10 @@ namespace API.Models
         {
             return MusicBUS.UpdateView(id);
         }
+        public static IEnumerable<Music> GetListMusicSearch(string value, bool music)
+        {
+            return MusicBUS.GetListMusicSearch(value,music);
+        }
         #endregion
 
         #region User

@@ -55,7 +55,7 @@ namespace API.Models.DAO
         public static IEnumerable<User> GetListSingerSearch(string value)
         {
             ProjectNCTEntities en = new ProjectNCTEntities();
-            return en.Users.Where(w => w.UserName.ToLower().Contains(value.ToLower()) || w.UserNameUnsigned.ToLower().Contains(value.ToLower())).ToList() ?? null;
+            return en.Users.Where(w =>w.RoleID==2 && (w.UserName.ToLower().Contains(value.ToLower()) || w.UserNameUnsigned.ToLower().Contains(value.ToLower()))).ToList() ?? null;
         }
         public static bool UpdateUser(User user)
         {

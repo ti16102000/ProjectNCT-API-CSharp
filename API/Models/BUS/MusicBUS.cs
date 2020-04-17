@@ -177,6 +177,10 @@ namespace API.Models.BUS
         {
             return MusicDAO.UpdateView(id);
         }
+        public static IEnumerable<Music> GetListMusicSearch(string value, bool music)
+        {
+            return MusicDAO.GetListMusicSearch(value, music);
+        }
         #endregion
 
         #region SingerMusic

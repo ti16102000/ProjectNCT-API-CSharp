@@ -90,5 +90,11 @@ namespace API.Models.DAO
             return en.SaveChanges() > 0 ? viewUp : 0;
 
         }
+        public static IEnumerable<Music> GetListMusicSearch(string value,bool music)
+        {
+            var en = new ProjectNCTEntities();
+            var ls = en.Musics.Where(w => w.SongOrMV==music && (w.MusicName.ToLower().Contains(value.ToLower()) || w.MusicNameUnsigned.ToLower().Contains(value.ToLower()))).ToList();
+            return ls ?? null;
+        }
     }
 }
