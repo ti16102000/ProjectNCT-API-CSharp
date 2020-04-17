@@ -418,6 +418,7 @@
     <Content Include="Views\Client\ChangePwd.cshtml" />
     <Content Include="Views\Client\ListPlaylistByIDCate.cshtml" />
     <Content Include="Views\Client\PlayPlist.cshtml" />
+    <Content Include="Views\Client\ListMusicByIDCate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

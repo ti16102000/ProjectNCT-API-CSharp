@@ -26,7 +26,7 @@
                     <div class="itemPlaylist">
                         <span>
                             <span> @number. </span>
-                            <a href="@Url.Action("PlayMusic",new { id=item.ID})" data-src="@Url.Content("~/Resource/Audio/")@item.FileNormal" target="_blank">@item.MusicName -</a>
+                            <a href="@Url.Action("PlayMusic",new { id=item.ID})" data-src="@Url.Content("~/Resource/Audio/")@item.FileNormal" data-id="@item.ID" target="_blank">@item.MusicName -</a>
                             <span>
                                 @foreach (var singer in item.ListSinger)
                                 {
@@ -133,6 +133,8 @@
             var itemLength = $('.itemPlaylist').length;
             $('.itemPlaylist:first-child').addClass("active-playlist");
             mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("data-src"));
+            var idMusicFirst = parseInt($('.itemPlaylist:first-child>span>a').attr("data-id"));
+            UpdateView(idMusicFirst);
             $('#checkAuto').change(function () {
                 if ($('#checkAuto').prop('checked') == true) {
                     valueAuto = true;
@@ -162,6 +164,7 @@
                 var index = $('.itemPlaylist').index($('.active-playlist')) + 1;
                 var nextItem = $('.itemPlaylist:nth-child(' + (index + 1) + ')');
                 var nextItemHref = $('.itemPlaylist:nth-child(' + (index + 1) + ')>span>a').attr("data-src");
+                var nextItemID = $('.itemPlaylist:nth-child(' + (index + 1) + ')>span>a').attr("data-id");
                 if (valueRepeat == true) {
                     document.getElementById("myAudio").play();
                 } else if (valueRandom == true) {
@@ -169,22 +172,26 @@
                     $('.itemPlaylist').removeClass("active-playlist");
                     $('.itemPlaylist:nth-child(' + random + ')').addClass("active-playlist");
                     mainAudio.attr("src", $('.itemPlaylist:nth-child(' + random + ')>span>a').attr("data-src"));
+                    UpdateView(parseInt($('.itemPlaylist:nth-child(' + random + ')>span>a').attr("data-id")));
                 } else if (index == itemLength && valueAuto == true) {
                     window.open($('.itemSongRandom>div>a:first-child').attr("href"), "_self");
                 }else if(index == itemLength){
                     $('.itemPlaylist').removeClass("active-playlist");
                     $('.itemPlaylist:first-child').addClass("active-playlist");
                     mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("data-src"));
+                    UpdateView(idMusicFirst);
                 }else{
                     $('.itemPlaylist').removeClass("active-playlist");
                     nextItem.addClass("active-playlist");
-                    mainAudio.attr("src",nextItemHref);
+                    mainAudio.attr("src", nextItemHref);
+                    UpdateView(parseInt(nextItemID));
                 }
             });
             $('.itemPlaylist').click(function(){
                 $('.itemPlaylist').removeClass("active-playlist");
                 $(this).addClass("active-playlist");
                 mainAudio.attr("src", $('.active-playlist>span>a').attr("data-src"));
+                UpdateView(parseInt($('.active-playlist>span>a').attr("data-id")));
             })
             //add music playlist
             $('.addPlaylist li').click(function () {
@@ -199,6 +206,20 @@
                     }
                 });
             });
+            //update view
+            function UpdateView(idMusic) {
+                $.ajax({
+                    url: '/Client/UpdateView',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    data: { idMusic },
+                    success: function (res) {
+                        var view = res.data;
+                        console.log(view);
+                    }
+                });
+            }
         });
 
 </script>

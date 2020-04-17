@@ -167,7 +167,7 @@ namespace MVC.Controllers
             var resMusic = APIService.client.GetAsync("PlaylistMusic?idPlist=" + id).Result;
             ViewBag.music = resMusic.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             //random playlist
-            var resRandom = APIService.client.GetAsync("Playlist?idCate=" + model.CateID + "?number=" + 3).Result;
+            var resRandom = APIService.client.GetAsync("Playlist?idCate=" + model.CateID + "&number=" + 3).Result;
             ViewBag.random = resRandom.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
             //PlaylistUser
             if (Session["UserID"] != null)
@@ -184,6 +184,17 @@ namespace MVC.Controllers
                 }
             }
             return View(model);
+        }
+        #endregion
+
+        #region List Music By IDCate
+        public ActionResult ListMusicByIDCate(int id,string name,bool music)
+        {
+            var res = APIService.client.GetAsync("Music?idCate=" + id + "&music=" + music).Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            ViewBag.name = name;
+            ViewBag.music = music;
+            return View(ls);
         }
         #endregion
     }

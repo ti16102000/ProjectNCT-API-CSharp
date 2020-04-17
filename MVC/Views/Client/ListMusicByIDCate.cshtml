@@ -1,0 +1,33 @@
+﻿@model IEnumerable<API.Models.ModelViews.MusicView>
+@{
+    ViewBag.Title = "ListMusicByIDCate";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="gridMusic">
+    <div class="gridLeft">
+        <label for="" class="lblMusic">Danh sách @(ViewBag.music==true?"bài hát":"video") của Chủ đề:  @ViewBag.name</label>
+        <div class="listMusic">
+            @foreach (var item in Model)
+            {
+                <div class="itemMusic">
+                    <span class="viewMusic">
+                        <i class="fas fa-headphones"></i> @item.View
+                    </span>
+                    <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 18px;"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="" class="imgMusic">@item.MusicName</a>
+                    <div class="nameSinger">
+                        @foreach (var singer in item.ListSinger)
+                        {
+                            <a href="">@singer.SingerName</a>
+                        }
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="gridRight">
+    </div>
+</div>
+
