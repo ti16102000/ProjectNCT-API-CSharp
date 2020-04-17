@@ -15,7 +15,7 @@ namespace MVC.Controllers
             HttpResponseMessage resAllCate = APIService.client.GetAsync("Category").Result;
             IEnumerable<CategoryView> ls = resAllCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
             TempData["cate"] = ls;
-            Session["UserID"] = 11;
+            //Session["UserID"] = 11;
             if (Session["UserID"] != null)
             {
                 HttpResponseMessage res = APIService.client.GetAsync("User/" + Convert.ToInt32(Session["UserID"])).Result;
