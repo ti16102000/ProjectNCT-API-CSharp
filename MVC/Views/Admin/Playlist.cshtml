@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Playlist";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="panel" style="margin-top:55px;">
+    <header class="panel-heading">
+        Create Playlist
+    </header>
+    <form action="@Url.Action("CreatePlaylist")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <div class="form-group">
+                    <label for="">Playlist Name:</label>
+                    <input type="text" class="form-control" name="PlaylistName" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Category:</label>
+                    <select name="CateID">
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                        {
+                            <option value="@item.ID">@item.CateName</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Singer:</label>
+                    <select name="UserID">
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.UserView>)TempData["singer"]))
+                        {
+                            <option value="@item.ID">@item.UserName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Description:</label><br />
+                    <textarea name="PlaylistDescription" style="height:200px;width:600px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">Image:</label><br />
+                    <div id="frameImg">
+                        <img src="#" id="showImg" style="width:300px;height:250px;" />
+                    </div>
+                    <input type="file" name="imgPlaylist" value="" id="selectImg" />
+                </div>
+                <button type="submit" name="submit" class="btn btn-info">Submit</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section scripts{
+
+    <script>
+        $(function () {
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+            $('#selectImg').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#showImg').fadeIn("fast").attr("src", tmppath);
+            })
+        });
+
+
+    </script>
+
+
+
+}
+
+

@@ -1,0 +1,51 @@
+﻿@model API.Models.ModelViews.QualityMusicView
+@{
+    ViewBag.Title = "EditQuality";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<a href="@Url.Action("Quality")" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:left;">
+    <i class="fa fa-arrow-left"></i>
+</a>
+<section class="panel" style="margin-top:55px;">
+    <header class="panel-heading">
+        Edit Quality
+    </header>
+    <form action="@Url.Action("UpdateQuality")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <div class="form-group">
+                    <label for="">Quality Name:</label>
+                    <input type="hidden" value="@Model.QualityID" name="QualityID"/>
+                    <input type="text" class="form-control" name="QualityName" maxlength="200" value="@Model.QualityName" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Quality VIP?</label>
+                    <input type="checkbox" id="cbActive" style="width:20px;height:20px;" />
+                    <input type="hidden" name="QualityVip" id="cbActiveValue" value="@(Model.QualityVip==true?"True":"False")"/>
+                </div>
+                <button type="submit" name="submit" class="btn btn-info">Submit</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section scripts{
+
+    <script>
+        var checkVip = '@(Model.QualityVip)';
+        if (checkVip == 'True') {
+            $('#cbActive').prop("checked", true);
+        }
+        $(function () {
+            $("#cbActive").change(function () {
+                $("#cbActive").is(":checked") ? $("#cbActiveValue").val("True") : $("#cbActiveValue").val("False");
+            })
+    });
+
+
+    </script>
+
+
+
+}

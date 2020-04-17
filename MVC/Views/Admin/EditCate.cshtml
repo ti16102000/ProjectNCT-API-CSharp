@@ -1,0 +1,40 @@
+﻿@model API.Models.ModelViews.CategoryView
+@{
+    ViewBag.Title = "EditCate";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    API.Models.ModelViews.CategoryView cate;
+    
+}
+
+<a href="@Url.Action("Category")" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:left;">
+    <i class="fa fa-arrow-left"></i>
+</a>
+
+<section class="panel" style="margin-top:55px;">
+    <header class="panel-heading">
+        Edit Category
+    </header>
+    <form action="@Url.Action("UpdateCate")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <div class="form-group">
+                    <label for="">Room Name:</label>
+                    <input type="hidden" value="@Model.ID" name="ID"/>
+                    <input type="text" class="form-control" name="CateName" maxlength="200" value="@Model.CateName" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Category Room:</label>
+                    <select name="ID_root" style="width:40%;">
+                        <option value="">Choose Category</option>
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                        {
+                            <option value="@item.ID">@item.CateName</option>
+                        }
+
+                    </select>
+                </div>
+                <button type="submit" name="submit" class="btn btn-info">Submit</button>
+            </div>
+        </div>
+    </form>
+</section>

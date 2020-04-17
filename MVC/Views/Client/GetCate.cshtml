@@ -1,0 +1,208 @@
+﻿@{
+    API.Models.ModelViews.UserView usr= ViewBag.usr;
+ }
+<!-- Start Header Top Area -->
+<div class="header-top-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="main-menu-area">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding-top: 5px;">
+                                <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
+                                    <li><a href="@Url.Action("Index")"><img src="@Url.Content("~/Content/Client/")img/logo-edit.png" alt="" class="logo" /></a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="fa fa-music"></i> Bài Hát
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                                            {
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item.CateName</a>
+                                                    <!-- Level 2 -->
+                                                    <ul>
+                                                        @foreach (var sub in item.ListSubCate)
+                                                        {
+                                                            <li><a href="#">@sub.CateName</a></li>
+                                                        }
+
+                                                    </ul>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                                            <i class="notika-icon notika-windows"></i>
+                                            Video
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                                            {
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item.CateName</a>
+                                                    <!-- Level 2 -->
+                                                    <ul>
+                                                        @foreach (var sub in item.ListSubCate)
+                                                        {
+                                                            <li><a href="#">@sub.CateName</a></li>
+                                                        }
+
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-th-list"></i> Chủ đề
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                                            {
+                                                <li class="dropdown-submenu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item.CateName</a>
+                                                    <!-- Level 2 -->
+                                                    <ul>
+                                                        @foreach (var sub in item.ListSubCate)
+                                                        {
+                                                            <li><a href="@Url.Action("ListPlaylistByIDCate",new { id=sub.ID,name=sub.CateName})">@sub.CateName</a></li>
+                                                        }
+
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="notika-icon notika-bar-chart"></i> BXH
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                                            {
+                                                <li><a href="#"> @item.CateName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    @if (Session["UserID"] == null)
+                                    {
+                                        <li><a href="@Url.Action("Index", "Login")">Đăng nhập</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-top: -10px;">
+                                                <img src="@Url.Content("~/Resource/ImagesUser/")@usr.UserImage" alt="" style="width: 40px;border-radius: 50%;">
+                                                @if (usr.UserVIP == true)
+                                                {
+                                                    <i class="fa fa-crown" style="color: yellow;"></i>
+                                                }
+
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#"> Thông tin tài khoản</a></li>
+                                                <li><a href=""> Trang cá nhân</a></li>
+                                                <li><a href=""> Lịch sử</a></li>
+                                                <li><a href=""> Đăng xuất</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-chevron-circle-down"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="buyVip.html"><i class="fa fa-upload"></i> Upload file</a></li>
+                                            <li><a href="#"><i class="fa fa-crown"></i> Mua VIP</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <form class="navbar-form navbar-left" action="search.html" method="POST" style="margin-top: 13px;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="valueSearch" placeholder="Tìm bài hát, video, ca sĩ">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--Search js/main.js-->
+            <div id="viewSearch" style="display: none;">
+                <span>Bài hát</span>
+                <div id="viewSong">
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3"><img src="img/avt.png" alt=""> Tên bài hát</a><br>
+                            <span>
+                                <a href="">Ca sĩ 1</a>,
+                                <a href="">Ca sĩ 2</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3"><img src="img/avt.png" alt=""> Tên bài hát</a><br>
+                            <span>
+                                <a href="">Ca sĩ 1</a>,
+                                <a href="">Ca sĩ 2</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <span>Video</span>
+                <div id="viewMV">
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3">
+                                <img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên
+                                Playlist
+                            </a><br>
+                            <span>
+                                <a href="">Người tạo</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3">
+                                <img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên
+                                Playlist
+                            </a><br>
+                            <span>
+                                <a href="">Người tạo</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <span>Nghệ sĩ</span>
+                <div class="viewSinger">
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3"><img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên ca sĩ</a><br>
+                        </div>
+                    </div>
+                    <div class="itemSongRandom">
+                        <div>
+                            <a href="nhac-demo.mp3"><img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên ca sĩ</a><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Header Top Area -->

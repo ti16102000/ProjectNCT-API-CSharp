@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Music";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="panel" style="margin-top:55px;">
+    <header class="panel-heading">
+        Create Music
+    </header>
+    <form action="@Url.Action("CreateMusic")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <div class="form-group">
+                    <label for="">Music Name:</label>
+                    <input type="text" class="form-control" name="MusicName" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Category:</label>
+                    <select name="CateID">
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                        {
+                            <option value="@item.ID">@item.CateName</option>
+                        }
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Singer:</label>
+                    <select name="UserID">
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.UserView>)TempData["singer"]))
+                        {
+                            <option value="@item.ID">@item.UserName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Audio?</label>
+                    <input type="checkbox" id="cbAudio" style="width:20px;height:20px;" />
+                    <input type="hidden" name="SongOrMV" id="cbAudioValue" value="False" />
+                </div>
+                <div class="form-group">
+                    <label for="">Download Allowed?</label>
+                    <input type="checkbox" id="cbActive" style="width:20px;height:20px;" />
+                    <input type="hidden" name="MusicDownloadAllowed" id="cbActiveValue" value="False" />
+                </div>
+                <div class="form-group">
+                    <label for="">Image:</label><br />
+                    <div id="frameImg">
+                        <img src="#" id="showImg" style="width:300px;height:250px;" />
+                    </div>
+                    <input type="file" name="imgMusic" value="" id="selectImg" />
+                </div>
+                <button type="submit" name="submit" class="btn btn-info">Submit</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section scripts{
+
+    <script>
+        $(function () {
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+            $('#selectImg').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#showImg').fadeIn("fast").attr("src", tmppath);
+            })
+            $("#cbActive").change(function () {
+                $("#cbActive").is(":checked") ? $("#cbActiveValue").val("True") : $("#cbActiveValue").val("False");
+            })
+            $("#cbAudio").change(function () {
+                $("#cbAudio").is(":checked") ? $("#cbAudioValue").val("True") : $("#cbAudioValue").val("False");
+            })
+        });
+
+
+    </script>
+    }

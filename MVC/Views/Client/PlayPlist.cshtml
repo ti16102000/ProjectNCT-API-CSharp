@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "PlayPlist";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="gridMusic">
+    <div class="gridLeft">
+        <div class="name-view-music">
+            <span>Tên Playlist - Ngưởi tạo</span>
+            <span style="position: absolute;left: 730px;top:86px;font-size: 18px;">
+                <i class="fas fa-headphones"></i> 300.000
+            </span>
+        </div>
+        <div class="playMusic">
+            <!--song-->
+            <img src="img/avt.png" alt="">
+            <audio autoplay controls id="myAudio">
+                <source src="" type="audio/mpeg">
+            </audio>
+            <!--song-->
+            <div id="playlistMusic">
+                <div class="itemPlaylist">
+                    <span>
+                        <span> 1. </span>
+                        <a href="nhac-demo.mp3">Demo 1 -</a>
+                        <span>
+                            <a href="">Ca sĩ 1</a>,
+                            <a href="">Ca sĩ 2</a>
+                        </span>
+                    </span>
+                    <span>
+                        <span>
+                            <a href="nhac-demo.mp3" download="nhac" style="color: black;" id="downFile"
+                               title="Tải về"><i class="fa fa-download"></i></a>
+                        </span>
+                        <span class="addPlaylist" style="cursor: pointer;">
+                            <i class="fas fa-plus-circle"></i>
+                            <ul>
+                                <li><a href="">Bài hát yêu thích</a> </li>
+                                <li><a href="">Test1</a></li>
+                                <li><a href="">Test2</a></li>
+                            </ul>
+                        </span>
+                        <span><i class="fas fa-headphones"></i> 300.000</span>
+                    </span>
+                </div>
+            </div>
+            <div class="menuMusic">
+                <img src="img/avt.png" alt="">
+                <div>
+                    <span>Cung cấp bởi:</span><br>
+                    <span style="color: #00c292;font-weight: 700;">Nhaccuateoo</span>
+                </div>
+                <div>
+                    <span>Auto chuyển Playlist:</span>
+                    <input type="checkbox" name="" id="checkAuto" checked><br>
+                </div>
+                <div>
+                    <span>Lặp lại 1 bài:</span>
+                    <input type="checkbox" name="" id="checkRepeat"><br>
+                </div>
+                <div>
+                    <span>Ngẫu nhiên:</span>
+                    <input type="checkbox" name="" id="checkRandom"><br>
+                </div>
+
+                <div>
+                    <a href=""><img src="img/share_fb.png" alt=""></a>
+                </div>
+            </div>
+            <p style="margin-top: 15px;margin-left: 20px;font-size: 16px;">Cho Description ở đây!!!</p>
+        </div>
+    </div>
+    <div class="gridRight">
+        <span class="lblMusic">Nghe tiếp</span>
+        <div class="itemSongRandom">
+            <div>
+                <a href="nhac-demo.mp3">
+                    <img src="img/avt.png" alt="" style="border-radius: 0%;"> Tên
+                    Playlist
+                </a><br>
+                <span>
+                    <a href="">Người tạo</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+<script>
+        $(document).ready(function () {
+            var valueRepeat = false;
+            var valueRandom = false;
+            var valueAuto = true;
+            var mainAudio = $('#myAudio');
+            var itemLength = $('.itemPlaylist').length;
+            $('.itemPlaylist:first-child').addClass("active-playlist");
+            mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("href"));
+            $('#checkAuto').change(function () {
+                if ($('#checkAuto').prop('checked') == true) {
+                    valueAuto = true;
+                } else {
+                    valueAuto = false;
+                }
+            });
+            $('#checkRepeat').change(function () {
+                if ($('#checkRepeat').prop('checked') == true) {
+                    valueRepeat = true;
+                    $('#checkRandom').prop('checked', false);
+                    valueRandom = false;
+                } else {
+                    valueRepeat = false;
+                }
+            });
+            $('#checkRandom').change(function () {
+                if ($('#checkRandom').prop('checked') == true) {
+                    valueRandom = true;
+                    $('#checkRepeat').prop('checked', false);
+                    valueRepeat = false;
+                } else {
+                    valueRandom = false;
+                }
+            });
+            $("#myAudio").on("ended", function () {
+                var index = $('.itemPlaylist').index($('.active-playlist')) + 1;
+                var nextItem = $('.itemPlaylist:nth-child(' + (index + 1) + ')');
+                var nextItemHref = $('.itemPlaylist:nth-child(' + (index + 1) + ')>span>a').attr("href");
+                if (valueRepeat == true) {
+                    document.getElementById("myAudio").play();
+                } else if (valueRandom == true) {
+                    var random = Math.floor((Math.random() * itemLength) + 1);
+                    $('.itemPlaylist').removeClass("active-playlist");
+                    $('.itemPlaylist:nth-child(' + random + ')').addClass("active-playlist");
+                    mainAudio.attr("src", $('.itemPlaylist:nth-child(' + random + ')>span>a').attr("href"));
+                } else if (index == itemLength && valueAuto == true) {
+                    window.open($('.itemSongRandom>div>a:first-child').attr("href"), "_self");
+                }else if(index == itemLength){
+                    $('.itemPlaylist').removeClass("active-playlist");
+                    $('.itemPlaylist:first-child').addClass("active-playlist");
+                    mainAudio.attr("src", $('.itemPlaylist:first-child>span>a').attr("href"));
+                }else{
+                    $('.itemPlaylist').removeClass("active-playlist");
+                    nextItem.addClass("active-playlist");
+                    mainAudio.attr("src",nextItemHref);
+                }
+            });
+            $('.itemPlaylist').click(function(){
+                $('.itemPlaylist').removeClass("active-playlist");
+                $(this).addClass("active-playlist");
+                mainAudio.attr("src",$('.active-playlist>span>a').attr("href"));
+            })
+        });
+
+</script>
+    }
+

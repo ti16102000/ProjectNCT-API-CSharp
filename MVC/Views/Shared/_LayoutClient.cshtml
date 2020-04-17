@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Nhaccuateoo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts
+              ============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/bootstrap.min.css">
+    <!-- Bootstrap CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/font-awesome.min.css">
+    <!-- owl.carousel CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/owl.carousel.css">
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/owl.theme.css">
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/owl.transitions.css">
+    <!-- meanmenu CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/meanmenu/meanmenu.min.css">
+    <!-- animate CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/animate.css">
+    <!-- normalize CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/normalize.css">
+    <!-- mCustomScrollbar CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- notika icon CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/notika-custom-icon.css">
+    <!-- wave CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/wave/waves.min.css">
+    <!-- main CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/main.css">
+    <!-- style CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")style.css">
+    <!-- responsive CSS
+              ============================================ -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/responsive.css">
+    <!-- modernizr JS
+              ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/vendor/modernizr-2.8.3.min.js"></script>
+    <!--My script-->
+    <script src="https://kit.fontawesome.com/d93a4b936d.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="~/Content/alertifyjs/alertify.min.css" rel="stylesheet" />
+    <link href="~/Content/alertifyjs/themes/default.min.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scriptsHeader", required: false)
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+              <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+    @{
+        Html.RenderAction("GetCate", "Client");
+    }
+    <!--Start Content-->
+    <div id="content" class="container">
+        @RenderBody()
+    </div>
+    <!--End content-->
+    <!-- Start Footer area-->
+    <div class="footer-copyright-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="display: inline;font-size: 16px;color: white;line-height: 40px;">
+                        <span><i class="fas fa-map-marker-alt"></i> 24-26 Phan Liêm, phường Đa Kao, Quận 1</span>
+                        <span style="margin-left: 15px;"><i class="fas fa-phone-alt"></i> (+84)912345678</span>
+                        <span style="margin-left: 15px;"><i class="fas fa-envelope"></i> nhaccuateo@aht.nct</span>
+                        <span style="float: right;">
+                            © 2020 <a href="https://colorlib.com">Colorlib</a>
+                            . All rights reserved.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Footer area-->
+    <!-- jquery
+          ============================================ -->
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/alertify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="@Url.Content("~/Content/Client/")js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- bootstrap JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/bootstrap.min.js"></script>
+    <!-- wow JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/wow.min.js"></script>
+    <!-- price-slider JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/jquery-price-slider.js"></script>
+    <!-- owl.carousel JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/owl.carousel.min.js"></script>
+    <!-- scrollUp JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/jquery.scrollUp.min.js"></script>
+    <!-- meanmenu JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/meanmenu/jquery.meanmenu.js"></script>
+    <!-- counterup JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/counterup/jquery.counterup.min.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/counterup/waypoints.min.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- sparkline JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/sparkline/sparkline-active.js"></script>
+    <!-- sparkline JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/flot/jquery.flot.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/flot/jquery.flot.resize.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/flot/curvedLines.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/flot/flot-active.js"></script>
+    <!-- knob JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/knob/jquery.knob.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/knob/jquery.appear.js"></script>
+    <script src="@Url.Content("~/Content/Client/")js/knob/knob-active.js"></script>
+    <!--  todo JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/todo/jquery.todo.js"></script>
+    <!-- plugins JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/plugins.js"></script>
+    <!-- main JS
+          ============================================ -->
+    <script src="@Url.Content("~/Content/Client/")js/main.js"></script>
+
+
+</body>
+
+</html>

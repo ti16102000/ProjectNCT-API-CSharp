@@ -1,0 +1,254 @@
+﻿@model API.Models.ModelViews.MusicView
+@{
+    ViewBag.Title = "MusicDetail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container" style="min-height:500px;background-color:white;">
+    <h2>Music Detail: @Model.MusicName (@(Model.SongOrMV==true?"Song":"MV"))</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Music</a></li>
+        <li><a data-toggle="tab" href="#menu1">MusicRelated & Singer</a></li>
+        <li><a data-toggle="tab" href="#menu2">File</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <section class="panel" style="margin-top:55px;">
+                <header class="panel-heading">
+                    Edit Music
+                </header>
+                <form action="@Url.Action("UpdateMusic")" method="POST" enctype="multipart/form-data">
+                    <div class="panel-body">
+                        <div class="position-center">
+                            <div class="form-group">
+                                <label for="">Music Name:</label>
+                                <input type="hidden" value="@Model.ID" name="ID" />
+                                <input type="hidden" value="@Model.UserID" name="UserID" />
+                                <input type="text" class="form-control" name="MusicName" maxlength="200" value="@Model.MusicName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Category:</label>
+                                <select name="CateID">
+                                    @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                                    {
+                                        <option value="@item.ID">@item.CateName</option>
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Audio?</label>
+                                <input type="checkbox" id="cbAudio" style="width:20px;height:20px;" />
+                                <input type="hidden" name="SongOrMV" id="cbAudioValue" value="@(Model.SongOrMV==true?"True":"False")">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Download Allowed?</label>
+                                <input type="checkbox" id="cbActive" style="width:20px;height:20px;" />
+                                <input type="hidden" name="MusicDownloadAllowed" id="cbActiveValue" value="@(Model.MusicDownloadAllowed==true?"True":"False")" />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Image:</label><br />
+                                <div id="frameImg">
+                                    <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.MusicImage" id="showImg" style="width:300px;height:250px;" />
+                                </div>
+                                <input type="file" name="imgMusic" value="" id="selectImg" />
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            @if (Model.MusicRelated == null)
+            {
+                <section class="panel" style="margin-top:55px;">
+                    <header class="panel-heading">
+                        Add Music Related
+                    </header>
+                    <form action="@Url.Action("AddMusicRelated")" method="POST" enctype="multipart/form-data">
+                        <div class="panel-body">
+                            <div class="position-center">
+                                <div class="form-group">
+                                    <input type="hidden" value="@Model.ID" name="id" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Music Related:</label>
+                                    <select name="idMusicRelated">
+                                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.MusicView>)TempData["music"]))
+                                        {
+                                            <option value="@item.ID">@item.MusicName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            }
+
+            @if (Model.MusicRelated != null)
+            {
+                <a href="@Url.Action("RemoveRelated",new { id=Model.ID,idMusicRelated=Model.MusicRelated})" class="btn btn-danger">Remove MusicRelated</a>
+            }
+            <section class="panel" style="margin-top:55px;">
+                <header class="panel-heading">
+                    Add Singer
+                </header>
+                <form action="@Url.Action("AddSingerMusic")" method="POST" enctype="multipart/form-data">
+                    <div class="panel-body">
+                        <div class="position-center">
+                            <div class="form-group">
+                                <input type="hidden" value="@Model.ID" name="MusicID" />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Singer:</label>
+                                <select name="SingerID">
+                                    @foreach (var item in ((IEnumerable<API.Models.ModelViews.UserView>)TempData["singer"]))
+                                    {
+                                        <option value="@item.ID">@item.UserName</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Singer List
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Singer Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.SingerMusicView>)TempData["sm"]))
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("SingerDetail",new { id=item.SingerID})">@item.SingerName</a>
+                                        </td>
+                                        <td>
+                                            @if (Model.UserID != item.SingerID)
+                                            {
+                                                <a href="@Url.Action("DelSinger",new { id=item.ID,idMusic=item.MusicID})" class="btn btn-danger">Delete</a>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <section class="panel" style="margin-top:55px;">
+                <header class="panel-heading">
+                    Add File
+                </header>
+                <form action="@Url.Action("AddFile")" method="POST" enctype="multipart/form-data">
+                    <div class="panel-body">
+                        <div class="position-center">
+                            <div class="form-group">
+                                <input type="hidden" value="@Model.ID" name="MusicID" />
+                            </div>
+                            <div class="form-group">
+                                <label for="">File:</label>
+                                <input type="file" value="" name="fileMusic" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Quality:</label>
+                                <select name="QualityID">
+                                    @foreach (var item in ((IEnumerable<API.Models.ModelViews.QualityMusicView>)TempData["q"]))
+                                    {
+                                        <option value="@item.QualityID">@item.QualityName</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        File List
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>Quality</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.QualityMusicView>)TempData["qm"]))
+                                {
+                                    <tr>
+                                        <td>@item.MusicFile</td>
+                                        <td>@item.QualityName</td>
+                                        <td>
+                                            <a href="@Url.Action("DelFile",new { id=item.ID})" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script>
+        $(function () {
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+            if ('@Model.MusicDownloadAllowed' == 'True') {
+                $('#cbActive').prop("checked", true);
+            }
+            if ('@Model.SongOrMV' == 'True') {
+                $('#cbAudio').prop("checked", true);
+            }
+            $('#selectImg').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#showImg').fadeIn("fast").attr("src", tmppath);
+            })
+            $("#cbActive").change(function () {
+                $("#cbActive").is(":checked") ? $("#cbActiveValue").val("True") : $("#cbActiveValue").val("False");
+            })
+            $("#cbAudio").change(function () {
+                $("#cbAudio").is(":checked") ? $("#cbAudioValue").val("True") : $("#cbAudioValue").val("False");
+            })
+        });
+
+
+    </script>
+}
+

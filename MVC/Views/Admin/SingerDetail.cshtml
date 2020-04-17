@@ -1,0 +1,236 @@
+﻿@model API.Models.ModelViews.UserView
+@{
+    ViewBag.Title = "SingerDetail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container" style="min-height:500px;background-color:white;">
+    <h2>Singer Detail: @Model.UserName</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Infomation</a></li>
+        <li><a data-toggle="tab" href="#menu1">Playlist</a></li>
+        <li><a data-toggle="tab" href="#menu2">Song</a></li>
+        <li><a data-toggle="tab" href="#menu3">Video</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <section class="panel" style="margin-top:55px;">
+                <header class="panel-heading">
+                    Edit Singer
+                </header>
+                <form action="@Url.Action("UpdateSinger")" method="POST" enctype="multipart/form-data">
+                    <div class="panel-body">
+                        <div class="position-center">
+                            <div class="form-group">
+                                <label for="">Singer Name:</label>
+                                <input type="hidden" name="ID" value="@Model.ID" />
+                                <input type="text" class="form-control" name="UserName" maxlength="200" value="@Model.UserName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Gender:</label>
+                                <input type="hidden" name="UserGender" value="True" id="gender" />
+                                <fieldset id="selectGender">
+                                    <label style="margin-right:15px;"><input type="radio" value="True" id="female" name="groupGender" checked>Nữ</label>
+                                    <label><input type="radio" value="False" name="groupGender" id="male">Nam</label>
+                                </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <label for="">DOB:</label>
+                                <input type="date" name="UserDOB" value="@Model.UserDOB" id="dob" />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description:</label><br />
+                                <textarea name="UserDescription" style="height:200px;width:600px;">@Model.UserDescription</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Image:</label><br />
+                                <div id="frameImg">
+                                    <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImage" id="showImg" style="width:300px;height:250px;" />
+                                </div>
+                                <input type="file" name="imgUser" value="@Model.UserImage" id="selectImg" />
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Playlist List &nbsp; <a class="agile-icon" href="@Url.Action("Playlist")"><i class="fa fa-plus-circle"></i></a>
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Playlist Name</th>
+                                    <th>Category Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.PlaylistView>)TempData["pl"]))
+                                {
+                                    <tr>
+                                        <td>@item.PlaylistName</td>
+                                        <td>@item.CateName</td>
+                                        <td>
+                                            <a href="@Url.Action("PlaylistDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                                <i class="fas fa-info-circle text-success text-active"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Song List &nbsp; <a class="agile-icon" href="@Url.Action("Music")"><i class="fa fa-plus-circle"></i></a>
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Song Name</th>
+                                    <th>Download Allowed?</th>
+                                    <th>View</th>
+                                    <th>MV Related</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.MusicView>)TempData["song"]))
+                                {
+                                <tr>
+                                    <td>@item.MusicName</td>
+                                    <td>@(item.MusicDownloadAllowed == true ? "Yes" : "No")</td>
+                                    <td>@item.View</td>
+                                    @if (item.MusicRelated == null)
+                                    {
+                                        <td>null</td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a href="@Url.Action("MusicDetail",new { id=item.MusicRelated})">@item.MusicRelated</a>
+                                            <a href="@Url.Action("RemoveRelated",new { id=item.ID,idMusicRelated=item.MusicRelated})" class="btn btn-danger" ui-toggle-class="">Remove</a>
+                                        </td>
+                                    }
+                                    <td>
+                                        <a href="@Url.Action("MusicDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                            <i class="fas fa-info-circle text-success text-active"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Video List &nbsp; <a class="agile-icon" href="@Url.Action("Music")"><i class="fa fa-plus-circle"></i></a>
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Video Name</th>
+                                    <th>Download Allowed?</th>
+                                    <th>View</th>
+                                    <th>Song Related</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.MusicView>)TempData["mv"]))
+                                {
+                                <tr>
+                                    <td>@item.MusicName</td>
+                                    <td>@(item.MusicDownloadAllowed == true ? "Yes" : "No")</td>
+                                    <td>@item.View</td>
+                                    @if (item.MusicRelated == null)
+                                    {
+                                    <td>null</td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a href="@Url.Action("MusicDetail",new { id=item.MusicRelated})">@item.MusicRelated</a>
+                                            <a href="@Url.Action("RemoveRelated",new { id=item.ID,idMusicRelated=item.MusicRelated})" class="btn btn-danger" ui-toggle-class="">Remove</a>
+                                        </td>
+                                    }
+                                    <td>
+                                        <a href="@Url.Action("MusicDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                            <i class="fas fa-info-circle text-success text-active"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script>
+        $(function () {
+            var gender = '@Model.UserGender'
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+            if (gender == "False") {
+                $('#gender').val("False");
+                $('#selectGender>label>input').prop("checked", false);
+                $('#male').prop("checked", true);
+            }
+            var day = '@Model.UserDOB.Value.Day';
+            var month;
+            if (parseInt('@Model.UserDOB.Value.Month') < 10) {
+                month = '0' + '@Model.UserDOB.Value.Month';
+            } else {
+                month = '@Model.UserDOB.Value.Month';
+            }
+            var year = '@Model.UserDOB.Value.Year';
+            $('#dob').val(year + "-" + month + "-" + day);
+            $('#selectGender>label>input').click(function () {
+                $('#gender').val($(this).val());
+            })
+            $('#selectImg').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#showImg').fadeIn("fast").attr("src", tmppath);
+            })
+        });
+
+
+    </script>
+
+
+
+}

@@ -1,0 +1,373 @@
+﻿@model API.Models.ModelViews.MusicView
+@{
+    ViewBag.Title = "PlayMusic";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    API.Models.ModelViews.QualityMusicView fileNormal = ViewBag.fileNormal;
+    IEnumerable<API.Models.ModelViews.QualityMusicView> lsFile = ViewBag.file;
+    API.Models.ModelViews.LyricsView lyrics = ViewBag.lyrics;
+    IEnumerable<API.Models.ModelViews.MusicView> lsRandom = ViewBag.random;
+    IEnumerable<API.Models.ModelViews.PlaylistView> lsPlist = ViewBag.plist;
+}
+
+<div class="gridMusic">
+    <div class="gridLeft">
+        <div class="name-view-music">
+            <span>@Model.MusicName @(fileNormal.QMusicApproved == false ? "(Đang chờ chuyệt)" : "")</span>
+            @if (Model.SongOrMV == true && Model.MusicRelated != null)
+            {
+                <!--song-->
+                <a href="@Url.Action("PlayMusic",new { idMusic=Model.MusicRelated})"><i class="fas fa-video"></i></a>
+                <!--song-->
+            }
+            else if (Model.SongOrMV == false && Model.MusicRelated != null)
+            {
+                <!--mv-->
+                <a href="@Url.Action("PlayMusic",new { idMusic=Model.MusicRelated})"><i class="fas fa-music"></i></a>
+                <!--mv-->
+            }
+            <span id="valueView" style="position: absolute;left: 730px;top:86px;font-size: 18px;">
+                <i class="fas fa-headphones"></i>@Model.View
+            </span>
+        </div>
+        <div class="playMusic">
+            @if (Model.SongOrMV == true)
+            {
+                <!--song-->
+                <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.MusicImage" alt="">
+                <audio autoplay controls id="myAudio">
+                    <source src="@Url.Content("~/Resource/Audio/")@fileNormal.MusicFile" type="audio/mpeg">
+                </audio>
+                <!--song-->
+            }
+            else
+            {
+
+                <!--mv-->
+                <video autoplay controls id="myAudio">
+                    <source src="@Url.Content("~/Resource/Video/")@fileNormal.MusicFile" type="audio/mpeg">
+                </video>
+                <!--mv-->
+            }
+            <div class="menuMusic">
+                <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImg" alt="">
+                <div>
+                    <span>Cung cấp bởi:</span><br>
+                    <a href="" style="color: #00c292;font-weight: 700;">@Model.UserName</a>
+                </div>
+                <div>
+                    <span>Tự động chuyển bài:</span>
+                    <input type="checkbox" name="" id="checkAuto" checked><br>
+                    @if (Model.SongOrMV == true)
+                    {
+                        <!--song-->
+                        <span class="addPlaylist" style="cursor: pointer;">
+                            <i class="fas fa-plus-circle"></i> Thêm
+                            vào
+                            <ul>
+                                @if (Session["UserID"] == null)
+                                {
+                                    <a href="@Url.Action("Index", "Login")">Mời bạn đăng nhập</a>
+                                }
+                                else
+                                {
+                                    if (lsPlist == null)
+                                    {
+                                        <span>Bạn chưa có playlist nào. <a href="#">TẠO</a></span>
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in lsPlist)
+                                        {
+                                            <li data-id="@item.ID">@item.PlaylistName</li>
+                                        }
+                                    }
+
+                                }
+                            </ul>
+                        </span>
+                        <!--song-->
+                    }
+                    else
+                    {
+                        <!--mv-->
+                        <span style="cursor: pointer;" id="removeFav">
+                            <i class="fas fa-heart"></i> Bỏ Yêu
+                            thích
+                        </span>
+                        <span style="cursor: pointer;" id="addFav"><i class="far fa-heart"></i> Yêu thích</span>
+                        <!--mv-->
+
+                    }
+                </div>
+                <div>
+                    @if (fileNormal.QMusicApproved == true)
+                    {
+                        <span>Chất lượng: </span>
+                        <select name="" id="selectQuality">
+                            @if (Model.SongOrMV == true)
+                            {
+                                //Song
+                                <option value="@Url.Content("~/Resource/Audio/")@fileNormal.MusicFile" data-vip="@fileNormal.QualityVip">@fileNormal.QualityName</option>
+                                if (lsFile != null)
+                                {
+                                    foreach (var item in lsFile)
+                                    {
+                                        if (item.MusicFile != fileNormal.MusicFile)
+                                        {
+                                            <option value="@Url.Content("~/Resource/Audio/")@item.MusicFile" data-vip="@item.QualityVip">@item.QualityName</option>
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //mv
+                                <option value="@Url.Content("~/Resource/Video/")@fileNormal.MusicFile" data-vip="@fileNormal.QualityVip">@fileNormal.QualityName</option>
+                                if (lsFile != null)
+                                {
+                                    foreach (var item in lsFile)
+                                    {
+                                        if (item.MusicFile != fileNormal.MusicFile)
+                                        {
+                                            <option value="@Url.Content("~/Resource/Video/")@item.MusicFile" data-vip="@item.QualityVip">@item.QualityName</option>
+                                        }
+                                    }
+                                }
+                            }
+
+                        </select><br>
+                        if (Model.MusicDownloadAllowed == true)
+                        {
+                            <a data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"
+                               aria-controls="multiCollapseExample1" style="color: black;">
+                                <i class="fa fa-download"></i>
+                                Tải về
+                            </a>
+                        }
+
+                    }
+
+                </div>
+                <div>
+                    <a href=""><img src="@Url.Content("~/Content/Client/")img/share_fb.png" alt=""></a>
+                </div>
+            </div>
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body" id="downFile">
+                    @foreach (var item in lsFile)
+                    {
+                        <a href="#" data-vip="@item.QualityVip" class="btn btn-info">@item.QualityName</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="lyrics">
+            <span style="font-size: 18px;font-weight: 700;">Lời Bài Hát: @Model.MusicName</span><br>
+            <span>
+                <span>Trình bày bởi: </span>
+                @foreach (var item in Model.ListSinger)
+                {
+                    <a href="">@item.SingerName, </a>
+                }
+            </span><br>
+            <div style="border: 1px solid #00c292;margin-top: 10px;margin-bottom: 20px;"></div>
+            @if (lyrics.UserName != null)
+            {
+                <span>Lời đăng bởi: <a href="">@lyrics.UserName</a></span><br />
+
+                if (lyrics.UserID == Convert.ToInt32(Session["UserID"]))
+                {
+                    <a data-toggle="collapse" href="#multiCollapseExample3" role="button" aria-expanded="false"
+                       aria-controls="multiCollapseExample3" id="editLyrics" data-hide="0">
+                        <i class="fas fa-edit"></i>
+                        Chỉnh sửa lời bài hát
+                    </a>
+                }
+                <!--Lyrics-->
+                <p id="lyrics">
+                    @lyrics.LMusicDetail
+                </p>
+                <!--Lyrics-->
+            }
+            else
+            {
+                <span>
+                    Hiện tại chưa có lời bài hát, cập nhật lời bài hát <a data-toggle="collapse"
+                                                                          href="#multiCollapseExample2" role="button" aria-expanded="false"
+                                                                          aria-controls="multiCollapseExample2">tại đây</a>
+                </span>
+            }
+
+            <!--Post Lyrics-->
+
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card card-body" style="width: 70%;">
+                    @if (Session["UserID"] == null)
+                    {
+                        <span>Mời bạn đăng nhập để đăng lời bài hát</span>
+                    }
+                    else
+                    {
+                        <form action="@Url.Action("AddLyrics")" method="POST">
+                            <div class="input-group">
+                                <input type="hidden" name="UserID" value="@Session["UserID"]" />
+                                <input type="hidden" name="MusicID" value="@Model.ID" />
+                                <textarea type="text" name="LMusicDetail" style="width: 500px;height: 300px;margin-bottom: 10px;" required></textarea>
+                                <input type="submit" id="btnLyrics" value="Gửi lời">
+                            </div>
+                        </form>
+                    }
+
+                </div>
+            </div>
+            <!--Post Lyrics-->
+            <!--Edit Lyrics-->
+
+            <div class="collapse multi-collapse" id="multiCollapseExample3">
+                <div class="card card-body" style="width: 70%;">
+                    <form action="@Url.Action("UpdateLyrics")" method="POST">
+                        <div class="input-group">
+                            <input type="hidden" name="UserID" value="@Session["UserID"]" />
+                            <input type="hidden" name="MusicID" value="@Model.ID" />
+                            <input type="hidden" name="ID" value="@lyrics.ID" />
+                            <textarea type="text" id="containLyrics" name="LMusicDetail" required style="width: 500px;height: 300px;margin-bottom: 10px;"></textarea>
+                            <input type="submit" id="btnEditLyrics" value="Cập nhật">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--Edit Lyrics-->
+        </div>
+    </div>
+    <div class="gridRight">
+        <span class="lblMusic">Nghe tiếp</span>
+        @foreach (var item in lsRandom)
+        {
+            <div class="itemSongRandom musicRandom">
+                <div>
+                    <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt=""> @item.MusicName</a><br>
+                    <span>
+                        @foreach (var singer in item.ListSinger)
+                        {
+                            <a href="">@singer.SingerName</a>
+                        }
+
+                    </span>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var valueAuto = true;
+            var userVip = "False";
+            if ('@Session["Vip"]' != null) {
+                userVip = '@Session["Vip"]';
+            }
+            var mainAudio = $("#myAudio");
+            var mvFav = true;
+            //alert
+            var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+            //repeat
+            $('#checkAuto').change(function () {
+                if ($('#checkAuto').prop('checked') == true) {
+                    valueAuto = true;
+                } else {
+                    valueAuto = false;
+                }
+            });
+            $("#myAudio").on("ended", function () {
+                if (valueAuto == true) {
+                    window.open($('.musicRandom>div>a:first-child').attr("href"), "_self");
+                } else {
+                    var idMusic = parseInt('@Model.ID');
+                    $.ajax({
+                        url: '/Client/UpdateView',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/json",
+                        data: { idMusic },
+                        success: function (res) {
+                            var view = res.data;
+                            alert(view);
+                            $('#valueView').text(view);
+
+                            document.getElementById("myAudio").play();
+                        }
+                    });
+                }
+            });
+            //check vip
+            $('#selectQuality').change(function (e) {
+                var optionSelected = $("#selectQuality option:selected");
+                if (optionSelected.attr("data-vip") == userVip || (optionSelected.attr("data-vip") == "False" && userVip == "True")) {
+                    mainAudio.attr("src", optionSelected.val());
+                } else {
+                    e.preventDefault();
+                    alertify.error("Chỉ có tài khoản VIP mới dược nghe/xem chất lượng cao");
+                }
+
+            })
+            //add music playlist
+            $('.addPlaylist li').click(function () {
+                var idplist = parseInt($(this).attr("data-id"));
+                var idmusic = parseInt('@Model.ID');
+                $.post("/Client/AddMusicPlaylist", { PlaylistID: idplist, MusicID: idmusic }).done(function (res) {
+                    var stt = res.status;
+                    if (stt == true) {
+                        alertify.success("Thêm bài hát vào playlist thành công.");
+                    } else {
+                        alertify.error("Lỗi khi thêm bài hát vào playlist. Mời thử lại.");
+                    }
+                });
+            });
+            //add favorite video
+            if (mvFav == true) {
+                $('#addFav').css('display', 'none');
+            } else {
+                $('#removeFav').css('display', 'none');
+            }
+            $('#removeFav').click(function () {
+                $('#removeFav').css('display', 'none');
+                $('#addFav').css('display', 'block');
+            });
+            $('#addFav').click(function () {
+                $('#addFav').css('display', 'none');
+                $('#removeFav').css('display', 'block');
+            });
+
+            //Edit lyrics
+            $('#editLyrics').click(function () {
+                if ($('#editLyrics').attr("data-hide") == "0") {
+                    $('#containLyrics').text($('#lyrics').text());
+                    $('#lyrics').hide();
+                    $('#editLyrics').attr("data-hide", "1")
+                } else {
+                    $('#lyrics').show();
+                    $('#editLyrics').attr("data-hide", "0")
+                }
+
+            });
+            //Download file
+            $('#downFile>a').click(function () {
+                var downAccept = $(this).attr("data-vip");
+                if (downAccept == "true" && userVip == "false") {
+                    alert("not allow");
+                }
+            });
+        });
+
+    </script>
+}
+

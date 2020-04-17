@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.CategoryView> lsCate = ViewBag.cate;
+    IEnumerable<API.Models.ModelViews.MusicView> lsSong = ViewBag.song;
+    IEnumerable<API.Models.ModelViews.MusicView> lsMV = ViewBag.mv;
+    IEnumerable<API.Models.ModelViews.PartnerView> lsPart = ViewBag.p;
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            window.onload = function () {
+                var itv = window.setInterval(function () { prevImages() }, 3000);
+
+                var next = document.getElementById("btnNext");
+                var prev = document.getElementById("btnPrev");
+                if (next != null && prev != null) {
+                    next.addEventListener("click", function () {
+                        nextImages();
+                    });
+
+                    prev.addEventListener("click", function () {
+                        prevImages();
+                    });
+                }
+            };
+            function nextImage(item) {
+                item.style.left = parseInt(item.style.left) + item.offsetWidth + 10 + "px";
+            }
+            function nextImages() {
+                var lsImg = document.getElementsByClassName("imgItem");
+                for (var i = 0; i < lsImg.length; i++) {
+                    nextImage(lsImg[i]);
+                }
+                createImgFirst();
+            }
+            function prevImage(item) {
+                item.style.left = parseInt(item.style.left) - item.offsetWidth - 10 + "px";
+            }
+            function prevImages() {
+                var lsImg = document.getElementsByClassName("imgItem");
+                for (var i = 0; i < lsImg.length; i++) {
+                    prevImage(lsImg[i]);
+                }
+                createImgLast();
+            }
+            function createImgFirst() {
+                var containImg = document.getElementById("owl-wrapper");
+                var lastA = $(".imgItem:last-child");
+                var lastImg = $(".imgItem:last-child>img");
+                var newA = document.createElement("a");
+                newA.className = "imgItem";
+                newA.target = "_blank";
+                newA.href = lastA.attr("href");
+                var newImg = document.createElement("img");
+                newImg.src = lastImg.attr("src");
+                newA.append(newImg);
+                newA.style.left = parseInt(containImg.firstElementChild.style.left) - containImg.firstElementChild.offsetWidth - 10 + "px";
+                lastA.remove();
+                containImg.insertBefore(newA, containImg.firstElementChild);
+            }
+            function createImgLast() {
+                var containImg = document.getElementById("owl-wrapper");
+                if (containImg != null) {
+                    var firstA = $(".imgItem:first-child");
+                    var firstImg = $(".imgItem:first-child>img");
+                    var newA = document.createElement("a");
+                    newA.className = "imgItem";
+                    newA.target = "_blank";
+                    newA.href = firstA.attr("href");
+                    var newImg = document.createElement("img");
+                    newImg.src = firstImg.attr("src");
+                    newA.append(newImg);
+                    newA.style.left = parseInt(containImg.lastElementChild.style.left) + containImg.lastElementChild.offsetWidth + 10 + "px";
+                    firstA.remove();
+                    containImg.appendChild(newA);
+                }
+
+            }
+        });
+    </script>
+}
+
+
+<div class="gridMusic">
+    <div class="gridLeft">
+        <!--New Song-->
+        <div>
+            <label for="" class="lblMusic">Mới phát hành</label>
+            <div class="listMusic">
+                @foreach (var item in lsSong)
+                {
+                    <div class="itemMusic">
+                        <span class="viewMusic">
+                            <i class="fas fa-headphones"></i> @item.View
+                        </span>
+                        <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 18px;"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="@item.MusicName" class="imgMusic">@item.MusicName</a>
+                        <div class="nameSinger">
+                            @foreach (var singer in item.ListSinger)
+                            {
+                                <a href="">@singer.SingerName</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <!--New Song-->
+        <!--New MV-->
+        <div style="margin-top: 10px;">
+            <label for="" class="lblMusic">MV mới</label>
+            <div class="listMusic">
+                @foreach (var item in lsMV)
+                {
+                    <div class="itemMusic">
+                        <span class="viewMusic">
+                            <i class="fas fa-headphones"></i> @item.View
+                        </span>
+                        <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 18px;"><img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="@item.MusicName" class="imgMusic">@item.MusicName</a>
+                        <div class="nameSinger">
+                            @foreach (var singer in item.ListSinger)
+                            {
+                                <a href="">@singer.SingerName</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <!--New MV-->
+    </div>
+    <div class="gridRight">
+        <label for="" class="lblMusic">Chủ đề HOT</label>
+        <div id="cateList">
+            <ul>
+                @foreach (var item in lsCate)
+                {
+                    <li><a href="">@item.CateName</a></li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+<!--Partner-->
+<div id="partner">
+    <label for="" style="font-size: 18px;text-transform: uppercase;">Liên kết và hợp tác</label>
+    <div id="slideImg">
+        <div id="owl-wrapper">
+            @foreach (var item in lsPart)
+            {
+                <a href="@item.PartnerLink" class="imgItem" target="_blank"> <img src="@Url.Content("~/Resource/ImagesUser/")@item.PartnerImage"></a>
+            }
+
+        </div>
+        <div id="controlImg">
+            <div id="btnPrev">
+                <i class="fas fa-caret-left"></i>
+            </div>
+            <div id="btnNext">
+                <i class="fas fa-caret-right"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Partner-->

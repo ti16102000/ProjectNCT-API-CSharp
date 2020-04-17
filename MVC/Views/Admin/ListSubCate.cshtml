@@ -1,0 +1,62 @@
+﻿@model IEnumerable<API.Models.ModelViews.CategoryView>
+@{
+    ViewBag.Title = "ListSubCate";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-agile-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            List SubCategory of @TempData["name"] &nbsp; <a class="agile-icon" href="@Url.Action("Category")"><i class="fa fa-plus-circle"></i></a>
+        </div>
+
+        <div class="table-responsive" style="height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Name category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CateName</td>
+                            <td><a href="@Url.Action("EditCate",new { id=item.ID})">Edit</a></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+    $(function () {
+        var msg1 = '@TempData["success"]';
+        var msg2 = '@TempData["error"]';
+        if (msg1 != '') {
+            alertify.success(msg1); //display notify
+        }
+        if (msg2 != '') {
+            alertify.error(msg2)
+        }
+    });
+
+	function Delete(id) {
+	        alertify.confirm('Delete Category', 'Are you sure to delete this record?', function () {
+	            window.location.href='@Url.Action("DelCate")/' + id;
+	        }, null); //display form yes/no using onclick="" in the a tag
+	    };
+
+
+    </script>
+
+
+
+}

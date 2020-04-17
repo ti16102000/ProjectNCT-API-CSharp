@@ -1,0 +1,1118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ProjectNCTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CateName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ID_root" Type="int" />
+        </EntityType>
+        <EntityType Name="HistoryUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LyricsMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LMusicDetail" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LMusicDayCreate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Music">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusicName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="MusicDownloadAllowed" Type="bit" Nullable="false" />
+          <Property Name="MusicView" Type="int" Nullable="false" />
+          <Property Name="SongOrMV" Type="bit" Nullable="false" />
+          <Property Name="CateID" Type="int" Nullable="false" />
+          <Property Name="MusicImage" Type="nvarchar" MaxLength="500" />
+          <Property Name="MusicDayCreate" Type="datetime" Nullable="false" />
+          <Property Name="MusicNameUnsigned" Type="nvarchar" MaxLength="1000" />
+          <Property Name="MusicRelated" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderVip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PVipID" Type="int" />
+          <Property Name="PaymentID" Type="int" Nullable="false" />
+          <Property Name="OrdPrice" Type="int" />
+          <Property Name="OrdDayCreate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PackageVip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PVipName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PVipMonths" Type="int" Nullable="false" />
+          <Property Name="PVipPrice" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Partner">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartnerName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PartnerImage" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PartnerLink" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="PartnerActive" Type="bit" Nullable="false" />
+          <Property Name="PartnerDayCreate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Playlist">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlaylistName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CateID" Type="int" />
+          <Property Name="PlaylistImage" Type="nvarchar" MaxLength="500" />
+          <Property Name="PlaylistDescription" Type="nvarchar" MaxLength="3000" />
+        </EntityType>
+        <EntityType Name="PlaylistMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlaylistID" Type="int" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Quality">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QualityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="QualityVip" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QualityMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+          <Property Name="MusicFile" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="QualityID" Type="int" Nullable="false" />
+          <Property Name="QMusicApproved" Type="bit" Nullable="false" />
+          <Property Name="NewFile" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rank">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RMusicName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RMusicStart" Type="date" Nullable="false" />
+          <Property Name="RMusicEnd" Type="date" Nullable="false" />
+          <Property Name="CateID" Type="int" Nullable="false" />
+          <Property Name="SongOrMusic" Type="bit" />
+        </EntityType>
+        <EntityType Name="RankMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RankID" Type="int" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+          <Property Name="RMusicGrade" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SingerMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+          <Property Name="SingerID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UserDOB" Type="date" />
+          <Property Name="UserGender" Type="bit" />
+          <Property Name="UserVIP" Type="bit" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserPwd" Type="varchar" MaxLength="20" />
+          <Property Name="UserImage" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserDescription" Type="nvarchar(max)" />
+          <Property Name="UserNameUnsigned" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserDayCreate" Type="datetime" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="UserActive" Type="bit" Nullable="false" />
+          <Property Name="DayVipEnd" Type="datetime" />
+          <Property Name="TokenUser" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ViewMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MusicID" Type="int" Nullable="false" />
+          <Property Name="ViewDayCreate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_HistoryUser_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="1" />
+          <End Role="HistoryUser" Type="Self.HistoryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="HistoryUser">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LyricsMusic_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="1" />
+          <End Role="LyricsMusic" Type="Self.LyricsMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LyricsMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Music_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Music" Type="Self.Music" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Music">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderVip_PackageVip">
+          <End Role="PackageVip" Type="Self.PackageVip" Multiplicity="0..1" />
+          <End Role="OrderVip" Type="Self.OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackageVip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="PVipID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderVip_Payment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="1" />
+          <End Role="OrderVip" Type="Self.OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderVip_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="OrderVip" Type="Self.OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Playlist_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Playlist">
+              <PropertyRef Name="CateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaylistMusic_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="1" />
+          <End Role="PlaylistMusic" Type="Self.PlaylistMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlaylistMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QualityMusic_Quality">
+          <End Role="Quality" Type="Self.Quality" Multiplicity="1" />
+          <End Role="QualityMusic" Type="Self.QualityMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quality">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QualityMusic">
+              <PropertyRef Name="QualityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RankMusic_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Rank" Type="Self.Rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rank">
+              <PropertyRef Name="CateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RankMusic_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="1" />
+          <End Role="RankMusic" Type="Self.RankMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RankMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SingerMusic_Music">
+          <End Role="Music" Type="Self.Music" Multiplicity="1" />
+          <End Role="SingerMusic" Type="Self.SingerMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SingerMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SingerMusic_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="SingerMusic" Type="Self.SingerMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SingerMusic">
+              <PropertyRef Name="SingerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProjectNCTModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoryUser" EntityType="Self.HistoryUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LyricsMusic" EntityType="Self.LyricsMusic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Music" EntityType="Self.Music" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderVip" EntityType="Self.OrderVip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PackageVip" EntityType="Self.PackageVip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Partner" EntityType="Self.Partner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Playlist" EntityType="Self.Playlist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlaylistMusic" EntityType="Self.PlaylistMusic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quality" EntityType="Self.Quality" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QualityMusic" EntityType="Self.QualityMusic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rank" EntityType="Self.Rank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RankMusic" EntityType="Self.RankMusic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SingerMusic" EntityType="Self.SingerMusic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ViewMusic" EntityType="Self.ViewMusic" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_HistoryUser_Music" Association="Self.FK_HistoryUser_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="HistoryUser" EntitySet="HistoryUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LyricsMusic_Music" Association="Self.FK_LyricsMusic_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="LyricsMusic" EntitySet="LyricsMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Music_User" Association="Self.FK_Music_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Music" EntitySet="Music" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderVip_PackageVip" Association="Self.FK_OrderVip_PackageVip">
+            <End Role="PackageVip" EntitySet="PackageVip" />
+            <End Role="OrderVip" EntitySet="OrderVip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderVip_Payment" Association="Self.FK_OrderVip_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="OrderVip" EntitySet="OrderVip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderVip_User" Association="Self.FK_OrderVip_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="OrderVip" EntitySet="OrderVip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Playlist_Category" Association="Self.FK_Playlist_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Playlist" EntitySet="Playlist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaylistMusic_Music" Association="Self.FK_PlaylistMusic_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="PlaylistMusic" EntitySet="PlaylistMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QualityMusic_Quality" Association="Self.FK_QualityMusic_Quality">
+            <End Role="Quality" EntitySet="Quality" />
+            <End Role="QualityMusic" EntitySet="QualityMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RankMusic_Category" Association="Self.FK_RankMusic_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Rank" EntitySet="Rank" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RankMusic_Music" Association="Self.FK_RankMusic_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="RankMusic" EntitySet="RankMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SingerMusic_Music" Association="Self.FK_SingerMusic_Music">
+            <End Role="Music" EntitySet="Music" />
+            <End Role="SingerMusic" EntitySet="SingerMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SingerMusic_User" Association="Self.FK_SingerMusic_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="SingerMusic" EntitySet="SingerMusic" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProjectNCTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ProjectNCTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="ProjectNCTModel.Category" />
+          <EntitySet Name="HistoryUsers" EntityType="ProjectNCTModel.HistoryUser" />
+          <EntitySet Name="LyricsMusics" EntityType="ProjectNCTModel.LyricsMusic" />
+          <EntitySet Name="Musics" EntityType="ProjectNCTModel.Music" />
+          <EntitySet Name="OrderVips" EntityType="ProjectNCTModel.OrderVip" />
+          <EntitySet Name="PackageVips" EntityType="ProjectNCTModel.PackageVip" />
+          <EntitySet Name="Partners" EntityType="ProjectNCTModel.Partner" />
+          <EntitySet Name="Playlists" EntityType="ProjectNCTModel.Playlist" />
+          <EntitySet Name="PlaylistMusics" EntityType="ProjectNCTModel.PlaylistMusic" />
+          <EntitySet Name="Qualities" EntityType="ProjectNCTModel.Quality" />
+          <EntitySet Name="QualityMusics" EntityType="ProjectNCTModel.QualityMusic" />
+          <EntitySet Name="Ranks" EntityType="ProjectNCTModel.Rank" />
+          <EntitySet Name="RankMusics" EntityType="ProjectNCTModel.RankMusic" />
+          <EntitySet Name="Roles" EntityType="ProjectNCTModel.Role" />
+          <EntitySet Name="SingerMusics" EntityType="ProjectNCTModel.SingerMusic" />
+          <EntitySet Name="Users" EntityType="ProjectNCTModel.User" />
+          <EntitySet Name="ViewMusics" EntityType="ProjectNCTModel.ViewMusic" />
+          <AssociationSet Name="FK_Playlist_Category" Association="ProjectNCTModel.FK_Playlist_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Playlist" EntitySet="Playlists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RankMusic_Category" Association="ProjectNCTModel.FK_RankMusic_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Rank" EntitySet="Ranks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistoryUser_Music" Association="ProjectNCTModel.FK_HistoryUser_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="HistoryUser" EntitySet="HistoryUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LyricsMusic_Music" Association="ProjectNCTModel.FK_LyricsMusic_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="LyricsMusic" EntitySet="LyricsMusics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Music_User" Association="ProjectNCTModel.FK_Music_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Music" EntitySet="Musics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaylistMusic_Music" Association="ProjectNCTModel.FK_PlaylistMusic_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="PlaylistMusic" EntitySet="PlaylistMusics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RankMusic_Music" Association="ProjectNCTModel.FK_RankMusic_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="RankMusic" EntitySet="RankMusics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderVip_PackageVip" Association="ProjectNCTModel.FK_OrderVip_PackageVip">
+            <End Role="PackageVip" EntitySet="PackageVips" />
+            <End Role="OrderVip" EntitySet="OrderVips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderVip_User" Association="ProjectNCTModel.FK_OrderVip_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="OrderVip" EntitySet="OrderVips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QualityMusic_Quality" Association="ProjectNCTModel.FK_QualityMusic_Quality">
+            <End Role="Quality" EntitySet="Qualities" />
+            <End Role="QualityMusic" EntitySet="QualityMusics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="ProjectNCTModel.FK_User_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SingerMusic_User" Association="ProjectNCTModel.FK_SingerMusic_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="SingerMusic" EntitySet="SingerMusics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SingerMusic_Music" Association="ProjectNCTModel.FK_SingerMusic_Music">
+            <End Role="Music" EntitySet="Musics" />
+            <End Role="SingerMusic" EntitySet="SingerMusics" />
+          </AssociationSet>
+          <EntitySet Name="Payments" EntityType="ProjectNCTModel.Payment" />
+          <AssociationSet Name="FK_OrderVip_Payment" Association="ProjectNCTModel.FK_OrderVip_Payment">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="OrderVip" EntitySet="OrderVips" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CateName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ID_root" Type="Int32" />
+          <NavigationProperty Name="Playlists" Relationship="ProjectNCTModel.FK_Playlist_Category" FromRole="Category" ToRole="Playlist" />
+          <NavigationProperty Name="Ranks" Relationship="ProjectNCTModel.FK_RankMusic_Category" FromRole="Category" ToRole="Rank" />
+        </EntityType>
+        <EntityType Name="HistoryUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Music" Relationship="ProjectNCTModel.FK_HistoryUser_Music" FromRole="HistoryUser" ToRole="Music" />
+        </EntityType>
+        <EntityType Name="LyricsMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LMusicDetail" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LMusicDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Music" Relationship="ProjectNCTModel.FK_LyricsMusic_Music" FromRole="LyricsMusic" ToRole="Music" />
+        </EntityType>
+        <EntityType Name="Music">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusicName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="MusicDownloadAllowed" Type="Boolean" Nullable="false" />
+          <Property Name="MusicView" Type="Int32" Nullable="false" />
+          <Property Name="SongOrMV" Type="Boolean" Nullable="false" />
+          <Property Name="CateID" Type="Int32" Nullable="false" />
+          <Property Name="MusicImage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="MusicDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MusicNameUnsigned" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MusicRelated" Type="Int32" />
+          <NavigationProperty Name="HistoryUsers" Relationship="ProjectNCTModel.FK_HistoryUser_Music" FromRole="Music" ToRole="HistoryUser" />
+          <NavigationProperty Name="LyricsMusics" Relationship="ProjectNCTModel.FK_LyricsMusic_Music" FromRole="Music" ToRole="LyricsMusic" />
+          <NavigationProperty Name="User" Relationship="ProjectNCTModel.FK_Music_User" FromRole="Music" ToRole="User" />
+          <NavigationProperty Name="PlaylistMusics" Relationship="ProjectNCTModel.FK_PlaylistMusic_Music" FromRole="Music" ToRole="PlaylistMusic" />
+          <NavigationProperty Name="RankMusics" Relationship="ProjectNCTModel.FK_RankMusic_Music" FromRole="Music" ToRole="RankMusic" />
+          <NavigationProperty Name="SingerMusics" Relationship="ProjectNCTModel.FK_SingerMusic_Music" FromRole="Music" ToRole="SingerMusic" />
+        </EntityType>
+        <EntityType Name="OrderVip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PVipID" Type="Int32" />
+          <Property Name="PaymentID" Type="Int32" Nullable="false" />
+          <Property Name="OrdPrice" Type="Int32" />
+          <Property Name="OrdDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PackageVip" Relationship="ProjectNCTModel.FK_OrderVip_PackageVip" FromRole="OrderVip" ToRole="PackageVip" />
+          <NavigationProperty Name="User" Relationship="ProjectNCTModel.FK_OrderVip_User" FromRole="OrderVip" ToRole="User" />
+          <NavigationProperty Name="Payment" Relationship="ProjectNCTModel.FK_OrderVip_Payment" FromRole="OrderVip" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="PackageVip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PVipName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PVipMonths" Type="Int32" Nullable="false" />
+          <Property Name="PVipPrice" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderVips" Relationship="ProjectNCTModel.FK_OrderVip_PackageVip" FromRole="PackageVip" ToRole="OrderVip" />
+        </EntityType>
+        <EntityType Name="Partner">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartnerName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PartnerImage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PartnerLink" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="PartnerActive" Type="Boolean" Nullable="false" />
+          <Property Name="PartnerDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Playlist">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlaylistName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CateID" Type="Int32" />
+          <Property Name="PlaylistImage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PlaylistDescription" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Category" Relationship="ProjectNCTModel.FK_Playlist_Category" FromRole="Playlist" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="PlaylistMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlaylistID" Type="Int32" Nullable="false" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Music" Relationship="ProjectNCTModel.FK_PlaylistMusic_Music" FromRole="PlaylistMusic" ToRole="Music" />
+        </EntityType>
+        <EntityType Name="Quality">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QualityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QualityVip" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="QualityMusics" Relationship="ProjectNCTModel.FK_QualityMusic_Quality" FromRole="Quality" ToRole="QualityMusic" />
+        </EntityType>
+        <EntityType Name="QualityMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <Property Name="MusicFile" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="QualityID" Type="Int32" Nullable="false" />
+          <Property Name="QMusicApproved" Type="Boolean" Nullable="false" />
+          <Property Name="NewFile" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Quality" Relationship="ProjectNCTModel.FK_QualityMusic_Quality" FromRole="QualityMusic" ToRole="Quality" />
+        </EntityType>
+        <EntityType Name="Rank">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RMusicName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RMusicStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RMusicEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CateID" Type="Int32" Nullable="false" />
+          <Property Name="SongOrMusic" Type="Boolean" />
+          <NavigationProperty Name="Category" Relationship="ProjectNCTModel.FK_RankMusic_Category" FromRole="Rank" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="RankMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RankID" Type="Int32" Nullable="false" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <Property Name="RMusicGrade" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Music" Relationship="ProjectNCTModel.FK_RankMusic_Music" FromRole="RankMusic" ToRole="Music" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="ProjectNCTModel.FK_User_Role" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SingerMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <Property Name="SingerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="ProjectNCTModel.FK_SingerMusic_User" FromRole="SingerMusic" ToRole="User" />
+          <NavigationProperty Name="Music" Relationship="ProjectNCTModel.FK_SingerMusic_Music" FromRole="SingerMusic" ToRole="Music" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserDOB" Type="DateTime" Precision="0" />
+          <Property Name="UserGender" Type="Boolean" />
+          <Property Name="UserVIP" Type="Boolean" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UserImage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserNameUnsigned" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="UserActive" Type="Boolean" Nullable="false" />
+          <Property Name="DayVipEnd" Type="DateTime" Precision="3" />
+          <Property Name="TokenUser" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Musics" Relationship="ProjectNCTModel.FK_Music_User" FromRole="User" ToRole="Music" />
+          <NavigationProperty Name="OrderVips" Relationship="ProjectNCTModel.FK_OrderVip_User" FromRole="User" ToRole="OrderVip" />
+          <NavigationProperty Name="Role" Relationship="ProjectNCTModel.FK_User_Role" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="SingerMusics" Relationship="ProjectNCTModel.FK_SingerMusic_User" FromRole="User" ToRole="SingerMusic" />
+        </EntityType>
+        <EntityType Name="ViewMusic">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MusicID" Type="Int32" Nullable="false" />
+          <Property Name="ViewDayCreate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Playlist_Category">
+          <End Type="ProjectNCTModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="ProjectNCTModel.Playlist" Role="Playlist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Playlist">
+              <PropertyRef Name="CateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RankMusic_Category">
+          <End Type="ProjectNCTModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="ProjectNCTModel.Rank" Role="Rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Rank">
+              <PropertyRef Name="CateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistoryUser_Music">
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="1" />
+          <End Type="ProjectNCTModel.HistoryUser" Role="HistoryUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="HistoryUser">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LyricsMusic_Music">
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="1" />
+          <End Type="ProjectNCTModel.LyricsMusic" Role="LyricsMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LyricsMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Music_User">
+          <End Type="ProjectNCTModel.User" Role="User" Multiplicity="1" />
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Music">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaylistMusic_Music">
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="1" />
+          <End Type="ProjectNCTModel.PlaylistMusic" Role="PlaylistMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlaylistMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RankMusic_Music">
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="1" />
+          <End Type="ProjectNCTModel.RankMusic" Role="RankMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RankMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderVip_PackageVip">
+          <End Type="ProjectNCTModel.PackageVip" Role="PackageVip" Multiplicity="0..1" />
+          <End Type="ProjectNCTModel.OrderVip" Role="OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackageVip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="PVipID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderVip_User">
+          <End Type="ProjectNCTModel.User" Role="User" Multiplicity="1" />
+          <End Type="ProjectNCTModel.OrderVip" Role="OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QualityMusic_Quality">
+          <End Type="ProjectNCTModel.Quality" Role="Quality" Multiplicity="1" />
+          <End Type="ProjectNCTModel.QualityMusic" Role="QualityMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quality">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QualityMusic">
+              <PropertyRef Name="QualityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Type="ProjectNCTModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="ProjectNCTModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SingerMusic_User">
+          <End Type="ProjectNCTModel.User" Role="User" Multiplicity="1" />
+          <End Type="ProjectNCTModel.SingerMusic" Role="SingerMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SingerMusic">
+              <PropertyRef Name="SingerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SingerMusic_Music">
+          <End Type="ProjectNCTModel.Music" Role="Music" Multiplicity="1" />
+          <End Type="ProjectNCTModel.SingerMusic" Role="SingerMusic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Music">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SingerMusic">
+              <PropertyRef Name="MusicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderVips" Relationship="ProjectNCTModel.FK_OrderVip_Payment" FromRole="Payment" ToRole="OrderVip" />
+        </EntityType>
+        <Association Name="FK_OrderVip_Payment">
+          <End Type="ProjectNCTModel.Payment" Role="Payment" Multiplicity="1" />
+          <End Type="ProjectNCTModel.OrderVip" Role="OrderVip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderVip">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProjectNCTModelStoreContainer" CdmEntityContainer="ProjectNCTEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="ID_root" ColumnName="ID_root" />
+                <ScalarProperty Name="CateName" ColumnName="CateName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoryUsers">
+            <EntityTypeMapping TypeName="ProjectNCTModel.HistoryUser">
+              <MappingFragment StoreEntitySet="HistoryUser">
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LyricsMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.LyricsMusic">
+              <MappingFragment StoreEntitySet="LyricsMusic">
+                <ScalarProperty Name="LMusicDayCreate" ColumnName="LMusicDayCreate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="LMusicDetail" ColumnName="LMusicDetail" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Music">
+              <MappingFragment StoreEntitySet="Music">
+                <ScalarProperty Name="MusicRelated" ColumnName="MusicRelated" />
+                <ScalarProperty Name="MusicNameUnsigned" ColumnName="MusicNameUnsigned" />
+                <ScalarProperty Name="MusicDayCreate" ColumnName="MusicDayCreate" />
+                <ScalarProperty Name="MusicImage" ColumnName="MusicImage" />
+                <ScalarProperty Name="CateID" ColumnName="CateID" />
+                <ScalarProperty Name="SongOrMV" ColumnName="SongOrMV" />
+                <ScalarProperty Name="MusicView" ColumnName="MusicView" />
+                <ScalarProperty Name="MusicDownloadAllowed" ColumnName="MusicDownloadAllowed" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="MusicName" ColumnName="MusicName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderVips">
+            <EntityTypeMapping TypeName="ProjectNCTModel.OrderVip">
+              <MappingFragment StoreEntitySet="OrderVip">
+                <ScalarProperty Name="OrdDayCreate" ColumnName="OrdDayCreate" />
+                <ScalarProperty Name="OrdPrice" ColumnName="OrdPrice" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="PVipID" ColumnName="PVipID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PackageVips">
+            <EntityTypeMapping TypeName="ProjectNCTModel.PackageVip">
+              <MappingFragment StoreEntitySet="PackageVip">
+                <ScalarProperty Name="PVipPrice" ColumnName="PVipPrice" />
+                <ScalarProperty Name="PVipMonths" ColumnName="PVipMonths" />
+                <ScalarProperty Name="PVipName" ColumnName="PVipName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Partners">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Partner">
+              <MappingFragment StoreEntitySet="Partner">
+                <ScalarProperty Name="PartnerDayCreate" ColumnName="PartnerDayCreate" />
+                <ScalarProperty Name="PartnerActive" ColumnName="PartnerActive" />
+                <ScalarProperty Name="PartnerLink" ColumnName="PartnerLink" />
+                <ScalarProperty Name="PartnerImage" ColumnName="PartnerImage" />
+                <ScalarProperty Name="PartnerName" ColumnName="PartnerName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Playlists">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Playlist">
+              <MappingFragment StoreEntitySet="Playlist">
+                <ScalarProperty Name="PlaylistDescription" ColumnName="PlaylistDescription" />
+                <ScalarProperty Name="PlaylistImage" ColumnName="PlaylistImage" />
+                <ScalarProperty Name="CateID" ColumnName="CateID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PlaylistName" ColumnName="PlaylistName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlaylistMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.PlaylistMusic">
+              <MappingFragment StoreEntitySet="PlaylistMusic">
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="PlaylistID" ColumnName="PlaylistID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Qualities">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Quality">
+              <MappingFragment StoreEntitySet="Quality">
+                <ScalarProperty Name="QualityVip" ColumnName="QualityVip" />
+                <ScalarProperty Name="QualityName" ColumnName="QualityName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QualityMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.QualityMusic">
+              <MappingFragment StoreEntitySet="QualityMusic">
+                <ScalarProperty Name="NewFile" ColumnName="NewFile" />
+                <ScalarProperty Name="QMusicApproved" ColumnName="QMusicApproved" />
+                <ScalarProperty Name="QualityID" ColumnName="QualityID" />
+                <ScalarProperty Name="MusicFile" ColumnName="MusicFile" />
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ranks">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Rank">
+              <MappingFragment StoreEntitySet="Rank">
+                <ScalarProperty Name="SongOrMusic" ColumnName="SongOrMusic" />
+                <ScalarProperty Name="CateID" ColumnName="CateID" />
+                <ScalarProperty Name="RMusicEnd" ColumnName="RMusicEnd" />
+                <ScalarProperty Name="RMusicStart" ColumnName="RMusicStart" />
+                <ScalarProperty Name="RMusicName" ColumnName="RMusicName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RankMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.RankMusic">
+              <MappingFragment StoreEntitySet="RankMusic">
+                <ScalarProperty Name="RMusicGrade" ColumnName="RMusicGrade" />
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="RankID" ColumnName="RankID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SingerMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.SingerMusic">
+              <MappingFragment StoreEntitySet="SingerMusic">
+                <ScalarProperty Name="SingerID" ColumnName="SingerID" />
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ProjectNCTModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="TokenUser" ColumnName="TokenUser" />
+                <ScalarProperty Name="DayVipEnd" ColumnName="DayVipEnd" />
+                <ScalarProperty Name="UserActive" ColumnName="UserActive" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserDayCreate" ColumnName="UserDayCreate" />
+                <ScalarProperty Name="UserNameUnsigned" ColumnName="UserNameUnsigned" />
+                <ScalarProperty Name="UserDescription" ColumnName="UserDescription" />
+                <ScalarProperty Name="UserImage" ColumnName="UserImage" />
+                <ScalarProperty Name="UserPwd" ColumnName="UserPwd" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserVIP" ColumnName="UserVIP" />
+                <ScalarProperty Name="UserGender" ColumnName="UserGender" />
+                <ScalarProperty Name="UserDOB" ColumnName="UserDOB" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ViewMusics">
+            <EntityTypeMapping TypeName="ProjectNCTModel.ViewMusic">
+              <MappingFragment StoreEntitySet="ViewMusic">
+                <ScalarProperty Name="ViewDayCreate" ColumnName="ViewDayCreate" />
+                <ScalarProperty Name="MusicID" ColumnName="MusicID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="ProjectNCTModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="PaymentName" ColumnName="PaymentName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

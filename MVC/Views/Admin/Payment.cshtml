@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div style="display:flex;">
+    <div style="width:48%;margin-right:4%;">
+        <section class="panel" style="margin-top:55px;">
+            <header class="panel-heading">
+                Create Payment
+            </header>
+            <form action="@Url.Action("CreatePayment")" method="POST" enctype="multipart/form-data">
+                <div class="panel-body">
+                    <div class="position-center">
+                        <div class="form-group">
+                            <label for="">Payment Name:</label>
+                            <input type="text" class="form-control" name="PaymentName" maxlength="200" required>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <div class="panel-heading">
+            Payment List
+        </div>
+        <div class="table-responsive" style="overflow:auto;background-color: white;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Partner Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in ((IEnumerable<API.Models.ModelViews.PaymentView>)TempData["p"]))
+                    {
+                        <tr>
+                            <td>@item.PaymentName</td>
+                            <td>
+                                <a href="@Url.Action("DelPayment",new { id=item.PaymentID})" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="width:48%;">
+        <section class="panel" style="margin-top:55px;">
+            <header class="panel-heading">
+                Create PackageVip
+            </header>
+            <form action="@Url.Action("CreatePV")" method="POST" enctype="multipart/form-data">
+                <div class="panel-body">
+                    <div class="position-center">
+                        <div class="form-group">
+                            <label for="">PackageVip Name:</label>
+                            <input type="text" class="form-control" name="PVipName" maxlength="200" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">PackageVip Months:</label>
+                            <input type="number" class="form-control" name="PVipMonths" min="1" max="12" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">PackageVip Price:</label>
+                            <input type="number" class="form-control" name="PVipPrice" min="1" max="500000" required>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <div class="panel-heading">
+            Package Vip List
+        </div>
+        <div class="table-responsive" style="overflow:auto;background-color: white;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Package Vip Name</th>
+                        <th>Month(s)</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in ((IEnumerable<API.Models.ModelViews.PackageVipView>)TempData["pv"]))
+                    {
+                        <tr>
+                            <td>@item.PVipName</td>
+                            <td>@item.PVipMonths</td>
+                            <td>@item.PVipPrice</td>
+                            <td>
+                                <a href="@Url.Action("DelPV",new { id=item.PVipID})" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+<script>
+        $(function () {
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+
+        });
+
+
+</script>
+}

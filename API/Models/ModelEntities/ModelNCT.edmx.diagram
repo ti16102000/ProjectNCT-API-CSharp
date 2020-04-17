@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cbca4682b3d14ed7b344e8727160e986" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectNCTModel.Category" Width="1.5" PointX="9.75" PointY="2.875" />
+        <EntityTypeShape EntityType="ProjectNCTModel.HistoryUser" Width="1.5" PointX="7.5" PointY="3.375" />
+        <EntityTypeShape EntityType="ProjectNCTModel.LyricsMusic" Width="1.5" PointX="7.5" PointY="5.875" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Music" Width="1.5" PointX="5.25" PointY="6.375" />
+        <EntityTypeShape EntityType="ProjectNCTModel.OrderVip" Width="1.5" PointX="5.25" PointY="11.25" />
+        <EntityTypeShape EntityType="ProjectNCTModel.PackageVip" Width="1.5" PointX="3" PointY="15.875" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Partner" Width="1.5" PointX="9.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Playlist" Width="1.5" PointX="12" PointY="1.125" />
+        <EntityTypeShape EntityType="ProjectNCTModel.PlaylistMusic" Width="1.5" PointX="7.5" PointY="8.875" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Quality" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="ProjectNCTModel.QualityMusic" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Rank" Width="1.5" PointX="12" PointY="4.25" />
+        <EntityTypeShape EntityType="ProjectNCTModel.RankMusic" Width="1.5" PointX="7.5" PointY="11.375" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Role" Width="1.5" PointX="0.75" PointY="8.875" />
+        <EntityTypeShape EntityType="ProjectNCTModel.SingerMusic" Width="1.5" PointX="5.25" PointY="17.625" />
+        <EntityTypeShape EntityType="ProjectNCTModel.User" Width="1.5" PointX="3" PointY="7.25" />
+        <EntityTypeShape EntityType="ProjectNCTModel.ViewMusic" Width="1.5" PointX="0.75" PointY="4.75" />
+        <AssociationConnector Association="ProjectNCTModel.FK_Playlist_Category" />
+        <AssociationConnector Association="ProjectNCTModel.FK_RankMusic_Category" />
+        <AssociationConnector Association="ProjectNCTModel.FK_HistoryUser_Music" />
+        <AssociationConnector Association="ProjectNCTModel.FK_LyricsMusic_Music" />
+        <AssociationConnector Association="ProjectNCTModel.FK_Music_User" />
+        <AssociationConnector Association="ProjectNCTModel.FK_PlaylistMusic_Music" />
+        <AssociationConnector Association="ProjectNCTModel.FK_RankMusic_Music" />
+        <AssociationConnector Association="ProjectNCTModel.FK_OrderVip_PackageVip" />
+        <AssociationConnector Association="ProjectNCTModel.FK_OrderVip_User" />
+        <AssociationConnector Association="ProjectNCTModel.FK_QualityMusic_Quality" />
+        <AssociationConnector Association="ProjectNCTModel.FK_User_Role" />
+        <AssociationConnector Association="ProjectNCTModel.FK_SingerMusic_User" />
+        <AssociationConnector Association="ProjectNCTModel.FK_SingerMusic_Music" />
+        <EntityTypeShape EntityType="ProjectNCTModel.Payment" Width="1.5" PointX="10.375" PointY="10.875" />
+        <AssociationConnector Association="ProjectNCTModel.FK_OrderVip_Payment" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

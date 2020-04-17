@@ -1,0 +1,67 @@
+﻿@model IEnumerable<API.Models.ModelViews.UserView>
+@{
+    ViewBag.Title = "ListSinger";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-agile-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Singer List &nbsp; <a class="agile-icon" href="@Url.Action("Singer")"><i class="fa fa-plus-circle"></i></a>
+        </div>
+        <div class="table-responsive" style="height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Image Singer</th>
+                        <th>Singer Name</th>
+                        <th>DOB</th>
+                        <th>Gender</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td><img src="@Url.Content("~/Resource/ImagesUser/")@item.UserImage" style="width:60px;height:60px;"/></td>
+                            <td>@item.UserName</td>
+                            <td>@(item.UserDOB==null?"Đang cập nhật":item.UserDOB.ToString())</td>
+                            <td>@(item.UserGender==null?"Đang cập nhật":item.UserGender==true?"Nữ":"Nam")</td>
+                            <td>
+                                <a href="@Url.Action("SingerDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                    <i class="fas fa-info-circle text-success text-active"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(function () {
+        var msg1 = '@TempData["success"]'
+        var msg2='@TempData["error"]'
+        if (msg1 != '') {
+            alertify.success(msg1);
+        }
+        if (msg2 != '') {
+            alertify.error(msg2);
+        }
+    });
+
+	function Delete(id) {
+	        alertify.confirm('Delete Room', 'Are you sure to delete this record?', function () {
+	            window.location.href='@Url.Action("DelRoom")/' + id;
+	        }, null);
+	    };
+
+
+    </script>
+}
+

@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "ChangePwd";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<form action="@Url.Action("NewPass")" method="post">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="form-example-wrap mg-t-30">
+            <div class="cmp-tb-hd cmp-int-hd">
+                <h2>Đổi mật khẩu</h2>
+            </div>
+            <div class="form-example-int form-horizental">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <label class="hrzn-fm">Mã số bí mật</label>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
+                            <div class="nk-int-st">
+                                <input type="hidden" name="email" value="@ViewBag.mail" />
+                                <input type="text" class="form-control input-sm" id="number" placeholder="Gửi trong email mà bạn đã đưa để đổi mật khẩu" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-example-int form-horizental mg-t-15">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                            <label class="hrzn-fm">Mật khẩu mới</label>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
+                            <div class="nk-int-st">
+                                <input type="password" class="form-control input-sm" name="pwd" style="font-size: 14px;" placeholder="Mật khẩu mới">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-example-int mg-t-15">
+                <div class="row">
+                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                    </div>
+                    <div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
+                        <input type="submit" class="btn btn-success notika-btn-success waves-effect" value="Đổi" id="btnChange">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section scripts{
+    <script>
+        $(function () {
+            var number = '@Session["number"]';
+            $('#btnChange').click(function (e) {
+                if (number != $('#number').val()) {
+                    e.preventDefault();
+                }
+            })
+        var msg = '@TempData["error"]'
+        if (msg != '') {
+            alertify.error(msg); //display notify
+        }
+    });
+    </script>
+}
