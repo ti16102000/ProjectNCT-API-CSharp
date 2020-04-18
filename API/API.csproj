@@ -176,6 +176,7 @@
     <Compile Include="Controllers\QualityController.cs" />
     <Compile Include="Controllers\QualityMusicController.cs" />
     <Compile Include="Controllers\RandomMusicController.cs" />
+    <Compile Include="Controllers\RankMusicController.cs" />
     <Compile Include="Controllers\SearchMenuController.cs" />
     <Compile Include="Controllers\SingerMusicController.cs" />
     <Compile Include="Controllers\SubCateController.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Models\DAO\PlaylistMusicDAO.cs" />
     <Compile Include="Models\DAO\QualityDAO.cs" />
     <Compile Include="Models\DAO\QualityMusicDAO.cs" />
+    <Compile Include="Models\DAO\RankDAO.cs" />
     <Compile Include="Models\DAO\SingerMusicDAO.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\ModelEntities\Category.cs">
@@ -279,6 +281,8 @@
     <Compile Include="Models\ModelViews\PlaylistMusicView.cs" />
     <Compile Include="Models\ModelViews\PlaylistView.cs" />
     <Compile Include="Models\ModelViews\QualityMusicView.cs" />
+    <Compile Include="Models\ModelViews\RankMusicView.cs" />
+    <Compile Include="Models\ModelViews\RankView.cs" />
     <Compile Include="Models\ModelViews\SingerMusicView.cs" />
     <Compile Include="Models\ModelViews\UserView.cs" />
     <Compile Include="Models\Repositories.cs" />

@@ -213,6 +213,43 @@ namespace MVC.Controllers
             var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult Search(string value)
+        {
+            ViewBag.value = value;
+            //song
+            var resSong = APIService.client.GetAsync("Music?value=" + value + "&music=" + true).Result;
+            ViewBag.song = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //mv
+            var resMV = APIService.client.GetAsync("Music?value=" + value + "&music=" + false).Result;
+            ViewBag.mv = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //singer
+            var resSinger = APIService.client.GetAsync("User?value=" + value).Result;
+            ViewBag.singer = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            //playlist
+            var resPlist = APIService.client.GetAsync("Playlist?value=" + value).Result;
+            ViewBag.plist = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            return View();
+        }
+        #endregion
+
+        #region Rank
+        public ActionResult RankMusic(int idCate,string name)
+        {
+            ViewBag.name = name;
+            //song
+            var resSong = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + true).Result;
+            var song = resSong.Content.ReadAsAsync<RankView>().Result;
+            ViewBag.song = song;
+            var resLsSong = APIService.client.GetAsync("RankMusic?idRank=" + song.ID).Result;
+            ViewBag.lsSong = resLsSong.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
+            //mv
+            var resMv = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + false).Result;
+            var mv = resMv.Content.ReadAsAsync<RankView>().Result;
+            ViewBag.mv = mv;
+            var resLsMV = APIService.client.GetAsync("RankMusic?idRank=" + mv.ID).Result;
+            ViewBag.lsMv = resLsMV.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
+            return View();
+        }
         #endregion
     }
 }

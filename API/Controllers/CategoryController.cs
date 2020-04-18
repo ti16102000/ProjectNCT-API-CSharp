@@ -15,13 +15,6 @@ namespace API.Controllers
         // GET api/<controller>
         public IHttpActionResult Get()
         {
-            //var list = Repositories.GetListSuperCate().Select(s => new CategoryView
-            //{
-            //    ID = s.ID,
-            //    CateName = s.CateName
-            //    ListSubCate = Repositories.GetListSubCateByID(s.ID).Select(s1 => new CategoryView { ID = s1.ID, CateName = s1.CateName }).ToList()
-            //});
-            //return Ok(list);
             var list = new List<CategoryView>();
             var dataList = Repositories.GetListSuperCate();
             foreach (var item in dataList)

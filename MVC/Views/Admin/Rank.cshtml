@@ -1,0 +1,204 @@
+﻿
+@{
+    ViewBag.Title = "Rank";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    IEnumerable<API.Models.ModelViews.RankView> lsSong = ViewBag.song;
+    IEnumerable<API.Models.ModelViews.RankView> lsMV = ViewBag.mv;
+}
+
+<section class="panel">
+    <header class="panel-heading">
+        Create Rank
+    </header>
+    <form action="@Url.Action("CreateRank")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <div class="form-group">
+                    <label for="">Rank Name:</label>
+                    <input type="text" class="form-control" name="RMusicName" maxlength="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Start Day:</label>
+                    <input type="date" class="form-control" name="RMusicStart" id="startDay" required>
+                </div>
+                <div class="form-group">
+                    <label for="">End Day:</label>
+                    <input type="date" class="form-control" name="RMusicEnd" id="endDay" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Audio?</label>
+                    <select name="SongOrMusic">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Category:</label>
+                    <select name="CateID">
+                        @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                        {
+                            <option value="@item.ID">@item.CateName</option>
+                        }
+
+                    </select>
+                </div>
+                <button type="submit" name="submit" class="btn btn-info" id="btnRank">Submit</button>
+            </div>
+        </div>
+    </form>
+</section>
+<div style="display:flex;">
+    <div style="width:48%;margin-right:4%;">
+        <div class="panel-heading">
+            Rank Song VN
+        </div>
+        <div class="table-responsive" style="background-color: white;height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Rank Name</th>
+                        <th>Start day</th>
+                        <th>End day</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in lsSong.Where(w=>w.CateID==1))
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("ListRM",new { id=item.ID})">@item.RMusicName</a></td>
+                            <td>@item.RMusicStart</td>
+                            <td>@item.RMusicEnd</td>
+                            <td>@item.CateName</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="width:48%;">
+        <div class="panel-heading">
+            Rank MV VN
+        </div>
+        <div class="table-responsive" style="background-color: white;height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Rank Name</th>
+                        <th>Start day</th>
+                        <th>End day</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in lsMV.Where(w=>w.CateID==1))
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("ListRM",new { id=item.ID})">@item.RMusicName</a></td>
+                            <td>@item.RMusicStart</td>
+                            <td>@item.RMusicEnd</td>
+                            <td>@item.CateName</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="display:flex;margin-top:20px;">
+    <div style="width:48%;margin-right:4%;">
+        <div class="panel-heading">
+            Rank Song Nước Ngoài
+        </div>
+        <div class="table-responsive" style="background-color: white;height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Rank Name</th>
+                        <th>Start day</th>
+                        <th>End day</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">  
+                    @foreach (var item in lsSong.Where(w=>w.CateID==2))
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("ListRM",new { id=item.ID})">@item.RMusicName</a></td>
+                            <td>@item.RMusicStart</td>
+                            <td>@item.RMusicEnd</td>
+                            <td>@item.CateName</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="width:48%;">
+        <div class="panel-heading">
+            Rank MV Nước Ngoài
+        </div>
+        <div class="table-responsive" style="background-color: white;height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Rank Name</th>
+                        <th>Start day</th>
+                        <th>End day</th>
+                        <th>Category Name</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in lsMV.Where(w=>w.CateID==2))
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("ListRM",new { id=item.ID})">@item.RMusicName</a></td>
+                            <td>@item.RMusicStart</td>
+                            <td>@item.RMusicEnd</td>
+                            <td>@item.CateName</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script>
+        $(function () {
+            var msg1 = '@TempData["success"]'
+            var msg2='@TempData["error"]'
+            if (msg1 != '') {
+                alertify.success(msg1);
+            }
+            if (msg2 != '') {
+                alertify.error(msg2);
+            }
+            $('#btnRank').click(function (e) {
+                var startDay = new Date($('#startDay').val());
+                var endDay = new Date($('#endDay').val());
+                var millisecondsPerDay = 1000 * 60 * 60 * 24;
+                var millisBetween = endDay.getTime() - startDay.getTime();
+                var days = millisBetween / millisecondsPerDay;
+                if (Math.round(days) != 7) {
+                    e.preventDefault();
+                    alertify.error("Không đủ 1 tuần nhé");
+                }
+            });
+        });
+
+
+    </script>
+}
+

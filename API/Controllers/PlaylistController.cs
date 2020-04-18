@@ -49,8 +49,13 @@ namespace API.Controllers
         }
         public IHttpActionResult GetSearch(string value)
         {
-            var ls = Repositories.GetListPlaylistSearch(value).Select(p => new PlaylistView { ID = p.ID, CateID = p.CateID, CateName = p.Category.CateName, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID });
-            return Ok(ls);
+            var list = new List<PlaylistView>();
+            var ls = Repositories.GetListPlaylistSearch(value);
+            foreach (var i in ls)
+            {
+                list.Add(new PlaylistView { ID = i.ID,PlaylistImage = i.PlaylistImage, PlaylistName = i.PlaylistName, UserID = i.UserID,UserName=Repositories.GetUserByID(i.UserID).UserName});
+            }
+            return Ok(list);
         }
         // GET api/<controller>/5
         public IHttpActionResult GetID(int id)

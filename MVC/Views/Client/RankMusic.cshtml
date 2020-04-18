@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "RankMusic";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    API.Models.ModelViews.RankView song = ViewBag.song;
+    API.Models.ModelViews.RankView mv = ViewBag.mv;
+    IEnumerable<API.Models.ModelViews.RankMusicView> lsSong = ViewBag.lsSong;
+    IEnumerable<API.Models.ModelViews.RankMusicView> lsMV = ViewBag.lsMv;
+}
+
+<div id="topicBxh">
+    <span>Bảng xếp hạng âm nhạc @ViewBag.name</span>
+    <div>
+        <div class="activeTopicBxh" data-music="1">Bài hát</div>
+        <div data-music="0">Video</div>
+    </div>
+</div>
+<p style="margin-left: 40px;">
+    Bảng xếp hạng được thống kê và thay đổi và lúc 23h30 chủ nhật hàng tuần.
+</p>
+<div id="listBxh">
+    <div>
+        <span id="rankDes">@song.RMusicName (@song.RMusicStart.ToString("dd/MM/yyyy") - @song.RMusicEnd.ToString("dd/MM/yyyy"))</span>
+        @*<span style="float: right;">
+                <a href="" style="color: white;font-weight: 700;">
+                    <i class="far fa-play-circle"></i> Nghe toàn bộ
+                </a>
+            </span>*@
+    </div>
+    <div id="songBxh" style="display: block;">
+        @foreach (var item in lsSong)
+        {
+            <div class="itemBxh" data-grade="@item.RMusicGrade">
+                <span>@item.RMusicGrade</span>
+                <img src="@Url.Content("~/Resource/ImagesMusic/")@item.ItemMusic.MusicImage" alt="">
+                <span>
+                    <a href="@Url.Action("PlayMusic",new { idMusic=@item.ItemMusic.ID})" style="font-size: 20px;margin-right:20px;">@item.ItemMusic.MusicName</a>
+                    <i class="fas fa-headphones"></i> @item.ItemMusic.View<br>
+                    <span>
+                        @foreach (var singer in item.ItemMusic.ListSinger)
+                        {
+                            <a href="">@singer.SingerName</a>
+                        }
+                    </span>
+                </span>
+                <span style="position:unset;">
+                    @*<span class="addPlaylist" style="cursor: pointer;">
+                            <i class="fas fa-plus-circle"></i> Thêm vào
+                            <ul>
+                                <li><a href="">Bài hát yêu thích</a> </li>
+                                <li><a href="">Test1</a></li>
+                                <li><a href="">Test2</a></li>
+                            </ul>
+                        </span>*@
+                </span>
+            </div>
+        }
+
+
+    </div>
+    <div id="mvBxh" style="display: none;">
+        @foreach (var item in lsMV)
+        {
+        <div class="itemBxh" data-grade="@item.RMusicGrade">
+            <span>@item.RMusicGrade</span>
+            <img src="@Url.Content("~/Resource/ImagesMusic/")@item.ItemMusic.MusicImage" alt="">
+            <span>
+                <a href="@Url.Action("PlayMusic",new { idMusic=@item.ItemMusic.ID})" style="font-size: 20px;margin-right:20px;">@item.ItemMusic.MusicName</a>
+                <i class="fas fa-headphones"></i> @item.ItemMusic.View<br>
+                <span>
+                    @foreach (var singer in item.ItemMusic.ListSinger)
+                    {
+                        <a href="">@singer.SingerName</a>
+                    }
+                </span>
+            </span>
+            <span style="position:unset;">
+                @*<span><i class="fas fa-plus-circle"></i> Thêm vào</span>*@
+            </span>
+        </div>
+        }
+
+
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var itemLenght=$('.itemBxh').length;
+            for (let i = 1; i < itemLenght+1; i++) {
+                var item=$('.itemBxh:nth-child(' + i + ')');
+                var itemNumber=$('.itemBxh:nth-child(' + i + ')>span:first-child');
+                if(item.attr('data-grade')=="1"){
+                    itemNumber.css('color','#e74c3c');
+                }else if(item.attr('data-grade')=="2"){
+                    itemNumber.css('color','#1abc9c');
+                }else if(item.attr('data-grade')=="3"){
+                    itemNumber.css('color','#f39c12');
+                }
+            }
+            $('#topicBxh>div>div').click(function(){
+                $('#topicBxh>div>div').removeClass("activeTopicBxh");
+                $(this).addClass("activeTopicBxh");
+                if($(this).attr("data-music")=="1"){
+                    $('#songBxh').css("display","block");
+                    $('#mvBxh').css("display", "none");
+                    $('#rankDes').text("@song.RMusicName (@song.RMusicStart.ToString("dd/MM/yyyy") - @song.RMusicEnd.ToString("dd/MM/yyyy"))");
+                }else{
+                    $('#songBxh').css("display","none");
+                    $('#mvBxh').css("display", "block");
+                    $('#rankDes').text("@mv.RMusicName (@mv.RMusicStart.ToString("dd/MM/yyyy") - @mv.RMusicEnd.ToString("dd/MM/yyyy"))");
+                }
+            });
+        });
+    </script>
+}
+

@@ -639,5 +639,55 @@ namespace MVC.Controllers
             return RedirectToAction("Payment");
         }
         #endregion
+
+        #region Rank
+        public ActionResult Rank()
+        {
+            //cate
+            var resCate = APIService.client.GetAsync("Category").Result;
+            TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
+            //rank song
+            var resS = APIService.client.GetAsync("RankMusic?musicRank="+true).Result;
+            ViewBag.song = resS.Content.ReadAsAsync<IEnumerable<RankView>>().Result;
+            //rank mv
+            var resM = APIService.client.GetAsync("RankMusic?musicRank=" + false).Result;
+            ViewBag.mv = resM.Content.ReadAsAsync<IEnumerable<RankView>>().Result;
+            return View();
+        }
+        public ActionResult CreateRank(RankView r)
+        {
+            var res = APIService.client.PostAsJsonAsync("RankMusic", r).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Create new Rank successfully!";
+            }
+            else
+            {
+                TempData["error"] = "Create new Rank failed!";
+            }
+            return RedirectToAction("Rank");
+        }
+        public ActionResult ListRM(int id)
+        {
+            var res = APIService.client.GetAsync("RankMusic/" + id).Result;
+            var model = res.Content.ReadAsAsync<RankView>().Result;
+            var resLs = APIService.client.GetAsync("RankMusic?idRank=" + id).Result;
+            ViewBag.ls = resLs.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
+            return View(model);
+        }
+        public ActionResult DelRank(int id)
+        {
+            var res = APIService.client.DeleteAsync("RankMusic/" + id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "delete Rank successfully!";
+            }
+            else
+            {
+                TempData["error"] = "delete Rank failed!";
+            }
+            return RedirectToAction("Rank");
+        }
+        #endregion
     }
 }

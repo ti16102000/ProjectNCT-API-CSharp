@@ -1,0 +1,42 @@
+﻿@model API.Models.ModelViews.RankView
+@{
+    ViewBag.Title = "ListRM";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    IEnumerable<API.Models.ModelViews.RankMusicView> ls = ViewBag.ls;
+}
+
+<div class="panel-heading">
+    @Model.RMusicName - @Model.CateName (@Model.RMusicStart.ToString("dd-MM-yyyy") - @Model.RMusicEnd.ToString("dd-MM-yyyy"))
+</div>
+<div class="table-responsive" style="background-color: white;">
+
+    <table class="table table-striped b-t b-light">
+        <thead>
+            <tr>
+                <th>Grade</th>
+                <th>Music Name</th>
+                <th>Singer</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody style="word-break: break-all;">
+            @foreach (var item in ls)
+            {
+                <tr>
+                    <td>@item.RMusicGrade</td>
+                    <td><a href="@Url.Action("MusicDetail",new { id=item.ItemMusic.ID})">@item.ItemMusic.MusicName</a></td>
+                    <td>
+                        @foreach (var singer in item.ItemMusic.ListSinger)
+                        {
+                        <a href="@Url.Action("SingerDetail",new { id=singer.SingerID})">@singer.SingerName ,</a>
+                        }
+                    </td>
+                    <td>@item.ItemMusic.View</td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+

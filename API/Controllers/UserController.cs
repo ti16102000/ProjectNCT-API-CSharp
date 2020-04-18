@@ -32,7 +32,11 @@ namespace API.Controllers
             var item = new UserView { ID = u.ID, DayVipEnd = u.DayVipEnd, TokenUser = u.TokenUser, RoleID = u.RoleID, UserActive = u.UserActive, UserDayCreate = u.UserDayCreate, UserDescription = u.UserDescription, UserDOB = u.UserDOB, UserEmail = u.UserEmail, UserGender = u.UserGender, UserImage = u.UserImage, UserName = u.UserName, UserNameUnsigned = u.UserNameUnsigned, UserVIP = u.UserVIP,UserPwd=u.UserPwd };
             return Ok(item);
         }
-
+        public IHttpActionResult GetSearch(string value)
+        {
+            var ls=Repositories.GetListSingerSearch(value).Select(u => new UserView { ID = u.ID, DayVipEnd = u.DayVipEnd, TokenUser = u.TokenUser, RoleID = u.RoleID, UserActive = u.UserActive, UserDayCreate = u.UserDayCreate, UserDescription = u.UserDescription, UserDOB = u.UserDOB, UserEmail = u.UserEmail, UserGender = u.UserGender, UserImage = u.UserImage, UserName = u.UserName, UserNameUnsigned = u.UserNameUnsigned, UserVIP = u.UserVIP });
+            return Ok(ls);
+        }
         // POST api/<controller>
         public IHttpActionResult Post(UserView u)
         {

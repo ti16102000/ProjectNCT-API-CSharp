@@ -85,7 +85,7 @@
                                         <ul class="dropdown-menu">
                                             @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
                                             {
-                                                <li><a href="#"> @item.CateName</a></li>
+                                                <li><a href="@Url.Action("RankMusic",new { idCate=item.ID,name=item.CateName})"> @item.CateName</a></li>
                                             }
                                         </ul>
                                     </li>

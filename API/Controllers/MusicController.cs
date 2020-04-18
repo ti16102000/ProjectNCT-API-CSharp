@@ -80,6 +80,25 @@ namespace API.Controllers
             }
             return InternalServerError();
         }
+        public IHttpActionResult GetSearch(string value,bool music)
+        {
+            var ls=Repositories.GetListMusicSearch(value,music).Select(s => new MusicView
+            {
+                CateID = s.CateID,
+                ID = s.ID,
+                MusicDayCreate = s.MusicDayCreate,
+                MusicDownloadAllowed = s.MusicDownloadAllowed,
+                MusicImage = s.MusicImage,
+                MusicName = s.MusicName,
+                MusicNameUnsigned = s.MusicNameUnsigned,
+                MusicRelated = s.MusicRelated,
+                SongOrMV = s.SongOrMV,
+                UserID = s.UserID,
+                View = s.MusicView,
+                ListSinger = Repositories.GetSMByID(s.ID).Select(s1 => new SingerMusicView { ID = s1.ID, MusicID = s1.MusicID, SingerID = s1.SingerID, SingerName = s1.User.UserName })
+            });
+            return Ok(ls);
+        }
         // POST api/<controller>
         public IHttpActionResult Post(MusicView s)
         {

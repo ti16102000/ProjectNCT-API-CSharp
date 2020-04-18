@@ -216,5 +216,33 @@ namespace API.Models.BUS
             return LyricsMusicDAO.UpdateLM(lm);
         }
         #endregion
+
+        #region RankMusic
+        public static bool CreateRank(Rank r)
+        {
+            return RankDAO.CreateRank(r);
+
+        }
+        public static Rank GetRankNewest(int idCate,bool? music)
+        {
+            return RankDAO.GetRankNewest( idCate,music);
+        }
+        public static IEnumerable<Rank> GetListRank(bool music)
+        {
+            return RankDAO.GetListRank(music);
+        }
+        public static IEnumerable<RankMusic> GetListRM(int id)
+        {
+            return RankDAO.GetListRM(id);
+        }
+        public static bool DelRank(int id)
+        {
+            return RankDAO.DelRank(id);
+        }
+        public static Rank GetRankByID(int id)
+        {
+            return RankDAO.GetRankByID(id);
+        }
+        #endregion
     }
 }

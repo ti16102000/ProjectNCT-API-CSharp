@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.MusicView> lsSong = ViewBag.song;
+    IEnumerable<API.Models.ModelViews.MusicView> lsMv = ViewBag.mv;
+    IEnumerable<API.Models.ModelViews.UserView> lsSinger = ViewBag.singer;
+    IEnumerable<API.Models.ModelViews.PlaylistView> lsPlist = ViewBag.plist;
+
+}
+
+<label for="" class="lblMusic" style="margin-left: 40px;margin-top: 20px;">Tìm Kiếm: </label>
+<span style="font-size: 18px;">@ViewBag.value</span>
+<div id="menuSearch">
+    <div class="hoverSearch" data-id="1">Bài hát</div>
+    <div data-id="2">Video</div>
+    <div data-id="3">Playlist</div>
+    <div data-id="4">Ca sĩ</div>
+</div>
+<div id="songSearch" class="musicSearch">
+    @foreach (var item in lsSong)
+    {
+        <div class="itemBxh">
+            <img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="">
+            <span style="left:-5px;">
+                <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a><br>
+                <span style="left: 80px;">
+                    @foreach (var singer in item.ListSinger)
+                    {
+                        <a href="">@singer.SingerName, </a>
+                    }
+
+                </span>
+            </span>
+        </div>
+    }
+    @*<div id="pageSong" class="pageSearch">
+        <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
+        <span class="prevPage"><i class="fas fa-angle-left"></i></span>
+        <span class="activeSong">1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span class="nextPage"><i class="fas fa-angle-right"></i></span>
+        <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
+    </div>*@
+</div>
+<div id="videoSearch" class="musicSearch">
+    @foreach (var item in lsMv)
+    {
+    <div class="itemBxh">
+        <img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="">
+        <span  style="left:-5px;">
+            <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a><br>
+            <span style="left:80px;">
+                @foreach (var singer in item.ListSinger)
+                {
+                    <a href="">@singer.SingerName, </a>
+                }
+
+            </span>
+        </span>
+        @*<span style="cursor: pointer;"><i class="fas fa-plus-circle"></i> Thêm vào</span>*@
+    </div>
+    }
+
+    @*<div id="pageMV" class="pageSearch">
+            <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
+            <span class="prevPage"><i class="fas fa-angle-left"></i></span>
+            <span class="activeSong">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span class="nextPage"><i class="fas fa-angle-right"></i></span>
+            <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
+        </div>*@
+</div>
+<div id="playlistSearch" class="musicSearch">
+    @foreach (var item in lsPlist)
+    {
+        <div class="itemBxh">
+            <img src="@Url.Content("~/Resource/ImagesMusic/")@item.PlaylistImage" alt="">
+            <span style="left:-5px;">
+                <a href="@Url.Action("PlayPlist",new { id=item.ID})" style="font-size: 20px;">@item.PlaylistName</a><br>
+                <span style="left: 80px;">
+                    <a href="">@item.UserName</a>
+                </span>
+            </span>
+        </div>
+    }
+
+
+    @*<div id="pagePlaylist" class="pageSearch">
+            <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
+            <span class="prevPage"><i class="fas fa-angle-left"></i></span>
+            <span class="activeSong">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span class="nextPage"><i class="fas fa-angle-right"></i></span>
+            <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
+        </div>*@
+</div>
+<div id="singerSearch" class="musicSearch">
+    @foreach (var item in lsSinger)
+    {
+        <div class="itemBxh">
+            <img src="@Url.Content("~/Resource/ImagesUser/")@item.UserImage" alt="">
+            <span style="left: 0;top: 0;">
+                <a href="" style="font-size: 20px;">@item.UserName</a><br>
+            </span>
+        </div>
+    }
+
+    @*<div id="pageSinger" class="pageSearch">
+            <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
+            <span class="prevPage"><i class="fas fa-angle-left"></i></span>
+            <span class="activeSong">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span class="nextPage"><i class="fas fa-angle-right"></i></span>
+            <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
+        </div>*@
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var nameID = "#pageSong";
+            var nameActive = "activeSong";
+            $('#songSearch').show();
+            //Click menu
+            $('#menuSearch>div').click(function () {
+                var id = $(this).attr("data-id");
+                $('#menuSearch>div').removeClass("hoverSearch");
+                $(this).addClass("hoverSearch");
+                $('.musicSearch').hide();
+                if (id == "1") {
+                    nameID = "#pageSong";
+                    nameActive = "activeSong";
+                    $('#songSearch').show();
+                } else if (id == "2") {
+                    nameID = "#pageMV";
+                    nameActive = "activeMV";
+                    $('#videoSearch').show();
+                } else if (id == "3") {
+                    nameID = "#pagePlaylist";
+                    nameActive = "activePlaylist";
+                    $('#playlistSearch').show();
+                }
+                else if (id == "4") {
+                    nameID = "#pageSinger";
+                    nameActive = "activeSinger";
+                    $('#singerSearch').show();
+                }
+            });
+            //Pagination
+            $('.pageSearch>.prevPage').hide();
+            $('.pageSearch>.firstPage').hide();
+            $('.pageSearch>span').click(function () {
+                var lengthSearch = $(nameID + '>span').length;
+                if ($(this).hasClass("firstPage") == true) {
+                    itemActive(3);
+                    $(this).hide();
+                } else if ($(this).hasClass("lastPage") == true) {
+                    itemActive(lengthSearch - 2);
+                    $(this).hide();
+                } else if ($(this).hasClass("nextPage") == true) {
+                    var index = $(nameID + '>span').index($('.' + nameActive)) + 1;
+                    if (index == 3) {
+                        $(nameID + '>.prevPage').show();
+                    }
+                    $(nameID + '>.firstPage').show();
+                    itemActive(index + 1);
+                } else if ($(this).hasClass("prevPage") == true) {
+                    var index = $(nameID + '>span').index($('.' + nameActive)) + 1;
+                    if (index == lengthSearch - 2) {
+                        $(nameID + '>.nextPage').show();
+                    }
+                    $(nameID + '>.lastPage').show();
+                    itemActive(index - 1);
+                } else {
+                    var index = parseInt($(this).text());
+                    itemActive(index + 2);
+                }
+            })
+            function itemActive(number) {
+                var lengthSearch = $(nameID + '>span').length;
+                if (number == lengthSearch - 2) {
+                    $(nameID + '>.nextPage').hide();
+                    $(nameID + '>.lastPage').hide();
+                    $(nameID + '>.prevPage').show();
+                    $(nameID + '>.firstPage').show();
+                }
+                if (number == 3) {
+                    $(nameID + '>.prevPage').hide();
+                    $(nameID + '>.firstPage').hide();
+                    $(nameID + '>.nextPage').show();
+                    $(nameID + '>.lastPage').show();
+                }
+                if (number >= 3 && number <= lengthSearch - 2) {
+                    $(nameID + '>span').removeClass(nameActive);
+                    $(nameID + '>span:nth-child(' + number + ')').addClass(nameActive);
+                }
+
+            }
+        });
+    </script>
+}
+

@@ -328,5 +328,33 @@ namespace API.Models
             return UserBUS.DelListMusicHU(idUser, music);
         }
         #endregion
+
+        #region RankMusic
+        public static bool CreateRank(Rank r)
+        {
+            return MusicBUS.CreateRank(r);
+
+        }
+        public static Rank GetRankNewest(int idCate,bool? music)
+        {
+            return MusicBUS.GetRankNewest(idCate,music);
+        }
+        public static IEnumerable<Rank> GetListRank(bool music)
+        {
+            return MusicBUS.GetListRank(music);
+        }
+        public static IEnumerable<RankMusic> GetListRM(int id)
+        {
+            return MusicBUS.GetListRM(id);
+        }
+        public static bool DelRank(int id)
+        {
+            return MusicBUS.DelRank(id);
+        }
+        public static Rank GetRankByID(int id)
+        {
+            return MusicBUS.GetRankByID(id);
+        }
+        #endregion
     }
 }

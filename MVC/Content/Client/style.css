@@ -485,6 +485,9 @@
 }
 .musicSearch{
     display: none;
+    width:64%;
+    height:550px;
+    overflow:auto;
 }
 .musicSearch>.itemBxh>span:last-child{
     top: 0;

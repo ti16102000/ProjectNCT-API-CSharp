@@ -419,6 +419,10 @@
     <Content Include="Views\Client\ListPlaylistByIDCate.cshtml" />
     <Content Include="Views\Client\PlayPlist.cshtml" />
     <Content Include="Views\Client\ListMusicByIDCate.cshtml" />
+    <Content Include="Views\Admin\Rank.cshtml" />
+    <Content Include="Views\Admin\ListRM.cshtml" />
+    <Content Include="Views\Client\Search.cshtml" />
+    <Content Include="Views\Client\RankMusic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
