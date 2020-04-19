@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewBag.Title = "UploadFile";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.CategoryView> lsCate = ViewBag.cate;
+    List<int> arr = new List<int>() ;
+    arr = Session["singer"] as List<int>;
+}
+
+<form action="@Url.Action("CreateMusicUser")" method="post" enctype="multipart/form-data"> 
+    <div style="margin-top: 40px;width: 65%;margin-left: auto;margin-right: auto;">
+        <h2>UPLOAD FILE</h2>
+        <div class="image-cropper-wp">
+            <div class="row" style="padding: 20px;">
+                <div class="form-group">
+                    <label readonly class="custom-file-label" for="customFile">
+                        Chọn file upload:
+                        <input type="text" name="" id="viewFile" readonly disabled style="width: 205%;">
+                    </label>
+                    <input type="file" class="custom-file-input" id="customFile" name="fileMusic"
+                           accept="audio/*,video/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="">Tên hiển thị: </label>
+                    <input type="hidden" name="UserID" value="@Session["UserID"]" />
+                    <input type="text" name="MusicName" id="" style="width: 70%;" required maxlength="200">
+                </div>
+                <div class="form-group">
+                    <label for="">Chọn Thể loại: </label>
+                    <select name="CateID" id="" style="width: 68%;">
+                        @foreach (var item in lsCate)
+                        {
+                            <option value="" disabled>@item.CateName</option>
+                            foreach (var sub in item.ListSubCate)
+                            {
+                                <option value="@sub.ID">@sub.CateName</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+                <div id="form-group">
+                    <label for="">Ca sĩ trình bày:</label>
+                    <div id="addSinger">
+                        <ul style="width:500px;">
+                            <li>
+                                <input type="text" id="searchSinger" style="outline: none; width: 30px;">
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="listSearch">
+                        
+                    </div>
+                </div>
+                <div class="maincrop-img" style="margin-top: 15px;margin-bottom: 10px;">
+                    <div class="image-crp-int" style="display: flex;">
+                        <div class="img-preview img-preview-custom">
+                            <img src="@Url.Content("~/Content/Client/")img/avt.png" id="upImage" style="width: 300px; height: 255px;">
+                        </div>
+                        <div>
+                            <input type="file" accept="image/*" name="imgMusic" id="inputImage">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <input type="submit" class="btn btn-success" id="btnUp" value="Tải lên">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+            $('#inputImage').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#upImage').fadeIn("fast").attr("src", tmppath);
+            });
+            $(".custom-file-input").on("change", function (e) {
+                var fileName = $(this).val().split("\\").pop();
+                var fileSizeKB = e.target.files[0].size;
+                var fileSizeMB = (fileSizeKB / (1024 * 1024)).toFixed(2);
+                var fileType = e.target.files[0].type;
+                if (fileSizeMB > 100) {
+                    alert("not allow");
+                    $(".custom-file-input").val("");
+                } else {
+                    $('#viewFile').val(fileName + ' (' + fileSizeMB + 'MB - ' + fileType + ')');
+                }
+            });
+
+            //add singer
+            var listSinger = [];
+            $('#searchSinger').keyup(function () {
+                if ($(this).val() == "") {
+                    $('#listSearch').hide();
+                } else {
+                    $('#listSearch').show();
+                    ChooseSinger($(this).val());
+                }
+            });
+            $('#btnUp').click(function (e) {
+                listSinger.forEach(function (number) {
+                    $.ajax({
+                        url: '/Client/GetListSinger',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: { number },
+                        success: function (res) {
+                            var num = res.data;
+                            console.log(num);
+                        }
+                    });
+                });
+                if (listSinger.length < 1) {
+                    alertify.error("Bạn chưa thêm ca sĩ");
+                    e.preventDefault();
+                    
+                }
+            });
+            function ChooseSinger(value) {
+                $.ajax({
+                    url: '/Client/SearchSingerUpload',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: { value },
+                    success: function (res) {
+                        var ls = res.lsData;
+                        $('#listSearch').html("");
+                        ls.forEach(function (i) {
+                            var newSpan = document.createElement("span");
+                            $(newSpan).text(i.UserName);
+                            $(newSpan).attr("data-id", i.ID);
+                            $('#listSearch').append(newSpan);
+                            //click
+                            $(newSpan).click(function () {
+                                var name = $(this).text();
+                                var id = $(this).attr("data-id");
+                                if ($.inArray(id, listSinger) < 0) {
+                                    $('#searchSinger').val("");
+                                    $('#listSearch').hide();
+                                    listSinger.push(id);
+                                    var newItem = document.createElement("li");
+                                    $(newItem).attr("data-id", id);
+                                    $(newItem).text(name + "  ");
+                                    var delIcon = document.createElement("i");
+                                    delIcon.className = "fa fa-times";
+                                    $(delIcon).css("cursor", "pointer");
+                                    newItem.append(delIcon);
+                                    $('#addSinger>ul').append(newItem);
+                                    
+                                    //remove
+                                    $(delIcon).click(function () {
+                                        var id = $(this).parent("li").attr("data-id");
+                                        $(this).parent("li").hide();
+                                        listSinger = $.grep(listSinger, function (value) {
+                                            return value != id;
+                                        });
+                                    })
+                                }
+                                
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+}
+

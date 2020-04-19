@@ -1,8 +1,10 @@
 ﻿using API.Models.ModelViews;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MVC.Controllers
@@ -249,6 +251,112 @@ namespace MVC.Controllers
             var resLsMV = APIService.client.GetAsync("RankMusic?idRank=" + mv.ID).Result;
             ViewBag.lsMv = resLsMV.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
             return View();
+        }
+        #endregion
+
+        #region Upload file
+        public ActionResult UploadFile()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var resCate = APIService.client.GetAsync("Category").Result;
+            ViewBag.cate = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
+            Session.Remove("singer");
+            return View();
+        }
+        [HttpGet]
+        public JsonResult SearchSingerUpload(string value)
+        {
+            var resSinger = APIService.client.GetAsync("User?value=" + value).Result;
+            var ls = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetListSinger(int number)
+        {
+            if (number != null || number != 0)
+            {
+                List<int> arr = new List<int>();
+                if (Session["singer"] != null)
+                {
+                    arr = Session["singer"] as List<int>;
+                    arr.Add(number);
+                    Session["singer"] = arr;
+                }
+                else
+                {
+                    arr.Add(number);
+                    Session["singer"] = arr;
+                }
+            }
+            return Json(new { data = number }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult CreateMusicUser(MusicView m, HttpPostedFileBase fileMusic, HttpPostedFileBase imgMusic)
+        {
+            if (Session["singer"] != null)
+            {
+                List<int> arrSinger = new List<int>();
+                arrSinger = Session["singer"] as List<int>;
+                m.MusicNameUnsigned = API.CommonHelper.RemoveUnicode.RemoveSign4VietnameseString(m.MusicName);
+                m.MusicDownloadAllowed = true;
+                m.View = 0;
+                //img music
+                if (imgMusic == null)
+                {
+                    m.MusicImage = "default.png";
+                }
+                else
+                {
+                    string FileName = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
+                    imgMusic.SaveAs(path);
+                    m.MusicImage = FileName;
+                }
+                //music
+                var resMusic = APIService.client.PostAsJsonAsync("Music", m).Result;
+                if (resMusic.IsSuccessStatusCode)
+                {
+                    var idMusic = resMusic.Content.ReadAsAsync<int>().Result;
+                    //quality music
+                    var quality = new QualityMusicView();
+                    quality.MusicID = idMusic;
+                    quality.NewFile = true;
+                    quality.QMusicApproved = false; //if admin do not approved file user, delete it(include singermusic, qualitymusic, music) without QMusicApproved is false
+                    string FileName = DateTime.Now.Ticks + Path.GetFileName(fileMusic.FileName);
+                    string path;
+                    if (FileName.EndsWith("mp3"))
+                    {
+                        quality.QualityID = 1; //file normal of song
+                        path = Path.Combine(Server.MapPath("~/Resource/Audio"), FileName);
+                    }
+                    else
+                    {
+                        quality.QualityID = 3; //file mormal of mv
+                        path = Path.Combine(Server.MapPath("~/Resource/Video"), FileName);
+                    }
+                    fileMusic.SaveAs(path);
+                    quality.MusicFile = FileName;
+                    var res = APIService.client.PostAsJsonAsync("QualityMusic", quality).Result;
+                    if (res.IsSuccessStatusCode)
+                    {
+                        //singer
+                        foreach (var number in arrSinger)
+                        {
+                            var resSM = APIService.client.PostAsJsonAsync("SingerMusic", new SingerMusicView { MusicID = idMusic, SingerID = number });
+                        }
+                    }
+
+                    TempData["success"] = "Upload file thành công";
+                }               
+            }
+            else
+            {
+                TempData["error"] = "Upload file xảy ra lỗi";
+            }
+            Session.Remove("singer");
+            return RedirectToAction("UploadFile");
         }
         #endregion
     }
