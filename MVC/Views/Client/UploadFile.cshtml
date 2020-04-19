@@ -3,8 +3,6 @@
     ViewBag.Title = "UploadFile";
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
     IEnumerable<API.Models.ModelViews.CategoryView> lsCate = ViewBag.cate;
-    List<int> arr = new List<int>() ;
-    arr = Session["singer"] as List<int>;
 }
 
 <form action="@Url.Action("CreateMusicUser")" method="post" enctype="multipart/form-data"> 
