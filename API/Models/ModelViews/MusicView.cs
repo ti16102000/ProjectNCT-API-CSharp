@@ -22,5 +22,8 @@ namespace API.Models.ModelViews
         public Nullable<int> MusicRelated { get; set; }
         public IEnumerable<SingerMusicView> ListSinger { get; set; }
         public string FileNormal { get; set; }
+        public bool FileApprove { get; set; }
+        public string CateName { get; set; }
+        public int FileID { get; set; }
     }
 }

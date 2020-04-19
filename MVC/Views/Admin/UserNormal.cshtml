@@ -1,23 +1,21 @@
 ﻿@model IEnumerable<API.Models.ModelViews.UserView>
 @{
-    ViewBag.Title = "ListSinger";
+    ViewBag.Title = "UserNormal";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
 <div class="table-agile-info">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Singer List &nbsp; <a class="agile-icon" href="@Url.Action("Singer")"><i class="fa fa-plus-circle"></i></a>
+            User Normal List
         </div>
         <div class="table-responsive" style="height:500px;overflow:auto;">
 
             <table class="table table-striped b-t b-light">
                 <thead>
                     <tr>
-                        <th>Image Singer</th>
-                        <th>Singer Name</th>
-                        <th>DOB</th>
-                        <th>Gender</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Day Create Account</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -26,12 +24,11 @@
                     {
 
                         <tr>
-                            <td><img src="@Url.Content("~/Resource/ImagesUser/")@item.UserImage" style="width:60px;height:60px;"/></td>
                             <td>@item.UserName</td>
-                            <td>@(item.UserDOB==null?"Đang cập nhật":item.UserDOB?.ToString("dd/MM/yyyy"))</td>
-                            <td>@(item.UserGender==null?"Đang cập nhật":item.UserGender==true?"Nữ":"Nam")</td>
+                            <td>@item.UserEmail</td>
+                            <td>@item.UserDayCreate</td>
                             <td>
-                                <a href="@Url.Action("SingerDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                <a href="@Url.Action("UserDetail",new { id=item.ID})" class="active" ui-toggle-class="">
                                     <i class="fas fa-info-circle text-success text-active"></i>
                                 </a>
                             </td>

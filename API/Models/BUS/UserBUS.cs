@@ -38,10 +38,6 @@ namespace API.Models.BUS
         {
             return UserDAO.LoginNormal(mail, pwd);
         }
-        public static int UpdatePwd(string mail, string pwdOld, string pwdNew)
-        {
-            return UserDAO.UpdatePwd(mail, pwdOld, pwdNew);
-        }
         public static int ChangePwd(string mail,string pwdNew)
         {
             return UserDAO.ChangePwd(mail, pwdNew);

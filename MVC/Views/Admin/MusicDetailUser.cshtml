@@ -1,0 +1,55 @@
+﻿@model API.Models.ModelViews.QualityMusicView
+@{
+    ViewBag.Title = "MusicDetailUser";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<section class="panel">
+    <div class="panel-body">
+        <div class="position-center">
+            <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.ItemMusic.MusicImage" style="width:170px;" />
+            <div class="form-group">
+                <label for="">Music Name:</label>
+                <span>@Model.ItemMusic.MusicName </span>
+            </div>
+            <div class="form-group">
+                <label for="">Category Name:</label>
+                <span>@Model.ItemMusic.CateName </span>
+            </div>
+            <div class="form-group">
+                <label for="">Singer:</label>
+                <span>
+                    @foreach (var item in Model.ItemMusic.ListSinger)
+                    {
+                        <a href="@Url.Action("SingerDetail",new { id=item.SingerID})">@item.SingerName, </a>
+                    }
+
+                </span>
+            </div>
+            @if (Model.ItemMusic.SongOrMV == true)
+            {
+                <label for="">Audio:</label>
+                <div class="form-group">
+                    <audio autoplay controls="controls">
+                        <source src="@Url.Content("~/Resource/Audio/")@Model.MusicFile" type="audio/mp3" />
+                    </audio>
+                </div>
+            }
+            else
+            {
+                <label for="">Video:</label>
+                <div class="form-group">
+                    <video autoplay controls="controls" style="width:80%;">
+                        <source src="@Url.Content("~/Resource/Video/")@Model.MusicFile" type="video/mp4" />
+                    </video>
+                </div>
+            }
+            @if (Model.QMusicApproved == false)
+            {
+                <a href="@Url.Action("ApproveFile",new { id=Model.ID})" class="btn btn-success">Duyệt</a>
+                <a href="@Url.Action("NotApproveFile",new { id=Model.ID})" class="btn btn-danger">Không duyệt (Xóa)</a>
+            }
+        </div>
+    </div>
+</section>
+

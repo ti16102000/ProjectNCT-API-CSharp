@@ -1,8 +1,56 @@
-﻿
+﻿@model IEnumerable<API.Models.ModelViews.MusicView>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Index</h2>
+<div class="table-agile-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            list of files user upload
+        </div>
+        <div class="table-responsive" style="height:500px;overflow:auto;">
 
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>Name User</th>
+                        <th>Music Name</th>
+                        <th>Audio/Video</th>
+                        <th>Day Upload</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td><a href="#">@item.UserName</a></td>
+                            <td>@item.MusicName</td>
+                            <td>@(item.SongOrMV == true ? "Audio" : "Video")</td>
+                            <th>@item.MusicDayCreate</th>
+                            <td>
+                                <a href="@Url.Action("NewFileDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                    <i class="fas fa-info-circle text-success text-active"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+    </script>
+}

@@ -15,7 +15,19 @@ namespace API.Controllers
         // GET api/<controller>
         public IHttpActionResult Get(int idSinger, bool music)
         {
-            var ls = Repositories.GetListMusicForSinger(idSinger, music).Select(s => new MusicView { CateID = s.CateID, ID = s.ID, MusicDayCreate = s.MusicDayCreate, MusicDownloadAllowed = s.MusicDownloadAllowed, MusicImage = s.MusicImage, MusicName = s.MusicName, MusicNameUnsigned = s.MusicNameUnsigned, MusicRelated = s.MusicRelated, SongOrMV = s.SongOrMV, UserID = s.UserID,View=s.MusicView });
+            var ls = Repositories.GetListMusicForSinger(idSinger, music).Select(s => new MusicView {
+                CateID = s.CateID,
+                ID = s.ID, MusicDayCreate = s.MusicDayCreate,
+                MusicDownloadAllowed = s.MusicDownloadAllowed,
+                MusicImage = s.MusicImage, MusicName = s.MusicName,
+                MusicNameUnsigned = s.MusicNameUnsigned,
+                MusicRelated = s.MusicRelated,
+                SongOrMV = s.SongOrMV,
+                UserID = s.UserID,
+                View =s.MusicView,
+                ListSinger = Repositories.GetSMByID(s.ID).Select(s1 => new SingerMusicView { ID = s1.ID, MusicID = s1.MusicID, SingerID = s1.SingerID, SingerName = s1.User.UserName })
+
+            });
             return Ok(ls);
         }
 
@@ -50,6 +62,21 @@ namespace API.Controllers
                 SongOrMV = s.SongOrMV,
                 UserID = s.UserID,
                 View = s.MusicView,
+                ListSinger = Repositories.GetSMByID(s.ID).Select(s1 => new SingerMusicView { ID = s1.ID, MusicID = s1.MusicID, SingerID = s1.SingerID, SingerName = s1.User.UserName })
+            });
+            return Ok(ls);
+        }
+        public IHttpActionResult GetMusic(int idUser,bool music)
+        {
+            var ls = Repositories.GetListMusicForUser(idUser, music).Select(s => new MusicView {
+                ID = s.ID,
+                MusicImage = s.MusicImage,
+                MusicName = s.MusicName,
+                SongOrMV = s.SongOrMV,
+                View = s.MusicView,
+                FileID = Repositories.GetQMByIDMusic(s.ID, false).ID,
+                FileNormal =Repositories.GetQMByIDMusic(s.ID,false).MusicFile,
+                FileApprove = Repositories.GetQMByIDMusic(s.ID, false).QMusicApproved,
                 ListSinger = Repositories.GetSMByID(s.ID).Select(s1 => new SingerMusicView { ID = s1.ID, MusicID = s1.MusicID, SingerID = s1.SingerID, SingerName = s1.User.UserName })
             });
             return Ok(ls);

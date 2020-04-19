@@ -425,6 +425,15 @@
     <Content Include="Views\Client\RankMusic.cshtml" />
     <Content Include="Views\Client\UploadFile.cshtml" />
     <Content Include="Views\Client\PersonalUser.cshtml" />
+    <Content Include="Views\Admin\NewFileDetail.cshtml" />
+    <Content Include="Views\Client\PersonalSinger.cshtml" />
+    <Content Include="Views\Client\AccountUser.cshtml" />
+    <Content Include="Views\Admin\UserNormal.cshtml" />
+    <Content Include="Views\Admin\UserVip.cshtml" />
+    <Content Include="Views\Admin\UserDetail.cshtml" />
+    <Content Include="Views\Admin\PlaylistDetailUser.cshtml" />
+    <Content Include="Views\Admin\MusicDetailUser.cshtml" />
+    <Content Include="Views\Admin\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

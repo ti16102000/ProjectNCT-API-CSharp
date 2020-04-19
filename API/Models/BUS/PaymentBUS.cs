@@ -38,5 +38,20 @@ namespace API.Models.BUS
             return PackageVipDAO.DelPV(id);
         }
         #endregion
+
+        #region Order
+        public static bool CreateOrd(OrderVip o)
+        {
+            return OrderVipDAO.CreateOrd(o);
+        }
+        public static IEnumerable<OrderVip> GetListOrd()
+        {
+            return OrderVipDAO.GetListOrd();
+        }
+        public static IEnumerable<OrderVip> GetListOrdByIDUser(int id)
+        {
+            return OrderVipDAO.GetListOrdByIDUser(id);
+        }
+        #endregion
     }
 }

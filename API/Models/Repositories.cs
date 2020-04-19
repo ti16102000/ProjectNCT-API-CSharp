@@ -225,10 +225,6 @@ namespace API.Models
         {
             return UserBUS.LoginNormal(mail, pwd);
         }
-        public static int UpdatePwd(string mail, string pwdOld, string pwdNew)
-        {
-            return UserBUS.UpdatePwd(mail, pwdOld, pwdNew);
-        }
         public static int ChangePwd(string mail, string pwdNew)
         {
             return UserBUS.ChangePwd(mail, pwdNew);
@@ -366,6 +362,21 @@ namespace API.Models
         public static Rank GetRankByID(int id)
         {
             return MusicBUS.GetRankByID(id);
+        }
+        #endregion
+
+        #region Order
+        public static bool CreateOrd(OrderVip o)
+        {
+            return PaymentBUS.CreateOrd(o);
+        }
+        public static IEnumerable<OrderVip> GetListOrd()
+        {
+            return PaymentBUS.GetListOrd();
+        }
+        public static IEnumerable<OrderVip> GetListOrdByIDUser(int id)
+        {
+            return PaymentBUS.GetListOrdByIDUser(id);
         }
         #endregion
     }

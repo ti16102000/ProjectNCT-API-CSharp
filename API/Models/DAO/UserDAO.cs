@@ -30,9 +30,9 @@ namespace API.Models.DAO
             User usr = en.Users.Find(id);
             if (usr != null)
             {
-                if (usr.UserVIP == true)
+                if (usr.UserVIP == true && usr.DayVipEnd != null)
                 {
-                    if (usr.DayVipEnd > DateTime.Now)
+                    if ( usr.DayVipEnd < DateTime.Now)
                     {
                         usr.UserVIP = false;
                         en.SaveChanges();
@@ -50,7 +50,12 @@ namespace API.Models.DAO
         public static IEnumerable<User> GetListUser(bool vip)
         {
             ProjectNCTEntities en = new ProjectNCTEntities();
-            return en.Users.Where(w => w.RoleID == 3 && w.UserVIP == vip).ToList() ?? null;
+            var ls =en.Users.Where(w => w.RoleID == 3 && w.UserVIP == vip).ToList();
+            foreach (var item in ls)
+            {
+                GetUserByID(item.ID);
+            }
+            return ls;
         }
         public static IEnumerable<User> GetListSingerSearch(string value)
         {
@@ -73,18 +78,6 @@ namespace API.Models.DAO
         {
             ProjectNCTEntities en = new ProjectNCTEntities();
             return en.Users.SingleOrDefault(w => w.UserEmail == mail && w.UserPwd == pwd) ?? null;
-        }
-        public static int UpdatePwd(string mail, string pwdOld, string pwdNew)
-        {
-            ProjectNCTEntities en = new ProjectNCTEntities();
-            User u = en.Users.SingleOrDefault(w => w.UserEmail == mail && w.UserPwd == pwdOld);
-            if (u != null)
-            {
-                u.UserPwd = pwdNew;
-                en.SaveChanges();
-                return u.ID;
-            }
-            return 0;
         }
         public static int ChangePwd(string mail,string pwdNew)
         {

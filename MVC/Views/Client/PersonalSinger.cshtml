@@ -1,68 +1,111 @@
-﻿
+﻿@model API.Models.ModelViews.UserView
 @{
-    ViewBag.Title = "Search";
+    ViewBag.Title = "PersonalSinger";
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.PlaylistView> lsPlist = ViewBag.pl;
     IEnumerable<API.Models.ModelViews.MusicView> lsSong = ViewBag.song;
     IEnumerable<API.Models.ModelViews.MusicView> lsMv = ViewBag.mv;
-    IEnumerable<API.Models.ModelViews.UserView> lsSinger = ViewBag.singer;
-    IEnumerable<API.Models.ModelViews.PlaylistView> lsPlist = ViewBag.plist;
-
 }
 
-<label for="" class="lblMusic" style="margin-left: 40px;margin-top: 20px;">Tìm Kiếm: </label>
-<span style="font-size: 18px;">@ViewBag.value</span>
-<div id="menuSearch">
+<div id="info">
+    <div>
+        <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImage" alt="">
+    </div>
+    <div>
+        <span><i class="fa fa-music"></i> @Model.UserName</span><br>
+        <span>Sinh ngày: @(Model.UserDOB?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</span><br>
+        <span>Giới tính: @(Model.UserGender == null ? "Đang cập nhật" : Model.UserGender == true ? "Nữ" : "Nam")</span><br>
+        <a data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"
+           aria-controls="multiCollapseExample1">Click để xem tiểu sử</a>
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+            <div class="card card-body" style="width: 70%;">
+                @Model.UserDescription
+            </div>
+        </div>
+    </div>
+</div>
+<div id="menuSearch" style="margin-top: -90px;">
     <div class="hoverSearch" data-id="1">Bài hát</div>
     <div data-id="2">Video</div>
     <div data-id="3">Playlist</div>
-    <div data-id="4">Ca sĩ</div>
 </div>
 <div id="songSearch" class="musicSearch">
     @foreach (var item in lsSong)
     {
         <div class="itemBxh">
             <img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="">
-            <span style="left:-5px;">
-                <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a><br>
+            <span>
+                <a href="@Url.Action("PlayMusic",new {idMusic=item.ID })" style="font-size: 20px;">@item.MusicName</a>
+                <i class="fas fa-headphones"></i> @item.View<br>
+
                 <span style="left: 80px;">
                     @foreach (var singer in item.ListSinger)
                     {
                         <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName, </a>
                     }
-
                 </span>
+                <span class="addPlaylist">
+                    <i class="fas fa-plus-circle"></i> Thêm vào
+                    <ul>
+                        @if (Session["UserID"] == null)
+                        {
+                            <a href="@Url.Action("Index", "Login")">Mời bạn đăng nhập</a>
+                        }
+                        else
+                        {
+                            if (lsPlist == null)
+                            {
+                                <span>Bạn chưa có playlist nào. <a href="#">TẠO</a></span>
+                            }
+                            else
+                            {
+                                foreach (var p in lsPlist)
+                                {
+                                    <li data-idPlist="@p.ID" data-idMusic="@item.ID">@p.PlaylistName</li>
+                                }
+                            }
+
+                        }
+                    </ul>
+                </span>
+            </span>
+            <span>
+                
             </span>
         </div>
     }
+
     @*<div id="pageSong" class="pageSearch">
-        <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
-        <span class="prevPage"><i class="fas fa-angle-left"></i></span>
-        <span class="activeSong">1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span class="nextPage"><i class="fas fa-angle-right"></i></span>
-        <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
-    </div>*@
+            <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
+            <span class="prevPage"><i class="fas fa-angle-left"></i></span>
+            <span class="activeSong">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span class="nextPage"><i class="fas fa-angle-right"></i></span>
+            <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
+        </div>*@
 </div>
 <div id="videoSearch" class="musicSearch">
     @foreach (var item in lsMv)
     {
     <div class="itemBxh">
         <img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="">
-        <span  style="left:-5px;">
-            <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a><br>
-            <span style="left:80px;">
+        <span>
+            <a href="@Url.Action("PlayMusic",new {idMusic=item.ID })" style="font-size: 20px;">@item.MusicName</a>
+            <i class="fas fa-headphones"></i> @item.View<br>
+            <span style="left: 80px;">
                 @foreach (var singer in item.ListSinger)
                 {
                     <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName, </a>
                 }
-
             </span>
         </span>
-        @*<span style="cursor: pointer;"><i class="fas fa-plus-circle"></i> Thêm vào</span>*@
+        <span style="left: 265px;">
+            @*<span><i class="fas fa-plus-circle"></i> Thêm vào</span>*@
+        </span>
     </div>
     }
 
@@ -84,7 +127,7 @@
     {
         <div class="itemBxh">
             <img src="@Url.Content("~/Resource/ImagesMusic/")@item.PlaylistImage" alt="">
-            <span style="left:-5px;">
+            <span style="left:15px;">
                 <a href="@Url.Action("PlayPlist",new { id=item.ID})" style="font-size: 20px;">@item.PlaylistName</a><br>
                 <span style="left: 80px;">
                     <a href="@Url.Action("TransferPersonalPage",new { id=item.UserID})">@item.UserName</a>
@@ -93,32 +136,7 @@
         </div>
     }
 
-
     @*<div id="pagePlaylist" class="pageSearch">
-            <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
-            <span class="prevPage"><i class="fas fa-angle-left"></i></span>
-            <span class="activeSong">1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span class="nextPage"><i class="fas fa-angle-right"></i></span>
-            <span class="lastPage"><i class="fas fa-angle-double-right"></i></span>
-        </div>*@
-</div>
-<div id="singerSearch" class="musicSearch">
-    @foreach (var item in lsSinger)
-    {
-        <div class="itemBxh">
-            <img src="@Url.Content("~/Resource/ImagesUser/")@item.UserImage" alt="">
-            <span style="left: 0;top: 0;">
-                <a href="@Url.Action("TransferPersonalPage",new { id=item.ID})" style="font-size: 20px;">@item.UserName</a><br>
-            </span>
-        </div>
-    }
-
-    @*<div id="pageSinger" class="pageSearch">
             <span class="firstPage"><i class="fas fa-angle-double-left"></i></span>
             <span class="prevPage"><i class="fas fa-angle-left"></i></span>
             <span class="activeSong">1</span>
@@ -155,11 +173,6 @@
                     nameID = "#pagePlaylist";
                     nameActive = "activePlaylist";
                     $('#playlistSearch').show();
-                }
-                else if (id == "4") {
-                    nameID = "#pageSinger";
-                    nameActive = "activeSinger";
-                    $('#singerSearch').show();
                 }
             });
             //Pagination
@@ -212,6 +225,19 @@
                 }
 
             }
+            //add music playlist
+            $('.addPlaylist li').click(function () {
+                var idplist = parseInt($(this).attr("data-idPlist"));
+                var idmusic = parseInt($(this).attr("data-idMusic"));
+                $.post("/Client/AddMusicPlaylist", { PlaylistID: idplist, MusicID: idmusic }).done(function (res) {
+                    var stt = res.status;
+                    if (stt == true) {
+                        alertify.success("Thêm bài hát vào playlist thành công.");
+                    } else {
+                        alertify.error("Lỗi khi thêm bài hát vào playlist. Mời thử lại.");
+                    }
+                });
+            });
         });
     </script>
 }

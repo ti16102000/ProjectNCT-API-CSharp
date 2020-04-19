@@ -90,8 +90,14 @@ namespace API.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            var res = Repositories.DelPlaylist(id);
+            if (res == true)
+            {
+                return Ok();
+            }
+            return InternalServerError();
         }
     }
 }

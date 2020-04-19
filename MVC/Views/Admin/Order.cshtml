@@ -1,0 +1,41 @@
+﻿@model IEnumerable<API.Models.ModelViews.OrderView>
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-agile-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Order List
+        </div>
+        <div class="table-responsive" style="height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Package Vip</th>
+                        <th>Payment</th>
+                        <th>Price</th>
+                        <th>Day create</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td><a href="@Url.Action("UserDetail",new { id=item.UserID})">@item.UserName</a></td>
+                            <td>@item.PVipName</td>
+                            <td>@item.PaymentName</td>
+                            <td>@item.OrdPrice</td>
+                            <th>@item.OrdDayCreate</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

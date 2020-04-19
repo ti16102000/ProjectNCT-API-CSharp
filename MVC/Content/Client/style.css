@@ -449,11 +449,14 @@
     font-size: 16px;
 }
 
-.itemBxh ul {
-    top : 5px;
-    left: 95px;
-}
-
+    .itemBxh ul {
+        top: 0px;
+        left: 80px;
+        z-index: 1000;
+    }
+    .itemBxh li{
+        cursor:pointer;
+    }
 #menuSearch {
     width           : 60%;
     height          : 40px;

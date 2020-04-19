@@ -59,7 +59,7 @@
                 <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImg" alt="">
                 <div>
                     <span>Cung cấp bởi:</span><br>
-                    <a href="" style="color: #00c292;font-weight: 700;">@Model.UserName</a>
+                    <a href="@Url.Action("TransferPersonalPage",new { id=Model.UserID})" style="color: #00c292;font-weight: 700;">@Model.UserName</a>
                 </div>
                 <div>
                     <span>Tự động chuyển bài:</span>
@@ -178,13 +178,13 @@
                 <span>Trình bày bởi: </span>
                 @foreach (var item in Model.ListSinger)
                 {
-                    <a href="">@item.SingerName, </a>
+                    <a href="@Url.Action("TransferPersonalPage",new { id=item.SingerID})">@item.SingerName, </a>
                 }
             </span><br>
             <div style="border: 1px solid #00c292;margin-top: 10px;margin-bottom: 20px;"></div>
             @if (lyrics.UserName != null)
             {
-                <span>Lời đăng bởi: <a href="">@lyrics.UserName</a></span><br />
+                <span>Lời đăng bởi: <a href="@Url.Action("TransferPersonalPage",new { id=lyrics.UserID})">@lyrics.UserName</a></span><br />
 
                 if (lyrics.UserID == Convert.ToInt32(Session["UserID"]))
                 {
@@ -262,7 +262,7 @@
                         <span>
                             @foreach (var singer in item.ListSinger)
                             {
-                                <a href="">@singer.SingerName</a>
+                                <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName</a>
                             }
 
                         </span>
@@ -280,7 +280,7 @@
         $(document).ready(function () {
             var valueAuto = true;
             var userVip = "False";
-            if ('@Session["Vip"]' != null) {
+            if ('@Session["Vip"]' === "True") {
                 userVip = '@Session["Vip"]';
             }
             var mainAudio = $("#myAudio");

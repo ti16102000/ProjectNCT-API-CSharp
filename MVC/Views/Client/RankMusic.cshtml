@@ -39,7 +39,7 @@
                     <span>
                         @foreach (var singer in item.ItemMusic.ListSinger)
                         {
-                            <a href="">@singer.SingerName</a>
+                            <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName</a>
                         }
                     </span>
                 </span>
@@ -70,7 +70,7 @@
                 <span>
                     @foreach (var singer in item.ItemMusic.ListSinger)
                     {
-                        <a href="">@singer.SingerName</a>
+                        <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName</a>
                     }
                 </span>
             </span>

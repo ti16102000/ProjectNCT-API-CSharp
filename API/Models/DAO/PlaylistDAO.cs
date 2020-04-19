@@ -53,6 +53,14 @@ namespace API.Models.DAO
         {
             var en = new ProjectNCTEntities();
             var item = en.Playlists.SingleOrDefault(s => s.ID == id);
+            var ls = PlaylistMusicDAO.GetListPM(id);
+            if (ls != null)
+            {
+                foreach (var pm in ls)
+                {
+                    en.PlaylistMusics.Remove(en.PlaylistMusics.Find(pm.ID));
+                }
+            }
             en.Playlists.Remove(item);
             return en.SaveChanges() > 0 ? true : false;
         }

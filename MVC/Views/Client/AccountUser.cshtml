@@ -1,0 +1,181 @@
+﻿@model API.Models.ModelViews.UserView
+@{
+    ViewBag.Title = "AccountUser";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.OrderView> lsOrd = ViewBag.ord;
+}
+
+<div id="info">
+    <div>
+        <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImage" alt="">
+    </div>
+    <div>
+        <span>@Model.UserName</span>
+        @if (Model.UserVIP == true)
+        {
+            <span><i class="fa fa-crown" style="color: yellow;"></i></span>
+        }
+        <br>
+        <span>Sinh ngày: @(Model.UserDOB?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</span><br>
+        <span>Giới tính: @(Model.UserGender == null ? "Đang cập nhật" : Model.UserGender == true ? "Nữ" : "Nam")</span><br>
+        <span>Email: @Model.UserEmail</span><br>
+        <span>Lời giới thiệu:</span>
+        <span>@Model.UserDescription</span><br />
+        <span>Ngày hết hạn VIP: @Model.DayVipEnd</span><br>
+        <a data-toggle="collapse" href="#multiCollapseExample1" role="button" class="btn btn-success"
+           aria-expanded="false" aria-controls="multiCollapseExample1">Chỉnh sửa</a>
+        <a data-toggle="collapse" href="#multiCollapseExample2" role="button" class="btn btn-primary"
+           aria-expanded="false" aria-controls="multiCollapseExample1">Đổi mật khẩu</a>
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+            <div class="card card-body" style="width: 30%;margin-top: 20px;">
+                <form action="@Url.Action("UpdateInfoUser")" method="post" enctype="multipart/form-data">
+                    <!--Full name-->
+                    <div class="form-group ic-cmp-int">
+                        <div class="form-ic-cmp">
+                            <i class="notika-icon notika-support"></i>
+                        </div>
+                        <div class="nk-int-st">
+                            <input type="hidden" value="@Model.ID" name="ID" />
+                            <input type="text" class="form-control" placeholder="Full Name" name="UserName" value="@Model.UserName">
+                        </div>
+                    </div>
+                    <!--DOB-->
+                    <div class="form-group ic-cmp-int">
+                        <div class="form-ic-cmp">
+                            <i class="notika-icon notika-calendar"></i>
+                        </div>
+                        <div class="nk-int-st">
+                            <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="UserDOB" value="@(Model.UserDOB?.ToString("yyyy-MM-dd"))">
+                        </div>
+                    </div>
+                    <!--Gender-->
+                    <div class="form-group ic-cmp-int">
+                        <div class="nk-int-st" style="margin-left: 10px;">
+                            <span><i class="fas fa-venus-mars"></i></span>
+                            <select name="UserGender" id="" style="width: 155px;font-size: 16px;">
+                                @if (Model.UserGender == null || Model.UserGender == true)
+                                {
+                                    <option value="true">Nữ</option>
+                                    <option value="false">Nam</option>
+                                }
+                                else
+                                {
+                                    <option value="false">Nam</option>
+                                    <option value="true">Nữ</option>
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <!--Description-->
+                    <div class="form-group ic-cmp-int">
+                        <div class="form-ic-cmp">
+                            <i class="notika-icon notika-edit"></i>
+                        </div>
+                        <div class="nk-int-st">
+                            <textarea type="text" class="form-control" placeholder="Lời giới thiệu"
+                                 name="UserDescription" style="height: 70px;" maxlength="200">@Model.UserDescription</textarea>
+                        </div>
+                    </div>
+                    <!--Image-->
+                    <div class="maincrop-img" style="margin-left: 37px;margin-bottom: 10px;">
+                        <div class="image-crp-int">
+                            <div class="img-preview img-preview-custom">
+                                <img src="@Url.Content("~/Resource/ImagesUser/")@Model.UserImage" id="upImage" style="width: 300px; height: 255px;">
+                            </div>
+                        </div>
+                        <div class="image-crp-img">
+                            <div class="btn-group images-cropper-pro">
+                                <label title="Upload image file" for="inputImage"
+                                       class="btn btn-primary img-cropper-cp waves-effect">
+                                    <input type="file" accept="image/*" name="imgUser" id="inputImage"
+                                           class="hide"> Upload new image
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Button-->
+                    <input type="submit" class="btn btn-info" value="Lưu"
+                           style="margin-left: 37px;font-size: 18px;">
+                </form>
+            </div>
+        </div>
+        <div class="collapse multi-collapse" id="multiCollapseExample2">
+            <div class="card card-body" style="width: 30%;margin-top: 20px;">
+                <form action="@Url.Action("UpdatePwd")" method="POST">
+                    <!--Old Pwd-->
+                    <div class="form-group">
+                        <div class="nk-int-st">
+                            <input type="password" class="form-control input-sm" name="oldPwd" style="font-size: 18px;"
+                                   placeholder="Mật khẩu cũ" pattern=".{6,}"  title="Six or more characters">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="nk-int-st">
+                            <input type="password" class="form-control input-sm" name="newPwd" style="font-size: 18px;"
+                                   placeholder="Mật khẩu mới" pattern=".{6,}"  title="Six or more characters">
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-info" value="Lưu" style="font-size: 18px;">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: -145px;">
+    <div class="normal-table-list mg-t-30">
+        <div class="basic-tb-hd">
+            <h2>Danh sách mua VIP của bạn</h2>
+        </div>
+        <div class="bsc-tbl-st">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Gói VIP</th>
+                        <th>Giá</th>
+                        <th>Cổng thanh toán</th>
+                        <th>Ngày mua</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lsOrd)
+                    {
+                        int index = 1;
+                        <tr>
+                            <td>@index</td>
+                            <td>@item.PVipName</td>
+                            <td>@item.OrdPrice</td>
+                            <td>@item.PaymentName</td>
+                            <td>@item.OrdDayCreate</td>
+                        </tr>
+                        index++;
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+            $('#inputImage').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#upImage').fadeIn("fast").attr("src", tmppath);
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<API.Models.ModelViews.UserView>
+@{
+    ViewBag.Title = "UserVip";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="table-agile-info">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            User VIP List
+        </div>
+        <div class="table-responsive" style="height:500px;overflow:auto;">
+
+            <table class="table table-striped b-t b-light">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Day Create Account</th>
+                        <th>DayVipEnd</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="word-break: break-all;">
+                    @foreach (var item in Model)
+                    {
+
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.UserEmail</td>
+                        <td>@item.UserDayCreate</td>
+                        <td>@item.DayVipEnd</td>
+                        <td>
+                            <a href="@Url.Action("UserDetail",new { id=item.ID})" class="active" ui-toggle-class="">
+                                <i class="fas fa-info-circle text-success text-active"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

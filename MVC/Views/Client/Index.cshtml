@@ -99,7 +99,7 @@
                         <div class="nameSinger">
                             @foreach (var singer in item.ListSinger)
                             {
-                                <a href="">@singer.SingerName</a>
+                                <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName</a>
                             }
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                         <div class="nameSinger">
                             @foreach (var singer in item.ListSinger)
                             {
-                                <a href="">@singer.SingerName</a>
+                                <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName</a>
                             }
                         </div>
                     </div>

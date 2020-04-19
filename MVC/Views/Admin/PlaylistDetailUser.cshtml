@@ -1,0 +1,67 @@
+﻿@model API.Models.ModelViews.PlaylistView
+@{
+    ViewBag.Title = "PlaylistDetailUser";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container" style="min-height:500px;background-color:white;">
+    <h2>Playlist Detail: @Model.PlaylistName</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Playlist</a></li>
+        <li><a data-toggle="tab" href="#menu1">Music</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <section class="panel">
+                    <div class="panel-body">
+                        <div class="position-center">
+                            <div class="form-group">
+                                <span>Category: @Model.CateName</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description:</label><br />
+                                <span>@Model.PlaylistDescription</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Image:</label><br />
+                                <div id="frameImg">
+                                    <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.PlaylistImage" id="showImg" style="width:300px;height:250px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Song List
+                    </div>
+                    <div class="table-responsive" style="height:500px;overflow:auto;">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Music Name</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in ((IEnumerable<API.Models.ModelViews.PlaylistMusicView>)TempData["pm"]))
+                                {
+                                    <tr>
+                                        <td>@item.MusicName</td>
+                                        <td>@item.MusicView</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

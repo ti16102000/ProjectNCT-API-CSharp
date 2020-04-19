@@ -169,6 +169,7 @@
     <Compile Include="Controllers\LyricsController.cs" />
     <Compile Include="Controllers\MusicController.cs" />
     <Compile Include="Controllers\NewFileController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PlaylistController.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Models\DAO\HistoryUserDAO.cs" />
     <Compile Include="Models\DAO\LyricsMusicDAO.cs" />
     <Compile Include="Models\DAO\MusicDAO.cs" />
+    <Compile Include="Models\DAO\OrderVipDAO.cs" />
     <Compile Include="Models\DAO\PackageVipDAO.cs" />
     <Compile Include="Models\DAO\PartnerDAO.cs" />
     <Compile Include="Models\DAO\PaymentDAO.cs" />
@@ -276,6 +278,7 @@
     <Compile Include="Models\ModelViews\HistoryUserView.cs" />
     <Compile Include="Models\ModelViews\LyricsView.cs" />
     <Compile Include="Models\ModelViews\MusicView.cs" />
+    <Compile Include="Models\ModelViews\OrderView.cs" />
     <Compile Include="Models\ModelViews\PackageVipView.cs" />
     <Compile Include="Models\ModelViews\PartnerView.cs" />
     <Compile Include="Models\ModelViews\PaymentView.cs" />

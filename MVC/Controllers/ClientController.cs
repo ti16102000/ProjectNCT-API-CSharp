@@ -371,16 +371,237 @@ namespace MVC.Controllers
         #endregion
 
         #region Personal Page
+        public ActionResult TransferPersonalPage(int id)
+        {
+            var res = APIService.client.GetAsync("User/" + id).Result;
+            var user = res.Content.ReadAsAsync<UserView>().Result;
+            if (user.RoleID == 3)
+            {
+                return RedirectToAction("PersonalUser", new { id = id });
+            }
+            if (user.RoleID == 2)
+            {
+                return RedirectToAction("PersonalSinger", new { id = id });
+            }
+            return RedirectToAction("Index");
+        }
         public ActionResult PersonalUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            //cate
+            HttpResponseMessage resCate = APIService.client.GetAsync("Category").Result;
+            ViewBag.cate = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
+            //playlist
+            HttpResponseMessage resPlist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
+            ViewBag.pl = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            //song
+            var resSong = APIService.client.GetAsync("Music?idUser=" + id + "&music=" + true).Result; ;
+            ViewBag.song = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //mv
+            var resMV = APIService.client.GetAsync("Music?idUser=" + id + "&music=" + false).Result; ;
+            ViewBag.mv = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //PlaylistUser
+            if (Session["UserID"] != null)
+            {
+                HttpResponseMessage resUser = APIService.client.GetAsync("Playlist?idUser=" + Convert.ToInt32(Session["UserID"])).Result;
+                IEnumerable<PlaylistView> plist = resUser.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+                if (plist.Count() > 0)
+                {
+                    ViewBag.plist = plist;
+                }
+                else
+                {
+                    ViewBag.plist = null;
+                }
+
+            }
+            return View(model);
+        }
+        public ActionResult CreatePlaylistUser(PlaylistView p, HttpPostedFileBase imgMusic)
+        {
+            //img music
+            if (imgMusic == null)
+            {
+                p.PlaylistImage = "default.png";
+            }
+            else
+            {
+                string FileNameMusic = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
+                string pathMusic = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileNameMusic);
+                imgMusic.SaveAs(pathMusic);
+                p.PlaylistImage = FileNameMusic;
+            }
+            var res = APIService.client.PostAsJsonAsync("Playlist", p).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Tạo playlist thành công";
+            }
+            else
+            {
+                TempData["error"] = "Tạo playlist xảy ra lỗi";
+            }
+            return RedirectToAction("PersonalUser", new { id = p.UserID });
+        }
+        public ActionResult DelPlist(int id)
+        {
+            var resModel = APIService.client.GetAsync("Playlist/" + id).Result;
+            var model = resModel.Content.ReadAsAsync<PlaylistView>().Result;
+            if (model.PlaylistImage != "default.png")
+            {
+                string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.PlaylistImage);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+            var res = APIService.client.DeleteAsync("Playlist/" + id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Xoá playlist thành công";
+            }
+            else
+            {
+                TempData["error"] = "Xóa playlist xảy ra lỗi";
+            }
+            return RedirectToAction("PersonalUser", new { id = Convert.ToInt32(Session["UserID"]) });
+        }
+        public ActionResult DelFile(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("QualityMusic/" + id).Result;
+            QualityMusicView model = res.Content.ReadAsAsync<QualityMusicView>().Result;
+            if (model != null)
+            {
+                if (model.ItemMusic.MusicImage != "default.png")
+                {
+                    string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.ItemMusic.MusicImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+                string fullPathAudio = Request.MapPath("~/Resource/Audio/" + model.MusicFile);
+                string fullPathVideo = Request.MapPath("~/Resource/Video/" + model.MusicFile);
+                if (System.IO.File.Exists(fullPathAudio))
+                {
+                    System.IO.File.Delete(fullPathAudio);
+                }
+                else
+                {
+                    System.IO.File.Delete(fullPathVideo);
+                }
+                HttpResponseMessage resDel = APIService.client.DeleteAsync("NewFile/" + id).Result;
+                if (res.IsSuccessStatusCode)
+                {
+                    TempData["success"] = "delete music successfully!";
+                }
+            }
+            else
+            {
+                TempData["error"] = "delete music failed!";
+            }
+            return RedirectToAction("PersonalUser", new { id = Convert.ToInt32(Session["UserID"]) });
+        
+}
+        public ActionResult PersonalSinger(int id)
         {
             HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
             UserView model = res.Content.ReadAsAsync<UserView>().Result;
             //playlist
             HttpResponseMessage resPlist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
-            ViewBag.plist = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
-            //file upload
+            ViewBag.pl = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            //song
+            HttpResponseMessage resSong = APIService.client.GetAsync("Music?idSinger=" + id + "&music=" + true).Result;
+            ViewBag.song = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //mv
+            HttpResponseMessage resMV = APIService.client.GetAsync("Music?idSinger=" + id + "&music=" + false).Result;
+            ViewBag.mv = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //PlaylistUser
+            if (Session["UserID"] != null)
+            {
+                HttpResponseMessage resUser = APIService.client.GetAsync("Playlist?idUser=" + Convert.ToInt32(Session["UserID"])).Result;
+                IEnumerable<PlaylistView> plist = resUser.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+                if (plist.Count() > 0)
+                {
+                    ViewBag.plist = plist;
+                }
+                else
+                {
+                    ViewBag.plist = null;
+                }
 
+            }
             return View(model);
+        }
+        #endregion
+
+        #region Account User
+        public ActionResult AccountUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            //order
+            var resOrd = APIService.client.GetAsync("Order/" + id).Result;
+            ViewBag.ord = resOrd.Content.ReadAsAsync<IEnumerable<OrderView>>().Result;
+            return View(model);
+        }
+        public ActionResult UpdateInfoUser(UserView u, HttpPostedFileBase imgUser)
+        {
+            
+HttpResponseMessage resUser = APIService.client.GetAsync("User/" + u.ID).Result;
+            UserView model = resUser.Content.ReadAsAsync<UserView>().Result;
+            if (imgUser == null)
+            {
+                u.UserImage = model.UserImage;
+            }
+            else
+            {
+                if (model.UserImage != "default.png")
+                {
+                    string fullPath = Request.MapPath("~/Resource/ImagesUser/" + model.UserImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(imgUser.FileName);
+                string path = Path.Combine(Server.MapPath("~/Resource/ImagesUser"), FileName);
+                imgUser.SaveAs(path);
+                u.UserImage = FileName;
+
+            }
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("User/" + u.ID, u).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Cập nhật thông tin thành công!";
+            }
+            else
+            {
+                TempData["error"] = "Cập nhật thông tin xảy ra lỗi!";
+            }
+            return RedirectToAction("AccountUser", new { id = u.ID });
+        }
+        public ActionResult UpdatePwd(string oldPwd,string newPwd)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + Convert.ToInt32(Session["UserID"])).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            if (oldPwd != model.UserPwd)
+            {
+                TempData["error"] = "Mật khẩu cũ không khớp nha";
+            }
+            else
+            {
+                HttpResponseMessage resChange = APIService.client.GetAsync("Login?mail=" + model.UserEmail + "&pwdNew=" + newPwd).Result;
+                if (resChange.IsSuccessStatusCode)
+                {
+                    TempData["success"] = "Cập nhật mật khẩu thành công";
+                }
+                else
+                {
+                    TempData["error"] = "Cập nhật mật khẩu xảy ra lỗi";
+                }
+            }
+            return RedirectToAction("AccountUser", new { id = Convert.ToInt32(Session["UserID"]) });
         }
         #endregion
     }

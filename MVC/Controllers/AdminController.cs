@@ -11,10 +11,67 @@ namespace MVC.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
+        #region New file
         public ActionResult Index()
         {
-            return View();
+            HttpResponseMessage res = APIService.client.GetAsync("NewFile").Result;
+            IEnumerable<MusicView> ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            return View(ls);
         }
+        public ActionResult NewFileDetail(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("QualityMusic?idMusic=" + id + "&vip=" + false).Result;
+            QualityMusicView model = res.Content.ReadAsAsync<QualityMusicView>().Result;
+            return View(model);
+        }
+        public ActionResult ApproveFile(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("NewFile/" + id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Duyệt thành công";
+            }
+            else
+            {
+                TempData["error"] = "Duyệt xảy ra lỗi";
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult NotApproveFile(int id)
+        {
+            HttpResponseMessage resFile = APIService.client.GetAsync("QualityMusic?idMusic=" + id + "&vip=" + false).Result;
+            QualityMusicView model = resFile.Content.ReadAsAsync<QualityMusicView>().Result;
+            if (model.ItemMusic.MusicImage != "default.png")
+            {
+                string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.ItemMusic.MusicImage);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+            if (model.ItemMusic.SongOrMV == true)
+            {
+                string fullPathAudio = Request.MapPath("~/Resource/Audio/" + model.MusicFile);
+                System.IO.File.Delete(fullPathAudio);
+            }
+            else
+            {
+                string fullPathVideo = Request.MapPath("~/Resource/Video/" + model.MusicFile);
+                System.IO.File.Delete(fullPathVideo);
+            }
+            HttpResponseMessage res = APIService.client.DeleteAsync("NewFile/" + id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Xóa thành công";
+            }
+            else
+            {
+                TempData["error"] = "Xóa xảy ra lỗi";
+            }
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         #region Category
         public ActionResult Category()
         {
@@ -70,13 +127,13 @@ namespace MVC.Controllers
         #region Quality
         public ActionResult Quality()
         {
-            var res = APIService.client.GetAsync("Quality").Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<QualityMusicView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Quality").Result;
+            IEnumerable<QualityMusicView> ls = res.Content.ReadAsAsync<IEnumerable<QualityMusicView>>().Result;
             return View(ls);
         }
         public ActionResult CreateQuality(QualityMusicView qv)
         {
-            var res = APIService.client.PostAsJsonAsync("Quality", qv).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Quality", qv).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new quality successfully!";
@@ -89,13 +146,13 @@ namespace MVC.Controllers
         }
         public ActionResult EditQuality(int id)
         {
-            var res = APIService.client.GetAsync("Quality/"+id).Result;
-            var ls = res.Content.ReadAsAsync<QualityMusicView>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Quality/" + id).Result;
+            QualityMusicView ls = res.Content.ReadAsAsync<QualityMusicView>().Result;
             return View(ls);
         }
         public ActionResult UpdateQuality(QualityMusicView qv)
         {
-            var res = APIService.client.PutAsJsonAsync("Quality/" + qv.QualityID, qv).Result;
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("Quality/" + qv.QualityID, qv).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update quality successfully!";
@@ -108,11 +165,11 @@ namespace MVC.Controllers
         }
         #endregion
 
-        #region User
+        #region Singer
         public ActionResult ListSinger()
         {
-            var res = APIService.client.GetAsync("User").Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("User").Result;
+            IEnumerable<UserView> ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return View(ls);
         }
         public ActionResult Singer()
@@ -134,7 +191,7 @@ namespace MVC.Controllers
                 imgUser.SaveAs(path);
                 u.UserImage = FileName;
             }
-            var res = APIService.client.PostAsJsonAsync("User", u).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("User", u).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new singer successfully!";
@@ -147,38 +204,41 @@ namespace MVC.Controllers
         }
         public ActionResult SingerDetail(int id)
         {
-            var res = APIService.client.GetAsync("User/" + id).Result;
-            var model = res.Content.ReadAsAsync<UserView>().Result;
-            var resPlaylist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            HttpResponseMessage resPlaylist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
             TempData["pl"] = resPlaylist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
-            var resSong = APIService.client.GetAsync("Music?idSinger=" + id + "&music=true").Result;
+            HttpResponseMessage resSong = APIService.client.GetAsync("Music?idSinger=" + id + "&music="+true).Result;
             TempData["song"] = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
-            var resMV = APIService.client.GetAsync("Music?idSinger=" + id + "&music=false").Result;
+            HttpResponseMessage resMV = APIService.client.GetAsync("Music?idSinger=" + id + "&music=" + false).Result;
             TempData["mv"] = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             return View(model);
         }
         public ActionResult UpdateSinger(UserView u, HttpPostedFileBase imgUser)
         {
             u.UserNameUnsigned = API.CommonHelper.RemoveUnicode.RemoveSign4VietnameseString(u.UserName);
-            var resUser = APIService.client.GetAsync("User/" + u.ID).Result;
-            var model = resUser.Content.ReadAsAsync<UserView>().Result;
+            HttpResponseMessage resUser = APIService.client.GetAsync("User/" + u.ID).Result;
+            UserView model = resUser.Content.ReadAsAsync<UserView>().Result;
             if (imgUser == null)
             {
                 u.UserImage = model.UserImage;
             }
             else
             {
-                string fullPath = Request.MapPath("~/Resource/ImagesUser/" + model.UserImage);
-                if (System.IO.File.Exists(fullPath))
+                if (model.UserImage != "default.png")
                 {
-                    System.IO.File.Delete(fullPath);
-                    string FileName = DateTime.Now.Ticks + Path.GetFileName(imgUser.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Resource/ImagesUser"), FileName);
-                    imgUser.SaveAs(path);
-                    u.UserImage = FileName;
+                    string fullPath = Request.MapPath("~/Resource/ImagesUser/" + model.UserImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
                 }
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(imgUser.FileName);
+                string path = Path.Combine(Server.MapPath("~/Resource/ImagesUser"), FileName);
+                imgUser.SaveAs(path);
+                u.UserImage = FileName;
             }
-            var res = APIService.client.PutAsJsonAsync("User/" + u.ID, u).Result;
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("User/" + u.ID, u).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update singer successfully!";
@@ -194,9 +254,9 @@ namespace MVC.Controllers
         #region Playlist
         public ActionResult Playlist()
         {
-            var resCate = APIService.client.GetAsync("SubCate").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("SubCate").Result;
             TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
-            var resSinger = APIService.client.GetAsync("User").Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User").Result;
             TempData["singer"] = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return View();
         }
@@ -204,7 +264,7 @@ namespace MVC.Controllers
         {
             if (imgPlaylist == null)
             {
-                p.PlaylistImage= "default.png";
+                p.PlaylistImage = "default.png";
             }
             else
             {
@@ -213,7 +273,7 @@ namespace MVC.Controllers
                 imgPlaylist.SaveAs(path);
                 p.PlaylistImage = FileName;
             }
-            var res = APIService.client.PostAsJsonAsync("Playlist", p).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Playlist", p).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new playlist successfully!";
@@ -227,39 +287,44 @@ namespace MVC.Controllers
         }
         public ActionResult PlaylistDetail(int id)
         {
-            var resCate = APIService.client.GetAsync("SubCate").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("SubCate").Result;
             TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
-            var resSinger = APIService.client.GetAsync("User").Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User").Result;
             TempData["singer"] = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
-            var res = APIService.client.GetAsync("Playlist/" + id).Result;
-            var model = res.Content.ReadAsAsync<PlaylistView>().Result;
-            var resMV = APIService.client.GetAsync("Music?idSinger=" + model.UserID + "&music=" +true).Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Playlist/" + id).Result;
+            PlaylistView model = res.Content.ReadAsAsync<PlaylistView>().Result;
+            HttpResponseMessage resMV = APIService.client.GetAsync("Music?idSinger=" + model.UserID + "&music=" + true).Result;
             TempData["music"] = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
-            var resPM = APIService.client.GetAsync("PlaylistMusic/" + id).Result;
+            HttpResponseMessage resPM = APIService.client.GetAsync("PlaylistMusic/" + id).Result;
             TempData["pm"] = resPM.Content.ReadAsAsync<IEnumerable<PlaylistMusicView>>().Result;
             return View(model);
         }
         public ActionResult UpdatePlaylist(PlaylistView p, HttpPostedFileBase imgPlaylist)
         {
-            var resP = APIService.client.GetAsync("Playlist/" + p.ID).Result;
-            var model = resP.Content.ReadAsAsync<PlaylistView>().Result;
+            HttpResponseMessage resP = APIService.client.GetAsync("Playlist/" + p.ID).Result;
+            PlaylistView model = resP.Content.ReadAsAsync<PlaylistView>().Result;
             if (imgPlaylist == null)
             {
                 p.PlaylistImage = model.PlaylistImage;
             }
             else
             {
-                string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.PlaylistImage);
-                if (System.IO.File.Exists(fullPath))
+                if (model.PlaylistImage != "default.png")
                 {
-                    System.IO.File.Delete(fullPath);
-                    string FileName = DateTime.Now.Ticks + Path.GetFileName(imgPlaylist.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
-                    imgPlaylist.SaveAs(path);
-                    p.PlaylistImage = FileName;
+                    string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.PlaylistImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                        
+                    }
                 }
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(imgPlaylist.FileName);
+                string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
+                imgPlaylist.SaveAs(path);
+                p.PlaylistImage = FileName;
+
             }
-            var res = APIService.client.PutAsJsonAsync("Playlist/" + p.ID, p).Result;
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("Playlist/" + p.ID, p).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update playlist successfully!";
@@ -275,20 +340,20 @@ namespace MVC.Controllers
         #region PlaylistMusic
         public ActionResult AddMusicPlaylist(PlaylistMusicView pm)
         {
-            var res = APIService.client.PostAsJsonAsync("PlaylistMusic", pm).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("PlaylistMusic", pm).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Add music to playlist successfully!";
             }
             else
             {
-                TempData["error"]= "Add music to playlist failed!";
+                TempData["error"] = "Add music to playlist failed!";
             }
             return RedirectToAction("PlaylistDetail", new { id = pm.PlaylistID });
         }
-        public ActionResult DelPM(int id,int idPL)
+        public ActionResult DelPM(int id, int idPL)
         {
-            var res = APIService.client.DeleteAsync("PlaylistMusic/" + id).Result;
+            HttpResponseMessage res = APIService.client.DeleteAsync("PlaylistMusic/" + id).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Delete music playlist successfully!";
@@ -304,9 +369,9 @@ namespace MVC.Controllers
         #region Music
         public ActionResult Music()
         {
-            var resCate = APIService.client.GetAsync("SubCate").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("SubCate").Result;
             TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
-            var resSinger = APIService.client.GetAsync("User").Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User").Result;
             TempData["singer"] = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return View();
         }
@@ -326,12 +391,12 @@ namespace MVC.Controllers
                 imgMusic.SaveAs(path);
                 m.MusicImage = FileName;
             }
-            var res = APIService.client.PostAsJsonAsync("Music", m).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Music", m).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new music successfully!";
-                var id = res.Content.ReadAsAsync<int>().Result;
-                var resSM = APIService.client.PostAsJsonAsync("SingerMusic", new SingerMusicView { MusicID = id, SingerID = m.UserID });
+                int id = res.Content.ReadAsAsync<int>().Result;
+                System.Threading.Tasks.Task<HttpResponseMessage> resSM = APIService.client.PostAsJsonAsync("SingerMusic", new SingerMusicView { MusicID = id, SingerID = m.UserID });
             }
             else
             {
@@ -341,44 +406,47 @@ namespace MVC.Controllers
         }
         public ActionResult MusicDetail(int id)
         {
-            var resCate = APIService.client.GetAsync("SubCate").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("SubCate").Result;
             TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
-            var res = APIService.client.GetAsync("Music/" + id).Result;
-            var model = res.Content.ReadAsAsync<MusicView>().Result;
-            var resMV = APIService.client.GetAsync("Music?idSinger=" + model.UserID + "&music="+(model.SongOrMV==true?false:true)).Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Music/" + id).Result;
+            MusicView model = res.Content.ReadAsAsync<MusicView>().Result;
+            HttpResponseMessage resMV = APIService.client.GetAsync("Music?idSinger=" + model.UserID + "&music=" + (model.SongOrMV == true ? false : true)).Result;
             TempData["music"] = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
-            var resSinger = APIService.client.GetAsync("User").Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User").Result;
             TempData["singer"] = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
-            var resSm = APIService.client.GetAsync("SingerMusic/" + id).Result;
+            HttpResponseMessage resSm = APIService.client.GetAsync("SingerMusic/" + id).Result;
             TempData["sm"] = resSm.Content.ReadAsAsync<IEnumerable<SingerMusicView>>().Result;
-            var resQ = APIService.client.GetAsync("Quality").Result;
+            HttpResponseMessage resQ = APIService.client.GetAsync("Quality").Result;
             TempData["q"] = resQ.Content.ReadAsAsync<IEnumerable<QualityMusicView>>().Result;
-            var resQm = APIService.client.GetAsync("QualityMusic?idMusic=" + id).Result;
+            HttpResponseMessage resQm = APIService.client.GetAsync("QualityMusic?idMusic=" + id).Result;
             TempData["qm"] = resQm.Content.ReadAsAsync<IEnumerable<QualityMusicView>>().Result;
             return View(model);
         }
         public ActionResult UpdateMusic(MusicView m, HttpPostedFileBase imgMusic)
         {
             m.MusicNameUnsigned = API.CommonHelper.RemoveUnicode.RemoveSign4VietnameseString(m.MusicName);
-            var res = APIService.client.GetAsync("Music/" + m.ID).Result;
-            var model = res.Content.ReadAsAsync<MusicView>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Music/" + m.ID).Result;
+            MusicView model = res.Content.ReadAsAsync<MusicView>().Result;
             if (imgMusic == null)
             {
                 m.MusicImage = model.MusicImage;
             }
             else
             {
-                string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.MusicImage);
-                if (System.IO.File.Exists(fullPath))
+                if (model.MusicImage != "default.png")
                 {
-                    System.IO.File.Delete(fullPath);
-                    string FileName = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
-                    imgMusic.SaveAs(path);
-                    m.MusicImage = FileName;
+                    string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.MusicImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
                 }
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
+                string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
+                imgMusic.SaveAs(path);
+                m.MusicImage = FileName;
             }
-            var resUp = APIService.client.PutAsJsonAsync("Music/" + m.ID, m).Result;
+            HttpResponseMessage resUp = APIService.client.PutAsJsonAsync("Music/" + m.ID, m).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Update music successfully!";
@@ -387,15 +455,15 @@ namespace MVC.Controllers
             {
                 TempData["error"] = "Update music failed!";
             }
-            return RedirectToAction("MusicDetail",new { id=m.ID});
+            return RedirectToAction("MusicDetail", new { id = m.ID });
         }
-        public ActionResult AddMusicRelated(int id,int idMusicRelated)
+        public ActionResult AddMusicRelated(int id, int idMusicRelated)
         {
-            var res1 = APIService.client.GetAsync("Music?idMusic=" + id + "&idRelated=" + idMusicRelated).Result;
+            HttpResponseMessage res1 = APIService.client.GetAsync("Music?idMusic=" + id + "&idRelated=" + idMusicRelated).Result;
             if (res1.IsSuccessStatusCode)
             {
                 TempData["success"] = "add music related successfully!";
-                var res2= APIService.client.GetAsync("Music?idMusic=" + idMusicRelated + "&idRelated=" + id).Result;
+                HttpResponseMessage res2 = APIService.client.GetAsync("Music?idMusic=" + idMusicRelated + "&idRelated=" + id).Result;
             }
             else
             {
@@ -405,11 +473,11 @@ namespace MVC.Controllers
         }
         public ActionResult RemoveRelated(int id, int idMusicRelated)
         {
-            var res1 = APIService.client.GetAsync("Music?idMusic=" + id + "&idRelated=0").Result;
+            HttpResponseMessage res1 = APIService.client.GetAsync("Music?idMusic=" + id + "&idRelated=0").Result;
             if (res1.IsSuccessStatusCode)
             {
                 TempData["success"] = "remove music related successfully!";
-                var res2 = APIService.client.GetAsync("Music?idMusic=" + idMusicRelated + "&idRelated=0").Result;
+                HttpResponseMessage res2 = APIService.client.GetAsync("Music?idMusic=" + idMusicRelated + "&idRelated=0").Result;
             }
             else
             {
@@ -422,9 +490,9 @@ namespace MVC.Controllers
         #region SingerMusic
         public ActionResult AddSingerMusic(SingerMusicView sm)
         {
-            var res = APIService.client.PostAsJsonAsync("SingerMusic", sm).Result;
-            var res1 = APIService.client.GetAsync("Music/" + sm.MusicID).Result;
-            var model = res.Content.ReadAsAsync<MusicView>().Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("SingerMusic", sm).Result;
+            HttpResponseMessage res1 = APIService.client.GetAsync("Music/" + sm.MusicID).Result;
+            MusicView model = res.Content.ReadAsAsync<MusicView>().Result;
 
             if (res.IsSuccessStatusCode)
             {
@@ -436,9 +504,9 @@ namespace MVC.Controllers
             }
             return RedirectToAction("MusicDetail", new { id = sm.MusicID });
         }
-        public ActionResult DelSinger(int id,int idMusic)
+        public ActionResult DelSinger(int id, int idMusic)
         {
-            var res = APIService.client.DeleteAsync("SingerMusic/" + id).Result;
+            HttpResponseMessage res = APIService.client.DeleteAsync("SingerMusic/" + id).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "delete singer successfully!";
@@ -452,12 +520,12 @@ namespace MVC.Controllers
         #endregion
 
         #region QualityMusic
-        public ActionResult AddFile(QualityMusicView qm,HttpPostedFileBase fileMusic)
+        public ActionResult AddFile(QualityMusicView qm, HttpPostedFileBase fileMusic)
         {
             qm.QMusicApproved = true;
             qm.NewFile = false;
-            var resModel = APIService.client.GetAsync("Music/" + qm.MusicID).Result;
-            var model = resModel.Content.ReadAsAsync<MusicView>().Result;
+            HttpResponseMessage resModel = APIService.client.GetAsync("Music/" + qm.MusicID).Result;
+            MusicView model = resModel.Content.ReadAsAsync<MusicView>().Result;
             if (fileMusic == null)
             {
                 TempData["error"] = "add file failed!";
@@ -465,7 +533,7 @@ namespace MVC.Controllers
             }
             string FileName = DateTime.Now.Ticks + Path.GetFileName(fileMusic.FileName);
             string path;
-            if((model.SongOrMV==false && FileName.EndsWith("mp3")) || (model.SongOrMV == true && !FileName.EndsWith("mp3")))
+            if ((model.SongOrMV == false && FileName.EndsWith("mp3")) || (model.SongOrMV == true && !FileName.EndsWith("mp3")))
             {
                 TempData["error"] = "add file failed!";
                 return RedirectToAction("MusicDetail", new { id = qm.MusicID });
@@ -480,7 +548,7 @@ namespace MVC.Controllers
             }
             fileMusic.SaveAs(path);
             qm.MusicFile = FileName;
-            var res = APIService.client.PostAsJsonAsync("QualityMusic", qm).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("QualityMusic", qm).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "add file successfully!";
@@ -493,8 +561,8 @@ namespace MVC.Controllers
         }
         public ActionResult DelFile(int id)
         {
-            var res = APIService.client.GetAsync("QualityMusic/" + id).Result;
-            var model = res.Content.ReadAsAsync<QualityMusicView>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("QualityMusic/" + id).Result;
+            QualityMusicView model = res.Content.ReadAsAsync<QualityMusicView>().Result;
             if (model != null)
             {
                 string fullPathAudio = Request.MapPath("~/Resource/Audio/" + model.MusicFile);
@@ -507,7 +575,7 @@ namespace MVC.Controllers
                 {
                     System.IO.File.Delete(fullPathVideo);
                 }
-                var resDel = APIService.client.DeleteAsync("QualityMusic/" + id).Result;
+                HttpResponseMessage resDel = APIService.client.DeleteAsync("QualityMusic/" + id).Result;
                 if (res.IsSuccessStatusCode)
                 {
                     TempData["success"] = "delete file successfully!";
@@ -524,8 +592,8 @@ namespace MVC.Controllers
         #region Partner
         public ActionResult Partner()
         {
-            var res = APIService.client.GetAsync("Partner").Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<PartnerView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Partner").Result;
+            IEnumerable<PartnerView> ls = res.Content.ReadAsAsync<IEnumerable<PartnerView>>().Result;
             return View(ls);
         }
         public ActionResult CreatePartner(HttpPostedFileBase imgPartner, PartnerView p)
@@ -541,7 +609,7 @@ namespace MVC.Controllers
                 imgPartner.SaveAs(path);
                 p.PartnerImage = FileName;
             }
-            var res = APIService.client.PostAsJsonAsync("Partner", p).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Partner", p).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new partner successfully!";
@@ -554,8 +622,8 @@ namespace MVC.Controllers
         }
         public ActionResult DelPartner(int id)
         {
-            var resGet = APIService.client.GetAsync("Partner/" + id).Result;
-            var model = resGet.Content.ReadAsAsync<PartnerView>().Result;
+            HttpResponseMessage resGet = APIService.client.GetAsync("Partner/" + id).Result;
+            PartnerView model = resGet.Content.ReadAsAsync<PartnerView>().Result;
             if (model.PartnerImage != "default.png")
             {
                 string fullPath = Request.MapPath("~/Resource/ImagesUser/" + model.PartnerImage);
@@ -564,7 +632,7 @@ namespace MVC.Controllers
                     System.IO.File.Delete(fullPath);
                 }
             }
-            var resDel = APIService.client.DeleteAsync("Partner/" + id).Result;
+            HttpResponseMessage resDel = APIService.client.DeleteAsync("Partner/" + id).Result;
             if (resDel.IsSuccessStatusCode)
             {
                 TempData["success"] = "delete partner successfully!";
@@ -580,15 +648,15 @@ namespace MVC.Controllers
         #region payment&packagevip
         public ActionResult Payment()
         {
-            var resP = APIService.client.GetAsync("Payment").Result;
+            HttpResponseMessage resP = APIService.client.GetAsync("Payment").Result;
             TempData["p"] = resP.Content.ReadAsAsync<IEnumerable<PaymentView>>().Result;
-            var resPV = APIService.client.GetAsync("PVip").Result;
+            HttpResponseMessage resPV = APIService.client.GetAsync("PVip").Result;
             TempData["pv"] = resPV.Content.ReadAsAsync<IEnumerable<PackageVipView>>().Result;
             return View();
         }
         public ActionResult CreatePayment(PaymentView p)
         {
-            var res = APIService.client.PostAsJsonAsync("Payment", p).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Payment", p).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new payment successfully!";
@@ -601,7 +669,7 @@ namespace MVC.Controllers
         }
         public ActionResult DelPayment(int id)
         {
-            var res = APIService.client.DeleteAsync("Payment/" + id).Result;
+            HttpResponseMessage res = APIService.client.DeleteAsync("Payment/" + id).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "delete payment successfully!";
@@ -614,7 +682,7 @@ namespace MVC.Controllers
         }
         public ActionResult CreatePV(PackageVipView pv)
         {
-            var res = APIService.client.PostAsJsonAsync("PVip", pv).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("PVip", pv).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new package vip successfully!";
@@ -627,7 +695,7 @@ namespace MVC.Controllers
         }
         public ActionResult DelPV(int id)
         {
-            var res = APIService.client.DeleteAsync("PVip/" + id).Result;
+            HttpResponseMessage res = APIService.client.DeleteAsync("PVip/" + id).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "delete payment successfully!";
@@ -644,19 +712,19 @@ namespace MVC.Controllers
         public ActionResult Rank()
         {
             //cate
-            var resCate = APIService.client.GetAsync("Category").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("Category").Result;
             TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
             //rank song
-            var resS = APIService.client.GetAsync("RankMusic?musicRank="+true).Result;
+            HttpResponseMessage resS = APIService.client.GetAsync("RankMusic?musicRank=" + true).Result;
             ViewBag.song = resS.Content.ReadAsAsync<IEnumerable<RankView>>().Result;
             //rank mv
-            var resM = APIService.client.GetAsync("RankMusic?musicRank=" + false).Result;
+            HttpResponseMessage resM = APIService.client.GetAsync("RankMusic?musicRank=" + false).Result;
             ViewBag.mv = resM.Content.ReadAsAsync<IEnumerable<RankView>>().Result;
             return View();
         }
         public ActionResult CreateRank(RankView r)
         {
-            var res = APIService.client.PostAsJsonAsync("RankMusic", r).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("RankMusic", r).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Create new Rank successfully!";
@@ -669,15 +737,15 @@ namespace MVC.Controllers
         }
         public ActionResult ListRM(int id)
         {
-            var res = APIService.client.GetAsync("RankMusic/" + id).Result;
-            var model = res.Content.ReadAsAsync<RankView>().Result;
-            var resLs = APIService.client.GetAsync("RankMusic?idRank=" + id).Result;
+            HttpResponseMessage res = APIService.client.GetAsync("RankMusic/" + id).Result;
+            RankView model = res.Content.ReadAsAsync<RankView>().Result;
+            HttpResponseMessage resLs = APIService.client.GetAsync("RankMusic?idRank=" + id).Result;
             ViewBag.ls = resLs.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
             return View(model);
         }
         public ActionResult DelRank(int id)
         {
-            var res = APIService.client.DeleteAsync("RankMusic/" + id).Result;
+            HttpResponseMessage res = APIService.client.DeleteAsync("RankMusic/" + id).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "delete Rank successfully!";
@@ -687,6 +755,61 @@ namespace MVC.Controllers
                 TempData["error"] = "delete Rank failed!";
             }
             return RedirectToAction("Rank");
+        }
+        #endregion
+
+        #region User
+        public ActionResult UserNormal()
+        {
+            var res = APIService.client.GetAsync("User?vip=" + false).Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            return View(ls);
+        }
+        public ActionResult UserVip()
+        {
+            var res = APIService.client.GetAsync("User?vip=" + true).Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            return View(ls);
+        }
+        public ActionResult UserDetail(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            HttpResponseMessage resPlaylist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
+            TempData["pl"] = resPlaylist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            //song
+            var resSong = APIService.client.GetAsync("Music?idUser=" + id + "&music=" + true).Result; ;
+            TempData["song"] = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //mv
+            var resMV = APIService.client.GetAsync("Music?idUser=" + id + "&music=" + false).Result; ;
+            TempData["mv"] = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            //order
+            var resOrd = APIService.client.GetAsync("Order/" + id).Result;
+            TempData["ord"] = resOrd.Content.ReadAsAsync<IEnumerable<OrderView>>().Result;
+            return View(model);
+        }
+        public ActionResult PlaylistDetailUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("Playlist/" + id).Result;
+            PlaylistView model = res.Content.ReadAsAsync<PlaylistView>().Result;
+            HttpResponseMessage resPM = APIService.client.GetAsync("PlaylistMusic/" + id).Result;
+            TempData["pm"] = resPM.Content.ReadAsAsync<IEnumerable<PlaylistMusicView>>().Result;
+            return View(model);
+        }
+        public ActionResult MusicDetailUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("QualityMusic?idMusic=" + id + "&vip=" + false).Result;
+            QualityMusicView model = res.Content.ReadAsAsync<QualityMusicView>().Result;
+            return View(model);
+        }
+        #endregion
+
+        #region Order
+        public ActionResult Order()
+        {
+            var res = APIService.client.GetAsync("Order").Result;
+            var ls = res.Content.ReadAsAsync<IEnumerable<OrderView>>().Result;
+            return View(ls);
         }
         #endregion
     }

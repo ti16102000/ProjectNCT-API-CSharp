@@ -105,8 +105,8 @@
 
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#"> Thông tin tài khoản</a></li>
-                                                <li><a href=""> Trang cá nhân</a></li>
+                                                <li><a href="@Url.Action("AccountUser",new { id=usr.ID})"> Thông tin tài khoản</a></li>
+                                                <li><a href="@Url.Action("TransferPersonalPage",new { id=usr.ID})"> Trang cá nhân</a></li>
                                                 <li><a href=""> Lịch sử</a></li>
                                                 <li><a href=""> Đăng xuất</a></li>
                                             </ul>
