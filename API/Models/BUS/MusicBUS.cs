@@ -80,6 +80,18 @@ namespace API.Models.BUS
         {
             return QualityMusicDAO.DelQM(id);
         }
+        public static IEnumerable<QualityMusic> GetListNewFileMusic()
+        {
+            return QualityMusicDAO.GetListNewFileMusic();
+        }
+        public static bool ApproveFile(int id)
+        {
+            return QualityMusicDAO.ApproveFile(id);
+        }
+        public static bool DelFileAndTableRelated(int id)
+        {
+            return QualityMusicDAO.DelFileAndTableRelated(id);
+        }
         #endregion
 
         #region Playlist

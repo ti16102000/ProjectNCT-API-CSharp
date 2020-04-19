@@ -130,6 +130,18 @@ namespace API.Models
         {
             return MusicBUS.DelPM(id);
         }
+        public static IEnumerable<QualityMusic> GetListNewFileMusic()
+        {
+            return MusicBUS.GetListNewFileMusic();
+        }
+        public static bool ApproveFile(int id)
+        {
+            return MusicBUS.ApproveFile(id);
+        }
+        public static bool DelFileAndTableRelated(int id)
+        {
+            return MusicBUS.DelFileAndTableRelated(id);
+        }
         #endregion
 
         #region Music

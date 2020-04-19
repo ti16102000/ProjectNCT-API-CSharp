@@ -109,23 +109,10 @@
                 }
             });
             $('#btnUp').click(function (e) {
-                listSinger.forEach(function (number) {
-                    $.ajax({
-                        url: '/Client/GetListSinger',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: { number },
-                        success: function (res) {
-                            var num = res.data;
-                            console.log(num);
-                        }
-                    });
-                });
+                
                 if (listSinger.length < 1) {
                     alertify.error("Bạn chưa thêm ca sĩ");
-                    e.preventDefault();
-                    
+                    e.preventDefault();                    
                 }
             });
             function ChooseSinger(value) {
@@ -159,13 +146,37 @@
                                     $(delIcon).css("cursor", "pointer");
                                     newItem.append(delIcon);
                                     $('#addSinger>ul').append(newItem);
-                                    
+                                    var number = id;
+                                        $.ajax({
+
+                                            url: '/Client/GetListSinger',
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            contentType: 'application/json',
+                                            data: { number },
+                                            success: function (res) {
+                                                var num = res.data;
+                                                console.log(num);
+                                            }
+                                        });
                                     //remove
                                     $(delIcon).click(function () {
                                         var id = $(this).parent("li").attr("data-id");
                                         $(this).parent("li").hide();
                                         listSinger = $.grep(listSinger, function (value) {
                                             return value != id;
+                                        });
+                                        $.ajax({
+
+                                            url: '/Client/RemoveIdSinger',
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            contentType: 'application/json',
+                                            data: { id },
+                                            success: function (res) {
+                                                var num = res.data;
+                                                console.log("remove id: " + num);
+                                            }
                                         });
                                     })
                                 }

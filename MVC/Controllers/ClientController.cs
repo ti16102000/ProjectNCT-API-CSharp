@@ -65,7 +65,7 @@ namespace MVC.Controllers
             //history
             if (Session["UserID"] != null)
             {
-                var resHis = APIService.client.PostAsJsonAsync("HistoryUser", new HistoryUserView { MusicID = idMusic, UserID = Convert.ToInt32(Session["UserID"])});
+                System.Threading.Tasks.Task<HttpResponseMessage> resHis = APIService.client.PostAsJsonAsync("HistoryUser", new HistoryUserView { MusicID = idMusic, UserID = Convert.ToInt32(Session["UserID"]) });
             }
             //music
             HttpResponseMessage resView = APIService.client.GetAsync("Music?idMusic=" + idMusic).Result;
@@ -87,7 +87,7 @@ namespace MVC.Controllers
                 {
                     ViewBag.plist = null;
                 }
-                
+
             }
             //file
             HttpResponseMessage resFileNormal = APIService.client.GetAsync("QualityMusic?idMusic=" + model.ID + "&vip=" + false).Result;
@@ -120,11 +120,11 @@ namespace MVC.Controllers
         {
             HttpResponseMessage resView = APIService.client.GetAsync("Music?idMusic=" + idMusic).Result;
             int view = resView.Content.ReadAsAsync<int>().Result;
-            return Json(new{data=view}, JsonRequestBehavior.AllowGet);
+            return Json(new { data = view }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult AddLyrics(LyricsView lv)
         {
-            var res = APIService.client.PostAsJsonAsync("Lyrics", lv).Result;
+            HttpResponseMessage res = APIService.client.PostAsJsonAsync("Lyrics", lv).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Đăng lời cho bài hát này thành công";
@@ -137,7 +137,7 @@ namespace MVC.Controllers
         }
         public ActionResult UpdateLyrics(LyricsView lv)
         {
-            var res = APIService.client.PutAsJsonAsync("Lyrics/" + lv.MusicID, lv).Result;
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("Lyrics/" + lv.MusicID, lv).Result;
             if (res.IsSuccessStatusCode)
             {
                 TempData["success"] = "Cập nhật lời cho bài hát này thành công";
@@ -151,10 +151,10 @@ namespace MVC.Controllers
         #endregion
 
         #region List Playlist By IDCate
-        public ActionResult ListPlaylistByIDCate(int id,string name)
+        public ActionResult ListPlaylistByIDCate(int id, string name)
         {
             ViewBag.namecate = name;
-            var res = APIService.client.GetAsync("Playlist?idCate=" + id).Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Playlist?idCate=" + id).Result;
             ViewBag.plist = res.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
             return View();
         }
@@ -163,13 +163,13 @@ namespace MVC.Controllers
         #region Play Playlist
         public ActionResult PlayPlist(int id)
         {
-            var resPlist = APIService.client.GetAsync("Playlist/" + id).Result;
-            var model = resPlist.Content.ReadAsAsync<PlaylistView>().Result;
+            HttpResponseMessage resPlist = APIService.client.GetAsync("Playlist/" + id).Result;
+            PlaylistView model = resPlist.Content.ReadAsAsync<PlaylistView>().Result;
             //list music
-            var resMusic = APIService.client.GetAsync("PlaylistMusic?idPlist=" + id).Result;
+            HttpResponseMessage resMusic = APIService.client.GetAsync("PlaylistMusic?idPlist=" + id).Result;
             ViewBag.music = resMusic.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             //random playlist
-            var resRandom = APIService.client.GetAsync("Playlist?idCate=" + model.CateID + "&number=" + 3).Result;
+            HttpResponseMessage resRandom = APIService.client.GetAsync("Playlist?idCate=" + model.CateID + "&number=" + 3).Result;
             ViewBag.random = resRandom.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
             //PlaylistUser
             if (Session["UserID"] != null)
@@ -190,10 +190,10 @@ namespace MVC.Controllers
         #endregion
 
         #region List Music By IDCate
-        public ActionResult ListMusicByIDCate(int id,string name,bool music)
+        public ActionResult ListMusicByIDCate(int id, string name, bool music)
         {
-            var res = APIService.client.GetAsync("Music?idCate=" + id + "&music=" + music).Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("Music?idCate=" + id + "&music=" + music).Result;
+            IEnumerable<MusicView> ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             ViewBag.name = name;
             ViewBag.music = music;
             return View(ls);
@@ -202,53 +202,53 @@ namespace MVC.Controllers
 
         #region Search
         [HttpGet]
-        public JsonResult SearchMusicMenu(string value,bool music)
+        public JsonResult SearchMusicMenu(string value, bool music)
         {
-            var res = APIService.client.GetAsync("SearchMenu?value=" + value + "&music=" + music).Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("SearchMenu?value=" + value + "&music=" + music).Result;
+            IEnumerable<MusicView> ls = res.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult SearchSingerMenu(string value)
         {
-            var res = APIService.client.GetAsync("SearchMenu?value=" + value).Result;
-            var ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            HttpResponseMessage res = APIService.client.GetAsync("SearchMenu?value=" + value).Result;
+            IEnumerable<UserView> ls = res.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Search(string value)
         {
             ViewBag.value = value;
             //song
-            var resSong = APIService.client.GetAsync("Music?value=" + value + "&music=" + true).Result;
+            HttpResponseMessage resSong = APIService.client.GetAsync("Music?value=" + value + "&music=" + true).Result;
             ViewBag.song = resSong.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             //mv
-            var resMV = APIService.client.GetAsync("Music?value=" + value + "&music=" + false).Result;
+            HttpResponseMessage resMV = APIService.client.GetAsync("Music?value=" + value + "&music=" + false).Result;
             ViewBag.mv = resMV.Content.ReadAsAsync<IEnumerable<MusicView>>().Result;
             //singer
-            var resSinger = APIService.client.GetAsync("User?value=" + value).Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User?value=" + value).Result;
             ViewBag.singer = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             //playlist
-            var resPlist = APIService.client.GetAsync("Playlist?value=" + value).Result;
+            HttpResponseMessage resPlist = APIService.client.GetAsync("Playlist?value=" + value).Result;
             ViewBag.plist = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
             return View();
         }
         #endregion
 
         #region Rank
-        public ActionResult RankMusic(int idCate,string name)
+        public ActionResult RankMusic(int idCate, string name)
         {
             ViewBag.name = name;
             //song
-            var resSong = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + true).Result;
-            var song = resSong.Content.ReadAsAsync<RankView>().Result;
+            HttpResponseMessage resSong = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + true).Result;
+            RankView song = resSong.Content.ReadAsAsync<RankView>().Result;
             ViewBag.song = song;
-            var resLsSong = APIService.client.GetAsync("RankMusic?idRank=" + song.ID).Result;
+            HttpResponseMessage resLsSong = APIService.client.GetAsync("RankMusic?idRank=" + song.ID).Result;
             ViewBag.lsSong = resLsSong.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
             //mv
-            var resMv = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + false).Result;
-            var mv = resMv.Content.ReadAsAsync<RankView>().Result;
+            HttpResponseMessage resMv = APIService.client.GetAsync("RankMusic?idCate=" + idCate + "&music=" + false).Result;
+            RankView mv = resMv.Content.ReadAsAsync<RankView>().Result;
             ViewBag.mv = mv;
-            var resLsMV = APIService.client.GetAsync("RankMusic?idRank=" + mv.ID).Result;
+            HttpResponseMessage resLsMV = APIService.client.GetAsync("RankMusic?idRank=" + mv.ID).Result;
             ViewBag.lsMv = resLsMV.Content.ReadAsAsync<IEnumerable<RankMusicView>>().Result;
             return View();
         }
@@ -261,7 +261,7 @@ namespace MVC.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            var resCate = APIService.client.GetAsync("Category").Result;
+            HttpResponseMessage resCate = APIService.client.GetAsync("Category").Result;
             ViewBag.cate = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
             Session.Remove("singer");
             return View();
@@ -269,29 +269,35 @@ namespace MVC.Controllers
         [HttpGet]
         public JsonResult SearchSingerUpload(string value)
         {
-            var resSinger = APIService.client.GetAsync("User?value=" + value).Result;
-            var ls = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
+            HttpResponseMessage resSinger = APIService.client.GetAsync("User?value=" + value).Result;
+            IEnumerable<UserView> ls = resSinger.Content.ReadAsAsync<IEnumerable<UserView>>().Result;
             return Json(new { lsData = ls }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetListSinger(int number)
         {
-            if (number != null || number != 0)
+            List<int> arr = new List<int>();
+            if (Session["singer"] != null)
             {
-                List<int> arr = new List<int>();
-                if (Session["singer"] != null)
-                {
-                    arr = Session["singer"] as List<int>;
-                    arr.Add(number);
-                    Session["singer"] = arr;
-                }
-                else
-                {
-                    arr.Add(number);
-                    Session["singer"] = arr;
-                }
+                arr = Session["singer"] as List<int>;
+                arr.Add(number);
+                Session["singer"] = arr;
+            }
+            else
+            {
+                arr.Add(number);
+                Session["singer"] = arr;
             }
             return Json(new { data = number }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult RemoveIdSinger(int id)
+        {
+            List<int> arr = new List<int>();
+            arr = Session["singer"] as List<int>;
+            arr.Remove(id);
+            Session["singer"] = arr;
+            return Json(new { data = id }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult CreateMusicUser(MusicView m, HttpPostedFileBase fileMusic, HttpPostedFileBase imgMusic)
         {
@@ -309,47 +315,51 @@ namespace MVC.Controllers
                 }
                 else
                 {
-                    string FileName = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
-                    imgMusic.SaveAs(path);
-                    m.MusicImage = FileName;
+                    string FileNameMusic = DateTime.Now.Ticks + Path.GetFileName(imgMusic.FileName);
+                    string pathMusic = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileNameMusic);
+                    imgMusic.SaveAs(pathMusic);
+                    m.MusicImage = FileNameMusic;
                 }
+                //quality music
+                QualityMusicView quality = new QualityMusicView
+                {
+                    NewFile = true,
+                    QMusicApproved = false //if admin do not approved file user, delete it(include singermusic, qualitymusic, music) without QMusicApproved is false
+                };
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(fileMusic.FileName);
+                string path;
+                if (FileName.EndsWith("mp3"))
+                {
+                    quality.QualityID = 1; //file normal of song
+                    m.SongOrMV = true;
+                    path = Path.Combine(Server.MapPath("~/Resource/Audio"), FileName);
+                }
+                else
+                {
+                    quality.QualityID = 3; //file mormal of mv
+                    m.SongOrMV = false;
+                    path = Path.Combine(Server.MapPath("~/Resource/Video"), FileName);
+                }
+                fileMusic.SaveAs(path);
+                quality.MusicFile = FileName;
                 //music
-                var resMusic = APIService.client.PostAsJsonAsync("Music", m).Result;
+                HttpResponseMessage resMusic = APIService.client.PostAsJsonAsync("Music", m).Result;
                 if (resMusic.IsSuccessStatusCode)
                 {
-                    var idMusic = resMusic.Content.ReadAsAsync<int>().Result;
-                    //quality music
-                    var quality = new QualityMusicView();
+                    int idMusic = resMusic.Content.ReadAsAsync<int>().Result;
                     quality.MusicID = idMusic;
-                    quality.NewFile = true;
-                    quality.QMusicApproved = false; //if admin do not approved file user, delete it(include singermusic, qualitymusic, music) without QMusicApproved is false
-                    string FileName = DateTime.Now.Ticks + Path.GetFileName(fileMusic.FileName);
-                    string path;
-                    if (FileName.EndsWith("mp3"))
-                    {
-                        quality.QualityID = 1; //file normal of song
-                        path = Path.Combine(Server.MapPath("~/Resource/Audio"), FileName);
-                    }
-                    else
-                    {
-                        quality.QualityID = 3; //file mormal of mv
-                        path = Path.Combine(Server.MapPath("~/Resource/Video"), FileName);
-                    }
-                    fileMusic.SaveAs(path);
-                    quality.MusicFile = FileName;
-                    var res = APIService.client.PostAsJsonAsync("QualityMusic", quality).Result;
+                    HttpResponseMessage res = APIService.client.PostAsJsonAsync("QualityMusic", quality).Result;
                     if (res.IsSuccessStatusCode)
                     {
                         //singer
-                        foreach (var number in arrSinger)
+                        foreach (int number in arrSinger)
                         {
-                            var resSM = APIService.client.PostAsJsonAsync("SingerMusic", new SingerMusicView { MusicID = idMusic, SingerID = number });
+                            System.Threading.Tasks.Task<HttpResponseMessage> resSM = APIService.client.PostAsJsonAsync("SingerMusic", new SingerMusicView { MusicID = idMusic, SingerID = number });
                         }
                     }
 
                     TempData["success"] = "Upload file thành công";
-                }               
+                }
             }
             else
             {
@@ -357,6 +367,20 @@ namespace MVC.Controllers
             }
             Session.Remove("singer");
             return RedirectToAction("UploadFile");
+        }
+        #endregion
+
+        #region Personal Page
+        public ActionResult PersonalUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            //playlist
+            HttpResponseMessage resPlist = APIService.client.GetAsync("Playlist?idUser=" + id).Result;
+            ViewBag.plist = resPlist.Content.ReadAsAsync<IEnumerable<PlaylistView>>().Result;
+            //file upload
+
+            return View(model);
         }
         #endregion
     }

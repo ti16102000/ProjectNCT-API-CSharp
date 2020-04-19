@@ -424,6 +424,7 @@
     <Content Include="Views\Client\Search.cshtml" />
     <Content Include="Views\Client\RankMusic.cshtml" />
     <Content Include="Views\Client\UploadFile.cshtml" />
+    <Content Include="Views\Client\PersonalUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

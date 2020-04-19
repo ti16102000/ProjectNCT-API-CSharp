@@ -1,0 +1,318 @@
+﻿
+@{
+    ViewBag.Title = "PersonalUser";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<div id="info">
+    <div>
+        <img src="img/avt.png" alt="">
+    </div>
+    <div>
+        <span><i class="fa fa-crown"></i> Tên ca sĩ</span><br>
+        <span>Sinh ngày: 16/10/2000</span><br>
+        <span>Giới tính: Nữ</span><br>
+        <span>Lời giới thiệu:</span>
+        <span>
+            Hi xin chào các bạn! ahihiihihihihihihihihiiih <br>
+        </span>
+    </div>
+</div>
+<div id="menuSearch" style="margin-top: -90px;">
+    <div class="hoverSearch" data-id="1">Playlist</div>
+    <div data-id="2">Video</div>
+    <div data-id="3">Tui Upload</div>
+</div>
+<div id="songSearch" class="musicSearch">
+    <a data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"
+       class="btn btn-primary" aria-controls="multiCollapseExample1"
+       style="margin-left: 40px; margin-top: 10px;">Tạo Playlist</a>
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+        <form action="" method="post">
+            <div class="card card-body" style="width: 70%;margin-top: 20px;margin-left: 40px;">
+                <div class="form-group">
+                    <label for="" style="margin-right: 12px;">Tên Playlist: </label>
+                    <input type="text" name="" id="" style="width: 40%;">
+                </div>
+                <div class="form-group">
+                    <label for="">Chọn Thể loại: </label>
+                    <select name="" id="" style="width: 38%;">
+                        <option value="">Cate 1</option>
+                        <option value="">Cate 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="" style="margin-right: 50px;">Mô tả: </label>
+                    <textarea name="" id="" maxlength="1000" style="width: 38%;"></textarea>
+                </div>
+                <div class="maincrop-img" style="margin-left: 95px;margin-bottom: 10px;">
+                    <div class="image-crp-int">
+                        <div class="img-preview img-preview-custom">
+                            <img src="img/avt.png" id="upImage" style="width: 300px; height: 255px;">
+                        </div>
+                    </div>
+                    <div class="image-crp-img">
+                        <div class="btn-group images-cropper-pro">
+                            <label title="Upload image file" for="inputImage"
+                                   class="btn btn-primary img-cropper-cp waves-effect">
+                                <input type="file" accept="image/*" name="file" id="inputImage" class="hide">
+                                Upload new image
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!--Button-->
+                <input type="submit" class="btn btn-info" value="Lưu"
+                       style="margin-left: 94px;font-size: 18px;">
+            </div>
+        </form>
+    </div>
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên Playlist</a><br>
+            <span style="left: 80px;">
+                <a href="">Người tạo</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+            <span><a href=""><i class="fas fa-edit"></i> Chỉnh sửa</a></span>
+        </span>
+    </div>
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên bài hát</a><br>
+            <span style="left: 80px;">
+                <a href="">Người tạo</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+            <span><a href=""><i class="fas fa-edit"></i> Chỉnh sửa</a></span>
+        </span>
+    </div>
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên bài hát</a><br>
+            <span style="left: 80px;">
+                <a href="">Người tạo</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+            <span><a href=""><i class="fas fa-edit"></i> Chỉnh sửa</a></span>
+        </span>
+    </div>
+</div>
+<div id="videoSearch" class="musicSearch">
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên Video</a><br>
+            <span style="left: 80px;">
+                <a href="">Ca sĩ 1</a>,
+                <a href="">Ca sĩ 2</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+        </span>
+    </div>
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên Video</a><br>
+            <span style="left: 80px;">
+                <a href="">Ca sĩ 1</a>,
+                <a href="">Ca sĩ 2</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+        </span>
+    </div>
+    <div class="itemBxh">
+        <img src="img/avt.png" alt="">
+        <span>
+            <a href="" style="font-size: 20px;">Tên Video</a><br>
+            <span style="left: 80px;">
+                <a href="">Ca sĩ 1</a>,
+                <a href="">Ca sĩ 2</a>
+            </span>
+        </span>
+        <span style="left: 265px;">
+            <span><i class="fas fa-trash-alt"></i> Xóa</span>
+        </span>
+    </div>
+</div>
+<div id="playlistSearch" class="musicSearch">
+    <div id="topicBxh">
+        <div>
+            <div class="activeTopicBxh" data-music="1">Bài hát</div>
+            <div data-music="0">Video</div>
+        </div>
+    </div>
+    <div id="songBxh" style="margin-left: 40px;">
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Bài hát</a>(Chờ duyệt)<br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span style="cursor: pointer;"><i class="far fa-trash-alt"></i> Xóa</span>
+                <span class="addPlaylist" style="cursor: pointer;">
+                    <i class="fas fa-plus-circle"></i> Thêm
+                    vào
+                    <ul>
+                        <li>Bài hát yêu thích</li>
+                        <li>Test 1</li>
+                        <li>Test2</li>
+                    </ul>
+                </span>
+        </div>
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Video</a><br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span style="cursor: pointer;"><i class="fas fa-trash-alt"></i> Xóa</span>
+                <span class="addPlaylist" style="cursor: pointer;">
+                    <i class="fas fa-plus-circle"></i> Thêm
+                    vào
+                    <ul>
+                        <li>Bài hát yêu thích</li>
+                        <li>Test 1</li>
+                        <li>Test2</li>
+                    </ul>
+                </span>
+        </div>
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Video</a><br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span style="cursor: pointer;"><i class="fas fa-trash-alt"></i> Xóa</span>
+                <span class="addPlaylist" style="cursor: pointer;">
+                    <i class="fas fa-plus-circle"></i> Thêm
+                    vào
+                    <ul>
+                        <li>Bài hát yêu thích</li>
+                        <li>Test 1</li>
+                        <li>Test2</li>
+                    </ul>
+                </span>
+        </div>
+    </div>
+    <div id="mvBxh" style="margin-left: 40px;display: none;">
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Video</a><br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span style="cursor: pointer;"><i class="fas fa-trash-alt"></i> Xóa</span>
+            </span>
+        </div>
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Video</a><br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span><i class="fas fa-trash-alt"></i> Xóa</span>
+            </span>
+        </div>
+        <div class="itemBxh" style="width: 60%;">
+            <img src="img/avt.png" alt="">
+            <span>
+                <a href="" style="font-size: 20px;">Tên Video</a><br>
+                <span style="left: 80px;">
+                    <a href="">Ca sĩ 1</a>,
+                    <a href="">Ca sĩ 2</a>
+                </span>
+            </span>
+            <span style="left: 209px;top: -2px;">
+                <span><i class="fas fa-headphones"></i> 300.000</span>
+                <span style="cursor: pointer;"><i class="fas fa-trash-alt"></i> Xóa</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var nameID = "#pageSong";
+            var nameActive = "activeSong";
+            $('#songSearch').show();
+            //Click menu
+            $('#menuSearch>div').click(function () {
+                var id = $(this).attr("data-id");
+                $('#menuSearch>div').removeClass("hoverSearch");
+                $(this).addClass("hoverSearch");
+                $('.musicSearch').hide();
+                if (id == "1") {
+                    nameID = "#pageSong";
+                    nameActive = "activeSong";
+                    $('#songSearch').show();
+                } else if (id == "2") {
+                    nameID = "#pageMV";
+                    nameActive = "activeMV";
+                    $('#videoSearch').show();
+                } else if (id == "3") {
+                    nameID = "#pagePlaylist";
+                    nameActive = "activePlaylist";
+                    $('#playlistSearch').show();
+                }
+            });
+
+            $('#topicBxh>div>div').click(function () {
+                $('#topicBxh>div>div').removeClass("activeTopicBxh");
+                $(this).addClass("activeTopicBxh");
+                if ($(this).attr("data-music") == "1") {
+                    $('#songBxh').css("display", "block");
+                    $('#mvBxh').css("display", "none");
+                } else {
+                    $('#songBxh').css("display", "none");
+                    $('#mvBxh').css("display", "block");
+                }
+            });
+            $('#inputImage').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                alert(tmppath);
+                $('#upImage').fadeIn("fast").attr("src", tmppath);
+            });
+        });
+    </script>
+}
+

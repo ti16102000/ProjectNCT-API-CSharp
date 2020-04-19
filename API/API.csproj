@@ -168,6 +168,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LyricsController.cs" />
     <Compile Include="Controllers\MusicController.cs" />
+    <Compile Include="Controllers\NewFileController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PlaylistController.cs" />

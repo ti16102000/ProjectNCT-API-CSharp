@@ -16,5 +16,7 @@ namespace API.Models.ModelViews
         public string MusicFile { get; set; }
         public bool QMusicApproved { get; set; }
         public bool NewFile { get; set; }
+        //
+        public MusicView ItemMusic { get; set; }
     }
 }
