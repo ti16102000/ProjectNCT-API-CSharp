@@ -95,7 +95,7 @@
             {
                 <span style="left: 265px;">
                     <span><a onclick="DelPlist(@item.ID)"><i class="fas fa-trash-alt"></i> Xóa</a></span>
-                    <span><a href=""><i class="fas fa-edit"></i> Chỉnh sửa</a></span>
+                    <span><a href="@Url.Action("EditPlaylist",new { id=item.ID})"><i class="fas fa-edit"></i> Chỉnh sửa</a></span>
                 </span>
             }
 
@@ -131,20 +131,14 @@
             <div class="itemBxh">
                 <img src="@Url.Content("~/Resource/ImagesMusic/")@item.MusicImage" alt="">
                 <span>
-                    <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a>@(item.FileApprove == false ? "(Chờ duyệt)" : "")<br>
+                    <a href="@Url.Action("PlayMusic",new { idMusic=item.ID})" style="font-size: 20px;">@item.MusicName</a>@(item.FileApprove == false ? "(Chờ duyệt)" : "")
+                    <i class="fas fa-headphones"></i> @item.View<br>
                     <span style="left: 80px;">
                         @foreach (var singer in item.ListSinger)
                         {
                             <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName, </a>
                         }
                     </span>
-                </span>
-                <span style="left: 209px;top: -2px;">
-                    <span><i class="fas fa-headphones"></i> @item.View</span>
-                    @if (Model.ID == Convert.ToInt32(Session["UserID"]))
-                    {
-                        <span><a onclick="DelFile(@item.ID)"><i class="far fa-trash-alt"></i> Xóa</a></span>
-                    }
                     @if (item.FileApprove == true)
                     {
                         <span class="addPlaylist" style="cursor: pointer;">
@@ -173,6 +167,14 @@
                             </ul>
                         </span>
                     }
+                </span>
+                <span style="left: 55px;top: -2px;">
+                    <span></span>
+                    @if (Model.ID == Convert.ToInt32(Session["UserID"]))
+                    {
+                        <span><a onclick="DelFile(@item.ID)"><i class="far fa-trash-alt"></i> Xóa</a></span>
+                    }
+                    
             </div>
         }
 

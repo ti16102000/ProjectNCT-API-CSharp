@@ -1,0 +1,117 @@
+﻿@model API.Models.ModelViews.PlaylistView
+@{
+    ViewBag.Title = "EditPlaylist";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left: 40px;margin-top: 40px;">
+    <div class="image-cropper-wp">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h4>CHỈNH SỬA PLAYLIST</h4>
+                <form action="@Url.Action("UpdatePlaylistUser")" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="" style="margin-right: 12px;">Tên Playlist: </label>
+                        <input type="hidden" value="@Model.ID" name="ID" />
+                        <input type="hidden" value="@Model.UserID" name="UserID"/>
+                        <input type="text" name="PlaylistName" value="@Model.PlaylistName" style="width: 40%;" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Chọn Thể loại: </label>
+                        <select name="CateID" id="" style="width: 38%;">
+                            <option value="@Model.ID">@Model.CateName</option>
+                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.CategoryView>)TempData["cate"]))
+                            {
+                                <option disabled>@item.CateName</option>
+                                foreach (var sub in item.ListSubCate)
+                                {
+                                    if (sub.ID != Model.CateID)
+                                    {
+                                        <option value="@sub.ID">@sub.CateName</option>
+                                    }
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" style="margin-right: 50px;">Mô tả: </label>
+                        <textarea name="PlaylistDescription" id="" maxlength="1000" style="width: 38%;">@Model.PlaylistDescription</textarea>
+                    </div>
+                    <div class="maincrop-img" style="margin-left: 95px;margin-bottom: 10px;">
+                        <div class="image-crp-int">
+                            <div class="img-preview img-preview-custom">
+                                <img src="@Url.Content("~/Resource/ImagesMusic/")@Model.PlaylistImage" id="upImage" style="width: 300px; height: 255px;">
+                            </div>
+                        </div>
+                        <div class="image-crp-img">
+                            <div class="btn-group images-cropper-pro">
+                                <label title="Upload image file" for="inputImage"
+                                       class="btn btn-primary img-cropper-cp waves-effect">
+                                    <input type="file" accept="image/*" name="imgPlaylist" id="inputImage" class="hide">
+                                    Upload new image
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 92px;">
+                        <input type="submit" class="btn btn-success" value="Cập nhật">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h4>DANH SÁCH BÀI HÁT</h4>
+                <div class="bsc-tbl-st" style="height:500px;overflow:auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tên bài hát</th>
+                                <th>Singer</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ((IEnumerable<API.Models.ModelViews.PlaylistMusicView>)TempData["pm"]))
+                            {
+
+                                <tr>
+                                    <td><a href="@Url.Action("PlayMusic",new { idMusic=item.ID})">@item.MusicName</a></td>
+                                    <td>
+                                        @foreach (var singer in item.ListSinger)
+                                        {
+                                            <a href="@Url.Action("TransferPersonalPage",new { id=singer.SingerID})">@singer.SingerName, </a>
+                                        }
+
+                                    </td>
+                                    <td><a href="@Url.Action("DelPM",new { idPlist=Model.ID,id=item.ID})" class="btn btn-danger">Xóa</a></td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+            var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+
+            $('#inputImage').change(function (event) {
+                var tmppath = URL.createObjectURL(event.target.files[0]);
+                $('#upImage').fadeIn("fast").attr("src", tmppath);
+            });
+
+        });
+    </script>
+}
+

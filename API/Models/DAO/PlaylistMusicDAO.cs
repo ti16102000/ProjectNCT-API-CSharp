@@ -22,8 +22,10 @@ namespace API.Models.DAO
         public static bool DelPM(int id)
         {
             var en = new ProjectNCTEntities();
-            en.PlaylistMusics.Remove(en.PlaylistMusics.Find(id));
+            var item = en.PlaylistMusics.Find(id);
+            en.PlaylistMusics.Remove(item);
             return en.SaveChanges() > 0 ? true : false;
         }
+
     }
 }

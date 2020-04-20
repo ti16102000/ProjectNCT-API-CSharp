@@ -13,38 +13,32 @@ namespace API.Controllers
     public class HistoryUserController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<controller>/5
         public IHttpActionResult Get(int idUser,bool music)
         {
-            var list = new List<MusicView>();
-            var ls = Repositories.GetListMusicHUByIDUser(idUser, music);
+            var list = new List<HistoryUserView>();
+            var ls = Repositories.GetListMusicHUByIDUser(idUser, music).GroupBy(g=>g.MusicID).Select(s=>s.First()).OrderByDescending(o=>o.ID) ;
             foreach (var item in ls)
             {
-                list.Add(new MusicView
-                {
-                    ID = item.MusicID,
-                    MusicName = item.Music.MusicName,
-                    MusicImage = item.Music.MusicImage,
-                    ListSinger = Repositories.GetSMByID(item.MusicID).Select(s => new SingerMusicView { SingerID = s.SingerID, SingerName = s.User.UserName })
+                list.Add(new HistoryUserView {
+                    ID=item.ID,
+                    UserID=item.UserID,
+                    MusicID=item.MusicID,
+                    ItemMusic=new MusicView {
+                        MusicName=item.Music.MusicName,
+                        MusicImage=item.Music.MusicImage,
+                        ListSinger=Repositories.GetSMByID(item.MusicID).Select(s=>new SingerMusicView { SingerID=s.SingerID,SingerName=s.User.UserName})
+                    }
                 });
             }
             return Ok(list);
         }
-        public IHttpActionResult DelMusic(int idUsr,int idMusic)
-        {
-            var res = Repositories.DelMusicHU(idUsr, idMusic);
-            if (res == true)
-            {
-                return Ok();
-            }
-            return InternalServerError();
-        }
-        public IHttpActionResult DelListMusic(int idUsr, bool music)
+        public IHttpActionResult GetListDel(int idUsr, bool music)
         {
             var res = Repositories.DelListMusicHU(idUsr, music);
             if (res == true)
@@ -71,8 +65,14 @@ namespace API.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            var res = Repositories.DelMusicHU(id);
+            if (res == true)
+            {
+                return Ok();
+            }
+            return InternalServerError();
         }
     }
 }

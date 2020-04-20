@@ -10,5 +10,6 @@ namespace API.Models.ModelViews
         public int ID { get; set; }
         public int UserID { get; set; }
         public int MusicID { get; set; }
+        public MusicView ItemMusic { get; set; }
     }
 }

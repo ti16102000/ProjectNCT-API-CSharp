@@ -14,5 +14,6 @@ namespace API.Models.ModelViews
         public string MusicName { get; set; }
         public bool MusicDownloadAllowed { get; set; }
         public int MusicView { get; set; }
+        public IEnumerable<SingerMusicView> ListSinger { get; set; }
     }
 }

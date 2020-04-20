@@ -29,14 +29,20 @@ namespace API.Controllers
             });
             return Ok(ls);
         }
-
         // GET api/<controller>/5
         public IHttpActionResult Get(int id)
         {
-            var ls = Repositories.GetListPMByID(id).Select(s => new PlaylistMusicView { ID = s.ID, MusicDownloadAllowed = s.Music.MusicDownloadAllowed, MusicID = s.MusicID, MusicName = s.Music.MusicName, MusicView = s.Music.MusicView, PlaylistID = s.PlaylistID });
+            var ls = Repositories.GetListPMByID(id).Select(s => new PlaylistMusicView {
+                ID = s.ID,
+                MusicDownloadAllowed = s.Music.MusicDownloadAllowed,
+                MusicID = s.MusicID,
+                MusicName = s.Music.MusicName,
+                MusicView = s.Music.MusicView,
+                PlaylistID = s.PlaylistID,
+                ListSinger= Repositories.GetSMByID(s.MusicID).Select(d => new SingerMusicView { SingerID = d.SingerID, SingerName = d.User.UserName })
+            });
             return Ok(ls);
         }
-
         // POST api/<controller>
         public IHttpActionResult Post(PlaylistMusicView s)
         {

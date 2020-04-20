@@ -14,7 +14,7 @@
 	
     1. Theme Default CSS (body, link color, section etc)
     2. Header Top 
-    3. Main Menu
+    3. Main Menu.
     4. status
     5. statistics 
     6. Email statistics
@@ -250,7 +250,7 @@
 }
 
 .addPlaylist ul {
-    min-width       : 150px;
+    min-width       : max-content;
     height          : 120px;
     overflow        : auto;
     position        : absolute;
@@ -482,7 +482,7 @@
 }
 
 .musicSearch>.itemBxh {
-    width        : 60%;
+    /*width        : 60%;*/
     margin-left  : 40px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }

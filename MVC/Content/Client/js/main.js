@@ -26,7 +26,7 @@
                 ls.forEach(function (i) {
                     var row = '<div class="itemSongRandom">\n' +
                         '<div>\n' +
-                        '<a href="/Client/PlayMusic?idMudic=' + i.ID + '"><img src="/Resource/ImagesUser/' + i.UserImage + '">' + i.UserName + '</a>' +
+                        '<a href="/Client/PersonalSinger/' + i.ID + '"><img src="/Resource/ImagesUser/' + i.UserImage + '">' + i.UserName + '</a>' +
                         '</div>\n' +
                         '</div>';
                     $('#viewSinger').append(row);
@@ -49,7 +49,7 @@
 
                     var row = '<div class="itemSongRandom">\n' +
                         '<div>\n' +
-                        '<a href="/Client/PlayMusic?idMudic=' + i.ID + '"><img src="/Resource/ImagesMusic/' + i.MusicImage + '" style="border-radius: 0%;">' + i.MusicName + '</a><br>' +
+                        '<a href="/Client/PlayMusic?idMusic=' + i.ID + '"><img src="/Resource/ImagesMusic/' + i.MusicImage + '" style="border-radius: 0%;">' + i.MusicName + '</a><br>' +
                         '<span>\n';
                     i.ListSinger.forEach(function (s) {
                         row += '<a href=""> ' + s.SingerName + ',</a>';
@@ -78,7 +78,7 @@
 
                     var row = '<div class="itemSongRandom">\n' +
                         '<div>\n' +
-                        '<a href="/Client/PlayMusic?idMudic=' + i.ID + '"><img src="/Resource/ImagesMusic/' + i.MusicImage + '">' + i.MusicName + '</a><br>' +
+                        '<a href="/Client/PlayMusic?idMusic=' + i.ID + '"><img src="/Resource/ImagesMusic/' + i.MusicImage + '">' + i.MusicName + '</a><br>' +
                         '<span>\n';
                     i.ListSinger.forEach(function (s) {
                         row += '<a href=""> ' + s.SingerName + ',</a>';

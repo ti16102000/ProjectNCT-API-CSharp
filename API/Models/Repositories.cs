@@ -80,6 +80,18 @@ namespace API.Models
         {
             return MusicBUS.DelQM(id);
         }
+        public static IEnumerable<QualityMusic> GetListNewFileMusic()
+        {
+            return MusicBUS.GetListNewFileMusic();
+        }
+        public static bool ApproveFile(int id)
+        {
+            return MusicBUS.ApproveFile(id);
+        }
+        public static bool DelFileAndTableRelated(int id)
+        {
+            return MusicBUS.DelFileAndTableRelated(id);
+        }
         #endregion
 
         #region Playlist
@@ -130,18 +142,7 @@ namespace API.Models
         {
             return MusicBUS.DelPM(id);
         }
-        public static IEnumerable<QualityMusic> GetListNewFileMusic()
-        {
-            return MusicBUS.GetListNewFileMusic();
-        }
-        public static bool ApproveFile(int id)
-        {
-            return MusicBUS.ApproveFile(id);
-        }
-        public static bool DelFileAndTableRelated(int id)
-        {
-            return MusicBUS.DelFileAndTableRelated(id);
-        }
+        
         #endregion
 
         #region Music
@@ -327,9 +328,9 @@ namespace API.Models
         {
             return UserBUS.GetListMusicHUByIDMusic(idUser, idMusic);
         }
-        public static bool DelMusicHU(int idUser, int idMusic)
+        public static bool DelMusicHU(int id)
         {
-            return UserBUS.DelMusicHU(idUser, idMusic);
+            return UserBUS.DelMusicHU(id);
         }
         public static bool DelListMusicHU(int idUser, bool music)
         {

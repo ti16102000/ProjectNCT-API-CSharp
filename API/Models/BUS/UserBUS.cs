@@ -76,9 +76,9 @@ namespace API.Models.BUS
         {
             return HistoryUserDAO.GetListMusicHUByIDMusic(idUser, idMusic);
         }
-        public static bool DelMusicHU(int idUser, int idMusic)
+        public static bool DelMusicHU(int id)
         {
-            return HistoryUserDAO.DelMusicHU(idUser, idMusic);
+            return HistoryUserDAO.DelMusicHU(id);
         }
         public static bool DelListMusicHU(int idUser, bool music)
         {

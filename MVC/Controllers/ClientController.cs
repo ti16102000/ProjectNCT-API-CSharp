@@ -603,6 +603,107 @@ HttpResponseMessage resUser = APIService.client.GetAsync("User/" + u.ID).Result;
             }
             return RedirectToAction("AccountUser", new { id = Convert.ToInt32(Session["UserID"]) });
         }
+        public ActionResult EditPlaylist(int id)
+        {
+            var res = APIService.client.GetAsync("Playlist/" + id).Result;
+            var model = res.Content.ReadAsAsync<PlaylistView>().Result;
+            //playlist music
+            var resPM = APIService.client.GetAsync("PlaylistMusic/" + id).Result;
+            TempData["pm"] = resPM.Content.ReadAsAsync<IEnumerable<PlaylistMusicView>>().Result;
+            //cate
+            var resCate = APIService.client.GetAsync("Category").Result;
+            TempData["cate"] = resCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
+            return View(model);
+        }
+        public ActionResult UpdatePlaylistUser(PlaylistView p, HttpPostedFileBase imgPlaylist)
+        {
+            HttpResponseMessage resP = APIService.client.GetAsync("Playlist/" + p.ID).Result;
+            PlaylistView model = resP.Content.ReadAsAsync<PlaylistView>().Result;
+            if (imgPlaylist == null)
+            {
+                p.PlaylistImage = model.PlaylistImage;
+            }
+            else
+            {
+                if (model.PlaylistImage != "default.png")
+                {
+                    string fullPath = Request.MapPath("~/Resource/ImagesMusic/" + model.PlaylistImage);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+
+                    }
+                }
+                string FileName = DateTime.Now.Ticks + Path.GetFileName(imgPlaylist.FileName);
+                string path = Path.Combine(Server.MapPath("~/Resource/ImagesMusic"), FileName);
+                imgPlaylist.SaveAs(path);
+                p.PlaylistImage = FileName;
+
+            }
+            HttpResponseMessage res = APIService.client.PutAsJsonAsync("Playlist/" + p.ID, p).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Cập nhật playlist thành công!";
+            }
+            else
+            {
+                TempData["error"] = "Cập nhật playlist xảy ra lỗi!";
+            }
+            return RedirectToAction("EditPlaylist", new { id = p.ID });
+        }
+        public ActionResult DelPM(int idPlist,int id)
+        {
+            var res = APIService.client.DeleteAsync("PlaylistMusic/"+id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                TempData["success"] = "Xóa bài hát trong playlist thành công!";
+            }
+            else
+            {
+                TempData["error"] = "Xóa bài hát trong playlist xảy ra lỗi!";
+            }
+            return RedirectToAction("EditPlaylist", new { id = idPlist });
+        }
+        public ActionResult HistoryUser(int id)
+        {
+            HttpResponseMessage res = APIService.client.GetAsync("User/" + id).Result;
+            UserView model = res.Content.ReadAsAsync<UserView>().Result;
+            //song
+            var resSong = APIService.client.GetAsync("HistoryUser?idUser=" + id + "&music=" + true).Result;
+            ViewBag.song = resSong.Content.ReadAsAsync<IEnumerable<HistoryUserView>>().Result;
+            //mv
+            var resMV = APIService.client.GetAsync("HistoryUser?idUser=" + id + "&music=" + false).Result;
+            ViewBag.mv = resMV.Content.ReadAsAsync<IEnumerable<HistoryUserView>>().Result;
+            return View(model);
+        }
+        [HttpGet]
+        public JsonResult DelItemMusic(int id)
+        {
+            var res = APIService.client.DeleteAsync("HistoryUser/"+id).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                return Json(new { stt = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { stt = false }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult DelListMusic(bool music)
+        {
+            var res = APIService.client.GetAsync("HistoryUser?idUsr=" + Convert.ToInt32(Session["UserID"]) + "&music=" + music).Result;
+            if (res.IsSuccessStatusCode)
+            {
+                return Json(new { stt = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { stt = false }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region LogOut
+        public ActionResult Logout()
+        {
+            Session.RemoveAll();
+            return RedirectToAction("Index");
+        }
         #endregion
     }
 }

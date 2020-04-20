@@ -107,8 +107,8 @@
                                             <ul class="dropdown-menu">
                                                 <li><a href="@Url.Action("AccountUser",new { id=usr.ID})"> Thông tin tài khoản</a></li>
                                                 <li><a href="@Url.Action("TransferPersonalPage",new { id=usr.ID})"> Trang cá nhân</a></li>
-                                                <li><a href=""> Lịch sử</a></li>
-                                                <li><a href=""> Đăng xuất</a></li>
+                                                <li><a href="@Url.Action("HistoryUser",new { id=usr.ID})"> Lịch sử</a></li>
+                                                <li><a href="@Url.Action("LogOut")"> Đăng xuất</a></li>
                                             </ul>
                                         </li>
                                     }
@@ -118,7 +118,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li><a href="@Url.Action("UploadFile")"><i class="fa fa-upload"></i> Upload file</a></li>
-                                            <li><a href="#"><i class="fa fa-crown"></i> Mua VIP</a></li>
+                                            <li><a href="@Url.Action("BuyVip")"><i class="fa fa-crown"></i> Mua VIP</a></li>
                                         </ul>
                                     </li>
                                 </ul>

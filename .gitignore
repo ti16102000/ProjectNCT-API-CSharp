@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /MVC/Resource/Audio
 /MVC/Resource
+/API/Controllers/UpdatePlaylistClientController.cs
