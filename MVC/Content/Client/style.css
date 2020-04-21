@@ -616,19 +616,46 @@
     margin-right: 20px;
     color: black;
 }
-
-
-
-
-
-
-
-/*-------------My script end---------------*/
-html,
-body {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
+.border-green {
+    border: 2px solid #00c292;
+    padding:20px;
 }
+#grid-vip {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin-bottom:20px;
+}
+    #grid-vip label {
+        font-size: 25px;
+        color: #00c292;
+    }
+    #grid-vip span {
+        font-size: 30px;
+        font-weight:700;
+    }
+#grid-payment {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    width: 39%;
+    margin: auto;
+    text-align: center;
+}
+    #grid-payment span {
+        font-size: 20px;
+    }
+    #grid-payment img{
+        margin-bottom:10px;
+    }
+#grid-vip > div:hover, .active-vip {
+    cursor:pointer;
+    background-color: aquamarine;
+}
+    /*-------------My script end---------------*/
+    html,
+    body {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+    }
 
 html {
     scroll-behavior: smooth;

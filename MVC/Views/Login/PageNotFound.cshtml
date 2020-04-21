@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "PageNotFound";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<!-- 404 Page area Start-->
+<div class="error-page-area">
+    <div class="error-page-wrap">
+        <i class="notika-icon notika-close"></i>
+        <h2>ERROR <span class="counter">404</span></h2>
+        <p>Trang bạn tìm kiếm không được tìm thấy</p>
+        <a href="@Url.Action("Index","Client")" class="btn">Quay lại trang chính</a>
+    </div>
+</div>
+<!-- 404 Page area End-->

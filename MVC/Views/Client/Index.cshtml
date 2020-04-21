@@ -10,6 +10,15 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            var msg1 = '@TempData["success"]'
+            if (msg1 != '') {
+                alertify.success(msg1); //display notify
+            }
+            var msg2 = '@TempData["error"]'
+            if (msg2 != '') {
+                alertify.error(msg2); //display notify
+            }
+
             window.onload = function () {
                 var itv = window.setInterval(function () { prevImages() }, 3000);
 

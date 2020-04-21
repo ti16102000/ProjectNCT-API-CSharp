@@ -20,9 +20,11 @@ namespace API.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            var p = Repositories.GetPVipByID(id);
+            var item = new PackageVipView { PVipID = p.ID, PVipMonths = p.PVipMonths, PVipName = p.PVipName, PVipPrice = p.PVipPrice };
+            return Ok(item);
         }
 
         // POST api/<controller>

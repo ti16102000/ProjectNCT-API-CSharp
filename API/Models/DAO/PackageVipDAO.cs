@@ -19,6 +19,11 @@ namespace API.Models.DAO
             var en = new ProjectNCTEntities();
             return en.PackageVips.ToList() ?? null;
         }
+        public static PackageVip GetPVipByID(int id)
+        {
+            var en = new ProjectNCTEntities();
+            return en.PackageVips.Find(id);
+        }
         public static bool DelPV(int id)
         {
             var en = new ProjectNCTEntities();

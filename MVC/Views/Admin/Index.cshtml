@@ -26,7 +26,7 @@
                     {
 
                         <tr>
-                            <td><a href="#">@item.UserName</a></td>
+                            <td><a href="@Url.Action("UserDetail",new { id=item.ID})">@item.UserName</a></td>
                             <td>@item.MusicName</td>
                             <td>@(item.SongOrMV == true ? "Audio" : "Video")</td>
                             <th>@item.MusicDayCreate</th>

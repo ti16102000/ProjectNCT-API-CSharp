@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "BuyVip";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    IEnumerable<API.Models.ModelViews.PackageVipView> lsPv = ViewBag.pv;
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="form-example-wrap mg-t-30">
+        <label for="" class="lblMusic" style="margin-left: 41%;">mua vip</label>
+        <div id="grid-vip">
+            @foreach (var item in lsPv)
+            {
+                <div class="card text-center border-green" data-id="@item.PVipID" style="width: 18rem;">
+                    <div class="card-body">
+                        <label>@item.PVipName</label><br />
+                        <span class="card-text">@item.PVipPrice VND</span><br />
+                    </div>
+                </div>
+            }
+
+        </div>
+        <label for="" class="lblMusic" style="margin-left: 36%;">cổng thanh toán</label><br />
+        <div id="grid-payment">
+            <a href="@Url.Action("MomoWithPayment","Momo")">
+                <img src="@Url.Content("~/Content/Client/")img/ic_momo.png" /><br />
+                <span>Ví điện tử MOMO</span>
+            </a>
+            <a href="#">
+                @*<img src="@Url.Content("~/Content/Client/")img/" /><br />
+                <span></span>*@
+            </a>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#grid-vip>div').click(function () {
+                $('#grid-vip>div').removeClass("active-vip");
+                $(this).addClass("active-vip");
+                var id = parseInt($(this).attr("data-id"));
+                $.ajax({
+                    url: '/Client/GetIDPVip',
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: { id },
+                    success: function (res) {
+                        var number = res.data;
+                        console.log(number);
+                    }
+                });
+            })
+        
+        });
+    </script>
+    }

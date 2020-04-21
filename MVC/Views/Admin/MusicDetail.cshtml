@@ -202,7 +202,21 @@
                                 @foreach (var item in ((IEnumerable<API.Models.ModelViews.QualityMusicView>)TempData["qm"]))
                                 {
                                     <tr>
-                                        <td>@item.MusicFile</td>
+                                       
+                                        <td>
+                                            @if (Model.SongOrMV == true)
+                                            {
+                                                <audio controls="controls">
+                                                    <source src="@Url.Content("~/Resource/Audio/")@item.MusicFile" type="audio/mp3" />
+                                                </audio>
+                                            }
+                                            else
+                                            {
+                                                <video controls="controls" style="width:60%;">
+                                                    <source src="@Url.Content("~/Resource/Video/")@item.MusicFile" type="video/mp4" />
+                                                </video>
+                                            }
+                                        </td>
                                         <td>@item.QualityName</td>
                                         <td>
                                             <a href="@Url.Action("DelFile",new { id=item.ID})" class="btn btn-danger">Delete</a>

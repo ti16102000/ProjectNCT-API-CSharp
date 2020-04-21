@@ -698,6 +698,26 @@ HttpResponseMessage resUser = APIService.client.GetAsync("User/" + u.ID).Result;
         }
         #endregion
 
+        #region Buy Vip
+        public ActionResult BuyVip()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var res = APIService.client.GetAsync("PVip").Result;
+            ViewBag.pv = res.Content.ReadAsAsync<IEnumerable<PackageVipView>>().Result;
+            Session.Remove("id");
+            return View();
+        }
+        [HttpGet]
+        public JsonResult GetIDPVip(int id)
+        {
+            Session["id"] = id;
+            return Json(new { data = id }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
         #region LogOut
         public ActionResult Logout()
         {

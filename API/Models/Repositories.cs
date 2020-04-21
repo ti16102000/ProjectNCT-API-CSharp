@@ -279,6 +279,10 @@ namespace API.Models
         {
             return PaymentBUS.DelPV(id);
         }
+        public static PackageVip GetPVipByID(int id)
+        {
+            return PaymentBUS.GetPVipByID(id);
+        }
         #endregion
 
         #region LyricsMusic

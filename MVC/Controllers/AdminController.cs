@@ -5,11 +5,24 @@ using System.IO;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MVC.Controllers
 {
     public class AdminController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            object o = filterContext.HttpContext.Session["ad"];
+            //var actionName = filterContext.RouteData.Values["action"];
+            //var ControllerName = filterContext.RouteData.Values["controller"];
+            if (o == null)
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "Controller", "Client" }, { "Action", "Index" } }); //back to public page
+            }
+
+        }
+
         // GET: Admin
         #region New file
         public ActionResult Index()

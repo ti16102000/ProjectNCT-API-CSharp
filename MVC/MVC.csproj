@@ -127,9 +127,11 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MomoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MomoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +254,7 @@
     <Content Include="Content\Client\img\favicon.ico" />
     <Content Include="Content\Client\img\green1.png" />
     <Content Include="Content\Client\img\icon-play.jpg" />
+    <Content Include="Content\Client\img\ic_momo.png" />
     <Content Include="Content\Client\img\logo-edit.png" />
     <Content Include="Content\Client\img\logo\favicon.png" />
     <Content Include="Content\Client\img\logo\logo.png" />
@@ -436,12 +439,15 @@
     <Content Include="Views\Admin\Order.cshtml" />
     <Content Include="Views\Client\EditPlaylist.cshtml" />
     <Content Include="Views\Client\HistoryUser.cshtml" />
+    <Content Include="Views\Client\BuyVip.cshtml" />
+    <Content Include="Views\Login\PageNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Resource\Audio\" />
     <Folder Include="Resource\Video\" />
+    <Folder Include="Views\Momo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -460,6 +466,10 @@
     <ProjectReference Include="..\API\API.csproj">
       <Project>{840C387B-CD33-4AB2-9A13-5D8A56639DE5}</Project>
       <Name>API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MomoGateway\MomoGateway.csproj">
+      <Project>{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}</Project>
+      <Name>MomoGateway</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

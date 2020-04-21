@@ -37,11 +37,17 @@ namespace API.Models.BUS
         {
             return PackageVipDAO.DelPV(id);
         }
+        public static PackageVip GetPVipByID(int id)
+        {
+            return PackageVipDAO.GetPVipByID(id);
+        }
         #endregion
 
         #region Order
         public static bool CreateOrd(OrderVip o)
         {
+            var package = GetPVipByID(o.PVipID??0);
+            UpdateVip(o.UserID, package.PVipMonths);
             return OrderVipDAO.CreateOrd(o);
         }
         public static IEnumerable<OrderVip> GetListOrd()
@@ -51,6 +57,13 @@ namespace API.Models.BUS
         public static IEnumerable<OrderVip> GetListOrdByIDUser(int id)
         {
             return OrderVipDAO.GetListOrdByIDUser(id);
+        }
+        #endregion
+
+        #region User
+        public static bool UpdateVip(int idUser, int month)
+        {
+            return UserDAO.UpdateVip(idUser, month);
         }
         #endregion
     }

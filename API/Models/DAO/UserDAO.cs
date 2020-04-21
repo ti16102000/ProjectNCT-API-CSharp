@@ -91,5 +91,20 @@ namespace API.Models.DAO
             }
             return 0;
         }
+        public static bool UpdateVip(int idUser,int month)
+        {
+            var en = new ProjectNCTEntities();
+            var user = en.Users.Find(idUser);
+            user.UserVIP = true;
+            if (user.DayVipEnd == null || user.DayVipEnd <= DateTime.Now)
+            {
+                user.DayVipEnd = DateTime.Now.AddMonths(month);
+            }
+            else
+            {
+                user.DayVipEnd = user.DayVipEnd.Value.AddMonths(month);
+            }
+            return en.SaveChanges() > 0 ? true : false;
+        }
     }
 }

@@ -92,5 +92,9 @@ namespace MVC.Controllers
             TempData["error"] = "Không gửi đc mail";
             return RedirectToAction("Index");
         }
+        public ActionResult PageNotFound()
+        {
+            return View();
+        }
     }
 }

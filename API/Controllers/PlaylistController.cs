@@ -78,7 +78,7 @@ namespace API.Controllers
         }
 
         // PUT api/<controller>/5
-        public IHttpActionResult Put(int id, PlaylistView p)
+        public IHttpActionResult Put(int id,[FromBody] PlaylistView p)
         {
             var item = new Playlist { ID = p.ID, CateID = p.CateID, PlaylistDescription = p.PlaylistDescription, PlaylistImage = p.PlaylistImage, PlaylistName = p.PlaylistName,UserID=p.UserID };
             var res = Repositories.UpdatePlaylist(item);

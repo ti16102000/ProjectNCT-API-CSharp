@@ -3,6 +3,7 @@
     ViewBag.Title = "AccountUser";
     Layout = "~/Views/Shared/_LayoutClient.cshtml";
     IEnumerable<API.Models.ModelViews.OrderView> lsOrd = ViewBag.ord;
+    int index = 1;
 }
 
 <div id="info">
@@ -21,7 +22,7 @@
         <span>Email: @Model.UserEmail</span><br>
         <span>Lời giới thiệu:</span>
         <span>@Model.UserDescription</span><br />
-        <span>Ngày hết hạn VIP: @Model.DayVipEnd</span><br>
+        <span>Ngày hết hạn VIP: @(Model.DayVipEnd?.ToString("dd/MM/yyyy hh:mm:ss"))</span><br>
         <a data-toggle="collapse" href="#multiCollapseExample1" role="button" class="btn btn-success"
            aria-expanded="false" aria-controls="multiCollapseExample1">Chỉnh sửa</a>
         <a data-toggle="collapse" href="#multiCollapseExample2" role="button" class="btn btn-primary"
@@ -143,7 +144,7 @@
                 <tbody>
                     @foreach (var item in lsOrd)
                     {
-                        int index = 1;
+                        
                         <tr>
                             <td>@index</td>
                             <td>@item.PVipName</td>
