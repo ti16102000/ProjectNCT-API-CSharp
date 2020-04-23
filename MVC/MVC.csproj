@@ -128,10 +128,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MomoController.cs" />
+    <Compile Include="Controllers\NganLuongController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="MomoService.cs" />
+    <Compile Include="NLService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +245,6 @@
     <Content Include="Content\Client\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Client\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Client\fonts\notika-icon.svg" />
-    <Content Include="Content\Client\img\avt.png" />
     <Content Include="Content\Client\img\blog\1.jpg" />
     <Content Include="Content\Client\img\chosen-sprite.png" />
     <Content Include="Content\Client\img\country\1.png" />
@@ -258,6 +259,7 @@
     <Content Include="Content\Client\img\logo-edit.png" />
     <Content Include="Content\Client\img\logo\favicon.png" />
     <Content Include="Content\Client\img\logo\logo.png" />
+    <Content Include="Content\Client\img\nl.jpg" />
     <Content Include="Content\Client\img\post\1.jpg" />
     <Content Include="Content\Client\img\post\2.jpg" />
     <Content Include="Content\Client\img\post\4.jpg" />
@@ -382,7 +384,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -448,6 +452,7 @@
     <Folder Include="Resource\Audio\" />
     <Folder Include="Resource\Video\" />
     <Folder Include="Views\Momo\" />
+    <Folder Include="Views\NganLuong\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -470,6 +475,10 @@
     <ProjectReference Include="..\MomoGateway\MomoGateway.csproj">
       <Project>{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}</Project>
       <Name>MomoGateway</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NganLuongGateway\NganLuongGateway.csproj">
+      <Project>{B510AA4F-79E1-4484-86CD-FA02AC0DA470}</Project>
+      <Name>NganLuongGateway</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

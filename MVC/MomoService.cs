@@ -22,7 +22,7 @@ namespace MVC
                 OrderId = orderNo.ToString(),
                 OrderInfo = "Thanh toán gói vip nghe nhạc",
                 ReturnUrl = "http://localhost:63252/Momo/MomoCallBack/",
-                NotifyUrl = "https://localhost:5001/api/", //i don't know this line to use for what
+                NotifyUrl = "", //i don't know this line to use for what
                 RequestType = "captureMoMoWallet",
                 SecretKey = "iI0Fg6R7nJUzpda4qbsYd4iFQHE9HDny",
                 Signature = "",

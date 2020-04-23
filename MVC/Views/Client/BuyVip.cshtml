@@ -20,15 +20,15 @@
             }
 
         </div>
-        <label for="" class="lblMusic" style="margin-left: 36%;">cổng thanh toán</label><br />
+        <label for="" class="lblMusic" style="margin-left: 38%;">cổng thanh toán</label><br />
         <div id="grid-payment">
             <a href="@Url.Action("MomoWithPayment","Momo")">
                 <img src="@Url.Content("~/Content/Client/")img/ic_momo.png" /><br />
                 <span>Ví điện tử MOMO</span>
             </a>
-            <a href="#">
-                @*<img src="@Url.Content("~/Content/Client/")img/" /><br />
-                <span></span>*@
+            <a href="@Url.Action("NLPayment","NganLuong")">
+                <img src="@Url.Content("~/Content/Client/")img/nl.jpg" style="width:49%;" /><br />
+                <span>Ví điện tử và Cổng TTTT dành cho TMĐT</span>
             </a>
         </div>
     </div>
@@ -36,6 +36,12 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            $('#grid-payment>a').click(function (e) {
+                if ($('.active-vip').length < 1) {
+                    e.preventDefault();
+                    alertify.error("Bạn chưa chọn gói vip để thanh toán");
+                }
+            });
             $('#grid-vip>div').click(function () {
                 $('#grid-vip>div').removeClass("active-vip");
                 $(this).addClass("active-vip");

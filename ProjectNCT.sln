@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC", "MVC\MVC.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MomoGateway", "MomoGateway\MomoGateway.csproj", "{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NganLuongGateway", "NganLuongGateway\NganLuongGateway.csproj", "{B510AA4F-79E1-4484-86CD-FA02AC0DA470}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D43F2F76-12BF-4D30-AE1A-AA64EE6ECE61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B510AA4F-79E1-4484-86CD-FA02AC0DA470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B510AA4F-79E1-4484-86CD-FA02AC0DA470}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B510AA4F-79E1-4484-86CD-FA02AC0DA470}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B510AA4F-79E1-4484-86CD-FA02AC0DA470}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

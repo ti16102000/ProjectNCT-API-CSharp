@@ -17,7 +17,7 @@ namespace MVC.Controllers
             HttpResponseMessage resAllCate = APIService.client.GetAsync("Category").Result;
             IEnumerable<CategoryView> ls = resAllCate.Content.ReadAsAsync<IEnumerable<CategoryView>>().Result;
             TempData["cate"] = ls;
-            Session["UserID"] = 11; //auto login acc user have id=11(data in my sql) to test my web faster
+            /*Session["UserID"] = 21;*/ //auto login acc user have id=11(data in my sql) to test my web faster
             if (Session["UserID"] != null)
             {
                 HttpResponseMessage res = APIService.client.GetAsync("User/" + Convert.ToInt32(Session["UserID"])).Result;
